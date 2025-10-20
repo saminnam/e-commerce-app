@@ -5,11 +5,19 @@
   --content-font: "Poppins", sans-serif;
 }
 
+/* * {
+  font-family: var(--content-font)
+} */
+
 .title-font {
   font-family: ;
 }
 
 .content-font {
+  font-family: var(--content-font);
+}
+
+p {
   font-family: var(--content-font);
 }
 
@@ -102,3 +110,15 @@
   border: 4px solid var(--dark-blue);
   padding: 2px;
 } */
+
+@keyframes shine {
+  0% {
+    left: -75%;
+  }
+  50% {
+    left: 125%;
+  }
+  100% {
+    left: 125%;
+  }
+}

@@ -37,7 +37,7 @@ const ProductFilter = ({
   return (
     <>
       {/* Desktop Filter */}
-      <div className="hidden md:block md:sticky top-0 h-max bg-white px-5 py-10 border border-gray-200 rounded-lg">
+      <div className="hidden md:block md:sticky top-32 h-max bg-white px-5 py-10 border border-gray-200 rounded-lg">
         <h4 className="text-lg font-semibold md:text-xl">Filter</h4>
         <div className="flex flex-col gap-5 mt-5">
           {/* Search */}

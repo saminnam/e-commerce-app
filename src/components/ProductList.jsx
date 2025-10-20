@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { StoreContext } from "../context/StoreContext";
 import { Link } from "react-router-dom";
 import { Plus, Star } from "lucide-react";
-import ProductFilter from "../components/ProductFilter";
+import ProductFilter from "./ProductFilter";
 
 const ProductListPage = () => {
   const [showFilter, setShowFilter] = useState(false);
@@ -23,7 +23,7 @@ const ProductListPage = () => {
   return (
     <div className="container mx-auto p-2 md:p-6 content-font">
       {/* 🔹 Filter Section */}
-      <div className="flex md:flex-row gap-10 flex-col">
+      <div className="flex lg:flex-row gap-10 flex-col">
         <div>
           <ProductFilter
             showFilter={showFilter}
@@ -49,7 +49,7 @@ const ProductListPage = () => {
                 className="border hover:border-[#e5b236] group overflow-hidden bg-white border-gray-200 pb-5 md:pb-10 relative rounded-lg p-4"
               >
                 <div>
-                  <div className="overflow-hidden h-40 md:h-48">
+                  <div className="overflow-hidden h-48">
                     <img
                       src={product.image}
                       alt={product.name}
@@ -106,6 +106,16 @@ const ProductListPage = () => {
                       <Plus className="w-4 transition-animation hover:rotate-180 h-4 md:w-5 md:h-5" />
                     </button>
                   </div>
+                </div>
+                <div
+                  className="absolute top-3 rounded-s right-0 w-[50px] text-center py-1 text-[12px] md:text-sm text-white bg-[#e5b336] 
+     hover:scale-110 transition-transform duration-300 overflow-hidden"
+                >
+                  {product.discount}%
+                  <span
+                    className="absolute top-0 left-[-75%] w-[50%] h-full bg-white opacity-20 rotate-12 
+        animate-[shine_2s_infinite]"
+                  ></span>
                 </div>
               </div>
             ))

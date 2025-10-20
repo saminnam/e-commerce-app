@@ -28,13 +28,25 @@ const StoreContextProvider = (props) => {
   };
 
   // ➖ Remove from cart
-  const removeFromCart = (itemId) => {
+  //   const removeFromCart = (itemId) => {
+  //     setCartItems((prev) => {
+  //       const updated = { ...prev };
+  //       if (updated[itemId] > 1) updated[itemId] -= 1;
+  //       else delete updated[itemId];
+  //       localStorage.setItem("cartItems", JSON.stringify(updated));
+  //       return updated;
+  //     });
+  //   };
+  const clearCart = () => setCartItems({});
+
+  const removeFromCart = (id, removeAll = false) => {
     setCartItems((prev) => {
-      const updated = { ...prev };
-      if (updated[itemId] > 1) updated[itemId] -= 1;
-      else delete updated[itemId];
-      localStorage.setItem("cartItems", JSON.stringify(updated));
-      return updated;
+      if (removeAll) {
+        const updated = { ...prev };
+        delete updated[id];
+        return updated;
+      }
+      return { ...prev, [id]: Math.max(prev[id] - 1, 0) };
     });
   };
 
@@ -89,6 +101,7 @@ const StoreContextProvider = (props) => {
     categories,
 
     // Cart
+    clearCart,
     cartItems,
     addToCart,
     removeFromCart,

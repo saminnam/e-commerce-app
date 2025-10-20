@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { StoreContext } from "../context/StoreContext";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { Trash2, Minus, Plus } from "lucide-react";
 
 const CartPage = () => {
   const {
@@ -9,6 +10,7 @@ const CartPage = () => {
     addToCart,
     removeFromCart,
     getTotalCartAmount,
+    clearCart,
   } = useContext(StoreContext);
   const navigate = useNavigate();
 
@@ -16,61 +18,107 @@ const CartPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-10">
-      <h1 className="text-2xl font-bold mb-6">Your Cart</h1>
+      <h1 className="text-3xl font-bold mb-8 text-gray-800">🛒 Your Cart</h1>
 
       {cartProducts.length === 0 ? (
-        <p>Your cart is empty.</p>
+        <div className="text-center py-10 text-gray-600">
+          <p className="text-lg">Your cart is empty.</p>
+          <button
+            onClick={() => navigate("/")}
+            className="mt-4 bg-yellow-500 text-white px-6 py-2 rounded hover:bg-yellow-600 transition"
+          >
+            Continue Shopping
+          </button>
+        </div>
       ) : (
-        <div className="space-y-4">
+        <div className="bg-white shadow-md rounded-lg overflow-hidden">
+          {/* Cart Header */}
+          <div className="grid grid-cols-6 font-semibold bg-gray-100 text-gray-700 p-3">
+            <p className="col-span-2 text-center">Product</p>
+            <p className="text-center">Price</p>
+            <p className="text-center">Offer Price</p>
+            <p className="text-center">Quantity</p>
+            <p className="text-center">Action</p>
+          </div>
+
+          {/* Cart Items */}
           {cartProducts.map((product) => (
             <div
               key={product._id}
-              className="flex items-center justify-between border p-4 rounded-lg bg-white shadow-sm"
+              className="grid grid-cols-6 items-center border-t border-gray-300 p-4 hover:bg-gray-50 transition"
             >
-              <div className="flex items-center gap-4">
+              {/* Product Info */}
+              <div className="col-span-2 flex items-center gap-4">
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="w-20 h-20 object-cover rounded-md"
+                  className="w-20 h-20 object-cover rounded-md border border-gray-300"
                 />
                 <div>
-                  <h3 className="font-semibold">{product.name}</h3>
-                  <p className="text-gray-500">₹{product.price}</p>
+                  <h3 className="font-semibold text-gray-800">
+                    {product.name}
+                  </h3>
+                  <p className="text-sm text-gray-500">
+                    {product.description?.slice(0, 40)}...
+                  </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3">
+              {/* Price */}
+              <p className="text-center text-gray-600">₹{product.price}</p>
+
+              {/* Offer Price */}
+              <p className="text-center text-green-600 font-semibold">
+                ₹{(product.price * 0.9).toFixed(0)} {/* example 10% off */}
+              </p>
+
+              {/* Quantity Controls */}
+              <div className="flex justify-center items-center gap-3">
                 <button
                   onClick={() => removeFromCart(product._id)}
-                  className="px-2 py-1 bg-gray-200 rounded"
+                  className="bg-gray-200 p-1 rounded hover:bg-gray-300"
                 >
-                  -
+                  <Minus size={16} />
                 </button>
-                <span>{cartItems[product._id]}</span>
+                <span className="text-gray-800 font-medium">
+                  {cartItems[product._id]}
+                </span>
                 <button
                   onClick={() => addToCart(product._id)}
-                  className="px-2 py-1 bg-gray-200 rounded"
+                  className="bg-gray-200 p-1 rounded hover:bg-gray-300"
                 >
-                  +
+                  <Plus size={16} />
                 </button>
               </div>
 
-              <button
-                onClick={() => removeFromCart(product._id)}
-                className="text-red-600 font-semibold"
-              >
-                Remove
-              </button>
+              {/* Remove Button */}
+              <div className="flex justify-center">
+                <button
+                  onClick={() => removeFromCart(product._id, true)} // true for full removal
+                  className="text-red-600 hover:text-red-700 transition"
+                >
+                  <Trash2 size={20} />
+                </button>
+              </div>
             </div>
           ))}
 
-          <div className="text-right mt-6">
-            <h2 className="text-xl font-bold">
+          {/* Footer */}
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 border-t border-gray-300 p-6 bg-gray-50">
+            <button
+              onClick={clearCart}
+              className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600 transition"
+            >
+              Clear Cart
+            </button>
+
+            <h2 className="text-xl font-bold text-gray-800">
               Total: ₹{getTotalCartAmount().toLocaleString()}
             </h2>
+
             <button
               onClick={() => navigate("/checkout")}
-              className="mt-4 bg-yellow-500 text-white px-6 py-2 rounded hover:bg-yellow-600"
+              className="bg-yellow-500 text-white px-8 py-2 rounded hover:bg-yellow-600 transition"
             >
               Proceed to Checkout
             </button>
