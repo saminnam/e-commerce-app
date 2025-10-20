@@ -65,7 +65,7 @@ const ProductListPage = () => {
                         By - {product.author}
                       </h5>
                     )}
-                    <div className="flex md:flex-row flex-col md:items-center gap-2 md:gap-4">
+                    <div className="flex md:mt-0 mt-1 md:flex-row flex-col md:items-center gap-1 md:gap-4">
                       <div className="flex gap-2">
                         <p className="text-gray-800 text-[12px] md:text-[15px] font-semibold">
                           ₹{product.price}
