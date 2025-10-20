@@ -49,14 +49,14 @@ const ProductListPage = () => {
                 className="border hover:border-[#e5b236] group overflow-hidden bg-white border-gray-200 pb-5 md:pb-10 relative rounded-lg p-4"
               >
                 <div>
-                  <div className="overflow-hidden h-48">
+                  <div className="overflow-hidden h-40 md:h-48">
                     <img
                       src={product.image}
                       alt={product.name}
                       className="w-full transition-animation group-hover:scale-110 object-cover rounded"
                     />
                   </div>
-                  <div className="space-y-1 my-8">
+                  <div className="md:space-y-1 my-8">
                     <h3 className="text-[12px] md:text-[16px] truncate w-[120px] md:w-[200px]">
                       {product.name}
                     </h3>
@@ -90,7 +90,7 @@ const ProductListPage = () => {
                     </div>
                   </div>
                 </div>
-                <div className="absolute bottom-3 md:bottom-5 w-full left-1/2 px-2 md:px-4 transform -translate-x-1/2">
+                <div className="absolute bottom-3 md:bottom-5 w-full left-1/2 px-4 transform -translate-x-1/2">
                   <div className="flex items-center w-full justify-between">
                     <Link
                       to={`/product/${product._id}`}
