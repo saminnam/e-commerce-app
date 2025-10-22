@@ -37,7 +37,7 @@ const ProductFilter = ({
   return (
     <>
       {/* Desktop Filter */}
-      <div className="hidden md:block md:sticky top-32 h-max bg-white px-5 py-10 border border-gray-200 rounded-lg">
+      <div className="hidden md:block md:sticky top-32 bg-white px-5 py-5 border border-gray-200 rounded-lg">
         <h4 className="text-lg font-semibold md:text-xl">Filter</h4>
         <div className="flex flex-col gap-5 mt-5">
           {/* Search */}
@@ -49,7 +49,7 @@ const ProductFilter = ({
             className="border border-gray-300 p-2 rounded"
           />
           {/* Category */}
-          <select
+          {/* <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
             className="border border-gray-300 p-2 rounded"
@@ -59,7 +59,28 @@ const ProductFilter = ({
                 {cat}
               </option>
             ))}
-          </select>
+          </select> */}
+          <div className="border border-gray-300 p-2 rounded">
+            <h4 className="font-semibold text-gray-800 border-gray-300 border-b pb-1 mb-2">
+              Categories
+            </h4>
+            <ul className="p-2 max-h-60 scrollbar overflow-y-auto w-full">
+              {categories.map((cat, i) => (
+                <li
+                  key={i}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`px-3 py-2 cursor-pointer rounded transition ${
+                    selectedCategory === cat
+                      ? "bg-[#e5b236] text-white"
+                      : "hover:bg-gray-100 text-gray-700"
+                  }`}
+                >
+                  {cat}
+                </li>
+              ))}
+            </ul>
+          </div>
+
           {/* Price Range */}
           <div className="flex md:flex-row flex-col md:items-center gap-3">
             <div className="flex items-center gap-1">
@@ -84,7 +105,7 @@ const ProductFilter = ({
               onChange={(e) =>
                 setPriceRange([priceRange[0], Number(e.target.value)])
               }
-              className="w-40 accent-yellow-500"
+              className="w-40 accent-[#e5b236]"
             />
 
             <div className="flex items-center gap-1">
@@ -103,7 +124,7 @@ const ProductFilter = ({
           </div>
 
           {/* Sort */}
-          <select
+          {/* <select
             value={sortOrder}
             onChange={(e) => setSortOrder(e.target.value)}
             className="border border-gray-300 p-2 rounded"
@@ -111,14 +132,49 @@ const ProductFilter = ({
             <option value="">Sort By</option>
             <option value="low-to-high">Price: Low to High</option>
             <option value="high-to-low">Price: High to Low</option>
-          </select>
+          </select> */}
+          <ul className="border border-gray-300 rounded p-2 max-h-48 overflow-y-auto space-y-2">
+            <li className="font-semibold text-gray-800 border-gray-300 border-b pb-1">
+              Sort By
+            </li>
+
+            {[
+              { label: "Price: Low to High", value: "low-to-high" },
+              { label: "Price: High to Low", value: "high-to-low" },
+            ].map((option) => {
+              const isActive = sortOrder === option.value;
+              return (
+                <li
+                  key={option.value}
+                  onClick={() => setSortOrder(isActive ? "" : option.value)}
+                  className={`flex items-center gap-2 cursor-pointer p-2 rounded transition ${
+                    isActive
+                      ? "bg-[#e5b236] text-white"
+                      : "hover:bg-gray-100 text-gray-700"
+                  }`}
+                >
+                  <input
+                    type="checkbox"
+                    checked={isActive}
+                    readOnly
+                    className={`cursor-pointer w-4 h-4 rounded ${
+                      isActive
+                        ? "accent-white bg-[#e5b236] border-white"
+                        : "accent-[#e5b236]"
+                    }`}
+                  />
+                  <label className="text-sm select-none">{option.label}</label>
+                </li>
+              );
+            })}
+          </ul>
         </div>
       </div>
 
       {/* Mobile Floating Filter Button */}
       <button
         onClick={() => setShowFilter(true)}
-        className="md:hidden cursor-pointer z-20 fixed bottom-5 right-5 bg-yellow-500 text-white p-3 rounded-full shadow-lg hover:bg-yellow-600 transition"
+        className="md:hidden cursor-pointer z-20 fixed bottom-5 right-5 bg-[#e5b236] text-white p-3 rounded-full shadow-lg hover:bg-yellow-600 transition"
       >
         <Filter size={20} />
       </button>
@@ -126,7 +182,9 @@ const ProductFilter = ({
       {/* Mobile Off-Canvas Filter */}
       <div
         className={`fixed inset-0 z-50 flex justify-end transition-all duration-300 ${
-          showFilter ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          showFilter
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
         }`}
       >
         {/* Backdrop */}
@@ -197,7 +255,7 @@ const ProductFilter = ({
                 onChange={(e) =>
                   setPriceRange([priceRange[0], Number(e.target.value)])
                 }
-                className="w-full accent-yellow-500"
+                className="w-full accent-[#e5b236]"
               />
 
               <div className="flex items-center gap-1">

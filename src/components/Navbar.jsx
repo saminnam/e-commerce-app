@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 import { category_list } from "../data/productData";
 import { useContext } from "react";
 import { StoreContext } from "../context/StoreContext";
-import logo from "../assets/images/logo-bg.png"
+import logo from "../assets/images/logo-bg.png";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -88,29 +88,69 @@ const Navbar = () => {
           <div className="p-4">
             {/* Links */}
             <ul className="space-y-3 text-gray-700">
-              <li className="border-b border-gray-300 pb-2">
-                <Link to="/">Home</Link>
+              <li
+                className="border-b border-gray-300 pb-2"
+                onClick={() => setMenuOpen(false)}
+              >
+                <Link to="/" className="block">
+                  Home
+                </Link>
               </li>
-              <li className="border-b border-gray-300 pb-2">
-                <Link to="/products">Shop</Link>
+              <li
+                className="border-b border-gray-300 pb-2"
+                onClick={() => setMenuOpen(false)}
+              >
+                <Link to="/products" className="block">
+                  Shop
+                </Link>
               </li>
-              <li className="border-b border-gray-300 pb-2">
-                <Link to="/">Re-Seller</Link>
+              <li
+                className="border-b border-gray-300 pb-2"
+                onClick={() => setMenuOpen(false)}
+              >
+                <Link to="/" className="block">
+                  Re-Seller
+                </Link>
               </li>
-              <li className="border-b border-gray-300 pb-2">
-                <Link to="/blog">Blog</Link>
+              <li
+                className="border-b border-gray-300 pb-2"
+                onClick={() => setMenuOpen(false)}
+              >
+                <Link to="/blog" className="block">
+                  Blog
+                </Link>
               </li>
-              <li className="border-b border-gray-300 pb-2">
-                <Link to="/contact_us">Contact Us</Link>
+              <li
+                className="border-b border-gray-300 pb-2"
+                onClick={() => setMenuOpen(false)}
+              >
+                <Link to="/contact_us" className="block">
+                  Contact Us
+                </Link>
               </li>
-              <li className="border-b border-gray-300 pb-2">
-                <Link to="/">Become a Seller</Link>
+              <li
+                className="border-b border-gray-300 pb-2"
+                onClick={() => setMenuOpen(false)}
+              >
+                <Link to="/" className="block">
+                  Become a Seller
+                </Link>
               </li>
-              <li className="border-b border-gray-300 pb-2">
-                <Link to="/about_us">About Us</Link>
+              <li
+                className="border-b border-gray-300 pb-2"
+                onClick={() => setMenuOpen(false)}
+              >
+                <Link to="/about_us" className="block">
+                  About Us
+                </Link>
               </li>
-              <li className="border-b border-gray-300 pb-2">
-                <Link to="/return_policy">Returns Policy</Link>
+              <li
+                className="border-b border-gray-300 pb-2"
+                onClick={() => setMenuOpen(false)}
+              >
+                <Link to="/return_policy" className="block">
+                  Returns Policy
+                </Link>
               </li>
             </ul>
             <ul className="mt-5 flex gap-2 justify-center text-center">
@@ -157,13 +197,9 @@ const Navbar = () => {
       {/* 🔹 Middle Section */}
       <div className="flex items-center z-40 sticky top-0 justify-between px-4 md:px-10 py-3 bg-[#111825]">
         {/* Logo */}
-        <div>
-          <img
-            src={logo}
-            alt=""
-            className="w-[80px] md:w-[105px]"
-          />
-        </div>
+        <Link to="/">
+          <img src={logo} alt="" className="w-[80px] md:w-[105px]" />
+        </Link>
         <nav className="hidden uppercase lg:flex justify-center gap-10 text-white text-sm font-medium">
           <Link to="/" className="hover:text-[#E5B236] transition-animation">
             Home

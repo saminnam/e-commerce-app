@@ -24,7 +24,7 @@ const ProductListPage = () => {
     <div className="container mx-auto p-2 md:p-6 content-font">
       {/* 🔹 Filter Section */}
       <div className="flex lg:flex-row gap-10 flex-col">
-        <div>
+        <div className="">
           <ProductFilter
             showFilter={showFilter}
             setShowFilter={setShowFilter}
@@ -41,12 +41,12 @@ const ProductListPage = () => {
         </div>
 
         {/* 🔹 Product Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 2xl:grid-cols-4 gap-2 md:gap-6">
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product) => (
               <div
                 key={product._id}
-                className="border hover:border-[#e5b236] group overflow-hidden bg-white border-gray-200 pb-5 md:pb-10 relative rounded-lg p-4"
+                className="border h-max hover:border-[#e5b236] group overflow-hidden bg-white border-gray-200 pb-5 md:pb-10 relative rounded-lg p-4"
               >
                 <div>
                   <div className="overflow-hidden h-48">
@@ -57,14 +57,14 @@ const ProductListPage = () => {
                     />
                   </div>
                   <div className="md:space-y-1 my-8">
-                    <h3 className="text-[12px] md:text-[16px] truncate w-[120px] md:w-[200px]">
+                    <h3 className="text-[12px] md:text-[14px] truncate w-[120px] md:w-[200px]">
                       {product.name}
                     </h3>
-                    {product.author && (
-                      <h5 className="text-[10px] md:text-[13px] truncate w-[120px] md:w-[200px] text-gray-700">
-                        By - {product.author}
+                    {/* {product.author && (
+                      <h5 className="text-[10px] md:text-[12px] truncate w-[120px] md:w-[200px] text-gray-700">
+                        {product.author}
                       </h5>
-                    )}
+                    )} */}
                     <div className="flex md:mt-0 mt-1 md:flex-row flex-col md:items-center gap-1 md:gap-4">
                       <div className="flex gap-2">
                         <p className="text-gray-800 text-[12px] md:text-[15px] font-semibold">
