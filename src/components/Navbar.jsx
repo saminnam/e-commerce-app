@@ -14,6 +14,7 @@ import { category_list } from "../data/productData";
 import { useContext } from "react";
 import { StoreContext } from "../context/StoreContext";
 import logo from "../assets/images/logo-bg.png";
+import MobileSearchBar from "./MobileSearchBar";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -209,131 +210,127 @@ const Navbar = () => {
         )}
       </header>
       {/* 🔹 Middle Section */}
-      <div className="flex items-center z-40 sticky top-0 justify-between px-4 md:px-10 py-3 bg-[#111825]">
-        {/* Logo */}
-        <Link to="/">
-          <img src={logo} alt="" className="w-[80px] md:w-[105px]" />
-        </Link>
-        <nav className="hidden uppercase lg:flex justify-center gap-10 text-white text-sm font-medium">
-          <Link to="/" className="hover:text-[#E5B236] transition-animation">
-            Home
+      <div className="z-40 sticky top-0">
+        <div className="flex items-center justify-between px-4 md:px-10 py-3 bg-[#111825]">
+          {/* Logo */}
+          <Link to="/">
+            <img src={logo} alt="" className="w-[80px] md:w-[105px]" />
           </Link>
-          <Link
-            to="/products"
-            className="hover:text-[#E5B236] transition-animation"
-          >
-            Shop
-          </Link>
-          <Link to="/" className="hover:text-[#E5B236] transition-animation">
-            Re-seller
-          </Link>
-          <Link
-            to="/blog"
-            className="hover:text-[#E5B236] transition-animation"
-          >
-            Blog
-          </Link>
-          <Link
-            to="/contact_us"
-            className="hover:text-[#E5B236] transition-animation"
-          >
-            Contact Us
-          </Link>
-        </nav>
-        {/* Search & Categories (Desktop) */}
-        <div className="hidden md:flex items-center mx-10">
-          <div ref={dropdownRef} className="relative text-gray-600">
-            <button
-              className="bg-white px-3 py-2 cursor-pointer rounded-l-full hidden lg:flex items-center gap-1"
-              onClick={() => setCategoryOpen(!categoryOpen)}
+          <nav className="hidden uppercase lg:flex justify-center gap-10 text-white text-sm font-medium">
+            <Link to="/" className="hover:text-[#E5B236] transition-animation">
+              Home
+            </Link>
+            <Link
+              to="/products"
+              className="hover:text-[#E5B236] transition-animation"
             >
-              <span>Categories</span> <ChevronDown size={20} />
-            </button>
+              Shop
+            </Link>
+            <Link to="/" className="hover:text-[#E5B236] transition-animation">
+              Re-seller
+            </Link>
+            <Link
+              to="/blog"
+              className="hover:text-[#E5B236] transition-animation"
+            >
+              Blog
+            </Link>
+            <Link
+              to="/contact_us"
+              className="hover:text-[#E5B236] transition-animation"
+            >
+              Contact Us
+            </Link>
+          </nav>
+          {/* Search & Categories (Desktop) */}
+          <div className="hidden md:flex items-center mx-10">
+            <div ref={dropdownRef} className="relative text-gray-600">
+              <button
+                className="bg-white px-3 py-2 cursor-pointer rounded-l-full hidden lg:flex items-center gap-1"
+                onClick={() => setCategoryOpen(!categoryOpen)}
+              >
+                <span>Categories</span> <ChevronDown size={20} />
+              </button>
 
-            {/* Dropdown */}
-            <div
-              className={`absolute top-full left-0 bg-white mt-1 scrollbar rounded shadow-lg w-max py-2 z-50 overflow-y-auto max-h-[150px] md:max-h-[300px]
+              {/* Dropdown */}
+              <div
+                className={`absolute top-full left-0 bg-white mt-1 scrollbar rounded shadow-lg w-max py-2 z-50 overflow-y-auto max-h-[150px] md:max-h-[300px]
           transition-all duration-300 ease-in-out transform origin-top
           ${
             categoryOpen
               ? "opacity-100 scale-y-100"
               : "opacity-0 scale-y-0 pointer-events-none"
           }`}
-            >
-              {category_list.map((item, index) => (
-                <ul className="text-sm" key={index}>
-                  <li
-                    onClick={() => handleCategorySelect(item.cat_name)}
-                    className="px-3 font-semibold py-2 hover:bg-[#E5B236] hover:text-white cursor-pointer"
-                  >
-                    {item.cat_name}
-                  </li>
-                </ul>
-              ))}
+              >
+                {category_list.map((item, index) => (
+                  <ul className="text-sm" key={index}>
+                    <li
+                      onClick={() => handleCategorySelect(item.cat_name)}
+                      className="px-3 font-semibold py-2 hover:bg-[#E5B236] hover:text-white cursor-pointer"
+                    >
+                      {item.cat_name}
+                    </li>
+                  </ul>
+                ))}
+              </div>
+            </div>
+            <div className="flex border bg-white lg:rounded-l-none rounded-l-full rounded-r-full">
+              <input
+                type="text"
+                placeholder="Search for products..."
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+                className="w-full px-4 py-2 outline-none"
+              />
+              <button
+                onClick={handleSearch}
+                className="bg-[#E5B236] text-white px-4 rounded-r-full"
+              >
+                <Search size={18} />
+              </button>
             </div>
           </div>
-          <div className="flex border bg-white lg:rounded-l-none rounded-l-full rounded-r-full">
-            <input
-              type="text"
-              placeholder="Search for products..."
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
-              className="w-full px-4 py-2 outline-none"
-            />
+
+          {/* Wishlist & Cart */}
+          <div className="flex items-center gap-4 text-white">
+            <button className="relative">
+              <Heart size={22} />
+            </button>
+            <Link to="/cart" className="relative">
+              <ShoppingCart size={22} />
+              <div
+                className={`absolute -top-2 -right-2 text-xs font-bold rounded-full flex items-center justify-center ${
+                  Object.keys(cartItems).length > 0
+                    ? "w-5 h-5 bg-[#E5B236] text-white"
+                    : "w-0 h-0"
+                }`}
+              >
+                {Object.keys(cartItems).length > 0
+                  ? Object.keys(cartItems).length
+                  : null}
+              </div>
+            </Link>
+            <button className="hidden md:block">
+              <User size={22} />
+            </button>
+            {/* Mobile Menu Button */}
             <button
-              onClick={handleSearch}
-              className="bg-[#E5B236] text-white px-4 rounded-r-full"
+              className="lg:hidden cursor-pointer text-white"
+              onClick={() => setMenuOpen(!menuOpen)}
             >
-              <Search size={18} />
+              {menuOpen ? <X size={26} /> : <Menu size={26} />}
             </button>
           </div>
         </div>
-
-        {/* Wishlist & Cart */}
-        <div className="flex items-center gap-4 text-white">
-          <button className="relative">
-            <Heart size={22} />
-          </button>
-          <Link to="/cart" className="relative">
-            <ShoppingCart size={22} />
-            <div
-              className={`absolute -top-2 -right-2 text-xs font-bold rounded-full flex items-center justify-center ${
-                Object.keys(cartItems).length > 0
-                  ? "w-5 h-5 bg-[#E5B236] text-white"
-                  : "w-0 h-0"
-              }`}
-            >
-              {Object.keys(cartItems).length > 0
-                ? Object.keys(cartItems).length
-                : null}
-            </div>
-          </Link>
-          <button className="hidden md:block">
-            <User size={22} />
-          </button>
-          {/* Mobile Menu Button */}
-          <button
-            className="lg:hidden cursor-pointer text-white"
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            {menuOpen ? <X size={26} /> : <Menu size={26} />}
-          </button>
-        </div>
-      </div>
-      <div className="flex md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 w-[90%] bg-white shadow-lg rounded-full z-50">
-        <input
-          type="text"
-          placeholder="Search for products..."
-          value={searchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
-          className="w-full px-4 py-2 outline-none rounded-l-full"
-        />
-        <button
-          onClick={handleSearch}
-          className="bg-[#E5B236] text-white px-4 rounded-r-full flex items-center justify-center"
-        >
-          <Search size={18} />
-        </button>
+        {/* <div>
+          <MobileSearchBar
+            category_list={category_list}
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
+            handleSearch={handleSearch}
+            setSelectedCategory={setSelectedCategory}
+          />
+        </div> */}
       </div>
     </>
   );
