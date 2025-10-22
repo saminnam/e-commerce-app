@@ -1,12 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import { StoreContext } from "../context/StoreContext";
 import { Link, useSearchParams } from "react-router-dom";
-import { Plus, Star } from "lucide-react";
+import { Plus, Star, ChevronLeft, ChevronRight } from "lucide-react";
 import ProductFilter from "./ProductFilter";
+import ProductCardSkeleton from "../skeletonLoader/ProductCardSkeleton";
 
 const ProductListPage = () => {
   const [showFilter, setShowFilter] = useState(false);
   const [searchParams] = useSearchParams();
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 10;
+
   const {
     filteredProducts,
     categories,
@@ -19,25 +23,41 @@ const ProductListPage = () => {
     searchTerm,
     setSearchTerm,
     addToCart,
+    loading,
   } = useContext(StoreContext);
 
+  // ✅ Pagination logic (must come AFTER filteredProducts is available)
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = filteredProducts.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+
+  const handleNext = () => {
+    if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
+  };
+
+  const handlePrev = () => {
+    if (currentPage > 1) setCurrentPage((prev) => prev - 1);
+  };
+
+  // ✅ Handle query params
   useEffect(() => {
     const search = searchParams.get("search");
     const category = searchParams.get("category");
 
-    if (search) {
-      setSearchTerm(search);
-    }
+    if (search) setSearchTerm(search);
+    if (category) setSelectedCategory(category);
+  }, [searchParams, setSearchTerm, setSelectedCategory]);
 
-    if (category) {
-      setSelectedCategory(category);
-    }
-  }, [searchParams]);
   return (
     <div className="container mx-auto p-2 md:p-6 content-font">
-      {/* 🔹 Filter Section */}
       <div className="flex lg:flex-row gap-10 flex-col">
-        <div className="">
+        {/* Filter Sidebar */}
+        <div>
           <ProductFilter
             showFilter={showFilter}
             setShowFilter={setShowFilter}
@@ -53,89 +73,127 @@ const ProductListPage = () => {
           />
         </div>
 
-        {/* 🔹 Product Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 2xl:grid-cols-4 gap-2 md:gap-6">
-          {filteredProducts.length > 0 ? (
-            filteredProducts.map((product) => (
-              <div
-                key={product._id}
-                className="border content-font h-max hover:border-[#e5b236] group overflow-hidden bg-white border-gray-200 pb-5 md:pb-10 relative rounded-lg p-4"
-              >
-                <div>
-                  <div className="overflow-hidden">
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-full transition-animation group-hover:scale-110 object-cover rounded"
-                    />
-                  </div>
-                  <div className="md:space-y-1 my-8">
-                    <h3 className="text-[12px] md:text-[14px] truncate w-[120px] md:w-[200px]">
-                      {product.name}
-                    </h3>
-                    {/* {product.author && (
-                      <h5 className="text-[10px] md:text-[12px] truncate w-[120px] md:w-[200px] text-gray-700">
-                        {product.author}
-                      </h5>
-                    )} */}
-                    <div className="flex md:mt-0 mt-1 md:flex-row flex-col md:items-center gap-1 md:gap-4">
-                      <div className="flex gap-2">
-                        <p className="text-gray-800 text-[12px] md:text-[15px] font-semibold">
-                          ₹{product.price}
-                        </p>
-                        <p className="text-red-500 text-[12px] md:text-[15px] line-through">
-                          ₹{product.mrp}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        {Array.from({ length: 5 }, (_, i) => (
-                          <Star
-                            key={i}
-                            size={14}
-                            className={
-                              i < product.rating
-                                ? "text-yellow-500"
-                                : "text-gray-300"
-                            }
-                          />
-                        ))}
+        {/* Product Grid Section */}
+        <div>
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 2xl:grid-cols-4 gap-2 md:gap-6">
+            {loading ? (
+              Array.from({ length: 15 }).map((_, i) => (
+                <ProductCardSkeleton key={i} />
+              ))
+            ) : currentProducts.length > 0 ? (
+              currentProducts.map((product) => (
+                <div
+                  key={product._id}
+                  className="border content-font h-max hover:border-[#e5b236] group overflow-hidden bg-white border-gray-200 pb-5 md:pb-10 relative rounded-lg p-4"
+                >
+                  <div>
+                    <div className="overflow-hidden">
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className="w-full transition-transform duration-300 group-hover:scale-110 object-cover rounded"
+                      />
+                    </div>
+                    <div className="md:space-y-1 mt-4 mb-8">
+                      <h3 className="text-[12px] md:text-[14px] truncate w-[120px] md:w-[200px]">
+                        {product.name}
+                      </h3>
+
+                      <div className="flex md:mt-0 mt-1 md:flex-row flex-col md:items-center gap-1 md:gap-4">
+                        <div className="flex gap-2">
+                          <p className="text-gray-800 text-[12px] md:text-[15px] font-semibold">
+                            ₹{product.price}
+                          </p>
+                          <p className="text-red-500 text-[12px] md:text-[15px] line-through">
+                            ₹{product.mrp}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          {Array.from({ length: 5 }, (_, i) => (
+                            <Star
+                              key={i}
+                              size={14}
+                              className={
+                                i < product.rating
+                                  ? "text-yellow-500"
+                                  : "text-gray-300"
+                              }
+                            />
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className="absolute bottom-3 md:bottom-5 w-full left-1/2 px-4 transform -translate-x-1/2">
-                  <div className="flex items-center w-full justify-between">
-                    <Link
-                      to={`/product/${product.slug}`}
-                      className="bg-[#111825] md:text-[15px] text-[12px] text-white px-2 py-1 md:py-2 md:px-5 rounded hover:bg-yellow-600 transition"
-                    >
-                      View Details
-                    </Link>
 
-                    <button
-                      onClick={() => addToCart(product._id)}
-                      className="flex cursor-pointer items-center border border-slate-100 justify-center text-[#111825] p-2 shadow-lg bg-white rounded-full transition"
-                    >
-                      <Plus className="w-4 transition-animation hover:rotate-180 h-4 md:w-5 md:h-5" />
-                    </button>
+                  {/* Buttons */}
+                  <div className="absolute bottom-3 md:bottom-5 w-full left-1/2 px-4 transform -translate-x-1/2">
+                    <div className="flex items-center w-full justify-between">
+                      <Link
+                        to={`/product/${product.slug}`}
+                        className="bg-[#111825] md:text-[15px] text-[12px] text-white px-2 py-1 md:py-2 md:px-5 rounded hover:bg-yellow-600 transition"
+                      >
+                        View Details
+                      </Link>
+                      <button
+                        onClick={() => addToCart(product._id)}
+                        className="flex cursor-pointer items-center border border-slate-100 justify-center text-[#111825] p-2 shadow-lg bg-white rounded-full transition"
+                      >
+                        <Plus className="w-4 transition-transform duration-300 hover:rotate-180 h-4 md:w-5 md:h-5" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Discount Tag */}
+                  <div className="absolute top-3 rounded-s right-0 w-[50px] text-center py-1 text-[12px] md:text-sm text-white bg-[#e5b336] hover:scale-110 transition-transform duration-300 overflow-hidden">
+                    {product.discount}%
+                    <span className="absolute top-0 left-[-75%] w-[50%] h-full bg-white opacity-20 rotate-12 animate-[shine_2s_infinite]" />
                   </div>
                 </div>
-                <div
-                  className="absolute top-3 rounded-s right-0 w-[50px] text-center py-1 text-[12px] md:text-sm text-white bg-[#e5b336] 
-     hover:scale-110 transition-transform duration-300 overflow-hidden"
-                >
-                  {product.discount}%
-                  <span
-                    className="absolute top-0 left-[-75%] w-[50%] h-full bg-white opacity-20 rotate-12 
-        animate-[shine_2s_infinite]"
-                  ></span>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className="col-span-full text-center text-gray-500">
-              No products found.
-            </p>
+              ))
+            ) : (
+              <p className="col-span-full text-center text-gray-500">
+                No products found.
+              </p>
+            )}
+          </div>
+
+          {/* Pagination Controls */}
+          {!loading && filteredProducts.length > productsPerPage && (
+            <div className="flex justify-center items-center mt-6 md:mt-10 gap-4">
+              {/* Previous Button */}
+              <button
+                onClick={handlePrev}
+                disabled={currentPage === 1}
+                className={`flex items-center gap-2 px-4 py-2 border rounded-full transition-all ${
+                  currentPage === 1
+                    ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                    : "bg-white hover:bg-[#e5b236] cursor-pointer hover:text-white text-gray-700"
+                }`}
+              >
+                <ChevronLeft className="w-5 h-5" />
+                <span className="hidden sm:inline">Prev</span>
+              </button>
+
+              {/* Page Info */}
+              <span className="text-gray-700 font-medium">
+                Page <span className="text-[#e5b236]">{currentPage}</span> of{" "}
+                {totalPages}
+              </span>
+
+              {/* Next Button */}
+              <button
+                onClick={handleNext}
+                disabled={currentPage === totalPages}
+                className={`flex items-center gap-2 px-4 py-2 border rounded-full transition-all ${
+                  currentPage === totalPages
+                    ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                    : "bg-white hover:bg-[#e5b236] cursor-pointer hover:text-white text-gray-700"
+                }`}
+              >
+                <span className="hidden sm:inline">Next</span>
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
           )}
         </div>
       </div>

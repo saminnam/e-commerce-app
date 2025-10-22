@@ -12,6 +12,13 @@ const StoreContextProvider = (props) => {
   const [priceRange, setPriceRange] = useState([0, 5000]);
   const [searchTerm, setSearchTerm] = useState("");
 
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1000); // Simulate API delay
+    return () => clearTimeout(timer);
+  }, []);
+
   // 🟢 Load cart data from localStorage
   useEffect(() => {
     const savedCart = localStorage.getItem("cartItems");
@@ -116,6 +123,10 @@ const StoreContextProvider = (props) => {
     setPriceRange,
     searchTerm,
     setSearchTerm,
+
+    // loader
+    loading,
+    setLoading,
   };
 
   return (

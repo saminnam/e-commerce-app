@@ -114,7 +114,7 @@ const CartPage = () => {
           </div>
 
           {/* Footer */}
-          <div className="flex flex-col text-[12px] md:text-[15px] md:flex-row justify-between items-center gap-4 border-t border-gray-300 p-6 bg-gray-50">
+          <div className="flex md:flex-nowrap flex-wrap text-[12px] md:text-[15px] md:flex-row justify-between items-center gap-4 border-t border-gray-300 p-6 bg-gray-50">
             <button
               onClick={clearCart}
               className="bg-[#111825] text-white px-6 py-2 cursor-pointer rounded hover:bg-red-600 transition"

@@ -83,8 +83,8 @@ const ProductFilter = ({
 
           {/* Price Range */}
           <div className="flex md:flex-row flex-col md:items-center gap-3">
-            <div className="flex items-center gap-1">
-              <span>₹</span>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-nowrap">Min ₹</span>
               <input
                 type="number"
                 min="0"
@@ -93,7 +93,7 @@ const ProductFilter = ({
                 onChange={(e) =>
                   setPriceRange([Number(e.target.value) || 0, priceRange[1]])
                 }
-                className="md:w-20 border w-full border-gray-300 rounded p-1 text-sm"
+                className="md:w-16 border w-full border-gray-300 rounded p-1 text-sm"
               />
             </div>
 
@@ -105,11 +105,11 @@ const ProductFilter = ({
               onChange={(e) =>
                 setPriceRange([priceRange[0], Number(e.target.value)])
               }
-              className="w-40 accent-[#e5b236]"
+              className="w-28 accent-[#e5b236]"
             />
 
-            <div className="flex items-center gap-1">
-              <span>₹</span>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-nowrap">Max ₹</span>
               <input
                 type="number"
                 min={priceRange[0]}
@@ -118,7 +118,7 @@ const ProductFilter = ({
                 onChange={(e) =>
                   setPriceRange([priceRange[0], Number(e.target.value) || 0])
                 }
-                className="md:w-20 border w-full border-gray-300 rounded p-1 text-sm"
+                className="md:w-16 border w-full border-gray-300 rounded p-1 text-sm"
               />
             </div>
           </div>
@@ -174,7 +174,7 @@ const ProductFilter = ({
       {/* Mobile Floating Filter Button */}
       <button
         onClick={() => setShowFilter(true)}
-        className="md:hidden cursor-pointer z-20 fixed bottom-5 right-5 bg-[#e5b236] text-white p-3 rounded-full shadow-lg hover:bg-yellow-600 transition"
+        className="md:hidden cursor-pointer z-20 fixed bottom-16 right-5 bg-[#e5b236] text-white p-3 rounded-full shadow-lg hover:bg-yellow-600 transition"
       >
         <Filter size={20} />
       </button>
