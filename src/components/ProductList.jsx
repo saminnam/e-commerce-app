@@ -1,11 +1,12 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { StoreContext } from "../context/StoreContext";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Plus, Star } from "lucide-react";
 import ProductFilter from "./ProductFilter";
 
 const ProductListPage = () => {
   const [showFilter, setShowFilter] = useState(false);
+  const [searchParams] = useSearchParams();
   const {
     filteredProducts,
     categories,
@@ -20,6 +21,18 @@ const ProductListPage = () => {
     addToCart,
   } = useContext(StoreContext);
 
+  useEffect(() => {
+    const search = searchParams.get("search");
+    const category = searchParams.get("category");
+
+    if (search) {
+      setSearchTerm(search);
+    }
+
+    if (category) {
+      setSelectedCategory(category);
+    }
+  }, [searchParams]);
   return (
     <div className="container mx-auto p-2 md:p-6 content-font">
       {/* 🔹 Filter Section */}
@@ -49,7 +62,7 @@ const ProductListPage = () => {
                 className="border content-font h-max hover:border-[#e5b236] group overflow-hidden bg-white border-gray-200 pb-5 md:pb-10 relative rounded-lg p-4"
               >
                 <div>
-                  <div className="overflow-hidden h-48">
+                  <div className="overflow-hidden">
                     <img
                       src={product.image}
                       alt={product.name}

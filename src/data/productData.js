@@ -101,7 +101,7 @@ export const product_list = [
     name: "Qur'an (Arabic with English Translation)",
     slug: "Quran-(Arabic with English Translation)",
     image:
-      "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/686/9780349413686.jpg",
+      "https://dummyimage.com/650x800/b3aab3/fff",
     mrp: 550,
     price: 450,
     resellerPrice: 100,
@@ -122,7 +122,7 @@ export const product_list = [
     name: "Fortress of the Muslim (Hisnul Muslim)",
     slug: "Fortress-of-the-Muslim-(Hisnul Muslim)",
     image:
-      "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/686/9780349413686.jpg",
+      "https://dummyimage.com/650x800/b3aab3/fff",
     mrp: 200,
     price: 150,
     resellerPrice: 100,
@@ -143,7 +143,7 @@ export const product_list = [
     name: "Stories of the Prophets by Ibn Kathir",
     slug: "Stories-of-the-Prophets-by-Ibn-Kathir",
     image:
-      "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/686/9780349413686.jpg",
+      "https://dummyimage.com/650x800/b3aab3/fff",
     mrp: 450,
     price: 380,
     resellerPrice: 100,
@@ -165,7 +165,7 @@ export const product_list = [
     name: "Arabic Calligraphy Wall Art",
     slug: "Arabic-Calligraphy-Wall-Art",
     image:
-      "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/686/9780349413686.jpg",
+      "https://dummyimage.com/650x800/b3aab3/fff",
     mrp: 1100,
     price: 900,
     resellerPrice: 100,
@@ -183,7 +183,7 @@ export const product_list = [
     name: "Luxury Oud Attar",
     slug: "Luxury-Oud-Attar",
     image:
-      "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/686/9780349413686.jpg",
+      "https://dummyimage.com/650x800/b3aab3/fff",
     mrp: 900,
     price: 750,
     resellerPrice: 100,
@@ -202,7 +202,7 @@ export const product_list = [
     name: "Musk Tahara Roll-on",
     slug: "Musk-Tahara-Roll-on",
     image:
-      "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/686/9780349413686.jpg",
+      "https://dummyimage.com/650x800/b3aab3/fff",
     mrp: 400,
     price: 320,
     resellerPrice: 100,
@@ -221,7 +221,7 @@ export const product_list = [
     name: "Handcrafted Wooden Tasbih (99 Beads)",
     slug: "Handcrafted-Wooden-Tasbih-(99 Beads)",
     image:
-      "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/686/9780349413686.jpg",
+      "https://dummyimage.com/650x800/b3aab3/fff",
     mrp: 220,
     price: 180,
     resellerPrice: 100,
@@ -239,7 +239,7 @@ export const product_list = [
     name: "Crystal Tasbih with Silver Tassel",
     slug: "Crystal-Tasbih-with-Silver-Tassel",
     image:
-      "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/686/9780349413686.jpg",
+      "https://dummyimage.com/650x800/b3aab3/fff",
     mrp: 300,
     price: 250,
     resellerPrice: 100,
@@ -257,7 +257,7 @@ export const product_list = [
     name: "Velvet Prayer Mat (Musalla)",
     slug: "Velvet-Prayer-Mat-(Musalla)",
     image:
-      "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/686/9780349413686.jpg",
+      "https://dummyimage.com/650x800/b3aab3/fff",
     mrp: 650,
     price: 500,
     resellerPrice: 100,
@@ -275,7 +275,7 @@ export const product_list = [
     name: "Travel Prayer Mat with Bag",
     slug: "Travel-Prayer-Mat-with-Bag",
     image:
-      "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/686/9780349413686.jpg",
+      "https://dummyimage.com/650x800/b3aab3/fff",
     mrp: 450,
     price: 350,
     resellerPrice: 100,
@@ -293,7 +293,7 @@ export const product_list = [
     name: "Islamic Gift Set (Qur'an + Tasbih + Attar)",
     slug: "Islamic-Gift-Set-(Qur'an + Tasbih + Attar)",
     image:
-      "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/686/9780349413686.jpg",
+      "https://dummyimage.com/650x800/b3aab3/fff",
     mrp: 1200,
     price: 999,
     resellerPrice: 100,
@@ -311,7 +311,7 @@ export const product_list = [
     name: "Perfume Oil - White Musk",
     slug: "Perfume-Oil-White-Musk",
     image:
-      "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/686/9780349413686.jpg",
+      "https://dummyimage.com/650x800/b3aab3/fff",
     mrp: 380,
     price: 300,
     resellerPrice: 100,
@@ -330,7 +330,7 @@ export const product_list = [
     name: "Riyad Us-Saliheen (English)",
     slug: "Riyad-Us-Saliheen-(English)",
     image:
-      "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/686/9780349413686.jpg",
+      "https://dummyimage.com/650x800/b3aab3/fff",
     mrp: 550,
     price: 480,
     resellerPrice: 100,
@@ -351,7 +351,7 @@ export const product_list = [
     name: "Islamic Home Frame – Ayatul Kursi",
     slug: "Islamic-Home-Frame–Ayatul-Kursi",
     image:
-      "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/686/9780349413686.jpg",
+      "https://dummyimage.com/650x800/b3aab3/fff",
     mrp: 1000,
     price: 850,
     resellerPrice: 100,
@@ -369,7 +369,7 @@ export const product_list = [
     name: "Amber Oud Gold Edition",
     slug: "Amber-Oud-Gold-Edition",
     image:
-      "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/686/9780349413686.jpg",
+      "https://dummyimage.com/650x800/b3aab3/fff",
     mrp: 1600,
     price: 1350,
     resellerPrice: 100,

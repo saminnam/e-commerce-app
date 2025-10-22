@@ -9,7 +9,7 @@ import {
   ChevronDown,
   LogIn,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { category_list } from "../data/productData";
 import { useContext } from "react";
 import { StoreContext } from "../context/StoreContext";
@@ -19,6 +19,20 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const { cartItems } = useContext(StoreContext);
+  const navigate = useNavigate();
+  const [searchValue, setSearchValue] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+
+  const handleSearch = () => {
+    if (searchValue.trim() !== "") {
+      navigate(`/products?search=${encodeURIComponent(searchValue)}`);
+    }
+  };
+
+  const handleCategorySelect = (category) => {
+    setSelectedCategory(category);
+    navigate(`/products?category=${encodeURIComponent(category)}`);
+  };
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -248,7 +262,10 @@ const Navbar = () => {
             >
               {category_list.map((item, index) => (
                 <ul className="text-sm" key={index}>
-                  <li className="px-3 font-semibold py-2 hover:bg-[#E5B236] hover:text-white cursor-pointer">
+                  <li
+                    onClick={() => handleCategorySelect(item.cat_name)}
+                    className="px-3 font-semibold py-2 hover:bg-[#E5B236] hover:text-white cursor-pointer"
+                  >
                     {item.cat_name}
                   </li>
                 </ul>
@@ -259,9 +276,14 @@ const Navbar = () => {
             <input
               type="text"
               placeholder="Search for products..."
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
               className="w-full px-4 py-2 outline-none"
             />
-            <button className="bg-[#E5B236] text-white px-4 rounded-r-full">
+            <button
+              onClick={handleSearch}
+              className="bg-[#E5B236] text-white px-4 rounded-r-full"
+            >
               <Search size={18} />
             </button>
           </div>

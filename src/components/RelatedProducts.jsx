@@ -44,7 +44,7 @@ const RelatedProducts = ({ category, currentProductId }) => {
           <SwiperSlide key={item._id}>
             <div className="border content-font hover:border-[#e5b236] group overflow-hidden bg-white border-gray-200 pb-5 md:pb-10 relative rounded-lg p-4">
               <div>
-                <div className="overflow-hidden h-48">
+                <div className="overflow-hidden">
                   <img
                     src={item.image}
                     alt={item.name}
