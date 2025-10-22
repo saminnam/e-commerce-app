@@ -1,5 +1,5 @@
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { StoreContext } from "../context/StoreContext";
 import { Plus, Star } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -9,11 +9,18 @@ import "swiper/css/navigation";
 import RelatedProducts from "../components/RelatedProducts";
 
 const ProductDetail = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const { product_list, addToCart } = useContext(StoreContext);
-  const product = product_list.find((p) => p._id === id);
+  const product = product_list.find((p) => p.slug === slug);
+
   const navigate = useNavigate();
   const [selectedImg, setSelectedImg] = useState(product?.images?.[0]);
+  // ✅ Set the product name in the browser tab
+  useEffect(() => {
+    if (product?.name) {
+      document.title = `${product.name} | Baqavi Book Centre`;
+    }
+  }, [product]);
 
   if (!product)
     return <div className="text-center mt-10">Product not found</div>;
@@ -23,7 +30,7 @@ const ProductDetail = () => {
       {/* Product Detail Section */}
       <div className="flex flex-col md:flex-row gap-8 mx-auto max-w-7xl">
         {/* Left - Gallery */}
-        <div className="flex flex-col md:flex-row gap-6 w-full">
+        <div className="flex md:flex-row flex-col-reverse gap-6 w-full">
           <div className="flex md:flex-col gap-3 md:w-24">
             {product.images?.map((img, index) => (
               <img

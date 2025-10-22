@@ -99,6 +99,7 @@ export const product_list = [
   {
     _id: "1",
     name: "Qur'an (Arabic with English Translation)",
+    slug: "Quran-(Arabic with English Translation)",
     image:
       "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/686/9780349413686.jpg",
     mrp: 550,
@@ -119,6 +120,7 @@ export const product_list = [
   {
     _id: "2",
     name: "Fortress of the Muslim (Hisnul Muslim)",
+    slug: "Fortress-of-the-Muslim-(Hisnul Muslim)",
     image:
       "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/686/9780349413686.jpg",
     mrp: 200,
@@ -139,6 +141,7 @@ export const product_list = [
   {
     _id: "3",
     name: "Stories of the Prophets by Ibn Kathir",
+    slug: "Stories-of-the-Prophets-by-Ibn-Kathir",
     image:
       "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/686/9780349413686.jpg",
     mrp: 450,
@@ -160,6 +163,7 @@ export const product_list = [
   {
     _id: "4",
     name: "Arabic Calligraphy Wall Art",
+    slug: "Arabic-Calligraphy-Wall-Art",
     image:
       "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/686/9780349413686.jpg",
     mrp: 1100,
@@ -177,6 +181,7 @@ export const product_list = [
   {
     _id: "5",
     name: "Luxury Oud Attar",
+    slug: "Luxury-Oud-Attar",
     image:
       "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/686/9780349413686.jpg",
     mrp: 900,
@@ -195,6 +200,7 @@ export const product_list = [
   {
     _id: "6",
     name: "Musk Tahara Roll-on",
+    slug: "Musk-Tahara-Roll-on",
     image:
       "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/686/9780349413686.jpg",
     mrp: 400,
@@ -213,6 +219,7 @@ export const product_list = [
   {
     _id: "7",
     name: "Handcrafted Wooden Tasbih (99 Beads)",
+    slug: "Handcrafted-Wooden-Tasbih-(99 Beads)",
     image:
       "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/686/9780349413686.jpg",
     mrp: 220,
@@ -230,6 +237,7 @@ export const product_list = [
   {
     _id: "8",
     name: "Crystal Tasbih with Silver Tassel",
+    slug: "Crystal-Tasbih-with-Silver-Tassel",
     image:
       "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/686/9780349413686.jpg",
     mrp: 300,
@@ -247,6 +255,7 @@ export const product_list = [
   {
     _id: "9",
     name: "Velvet Prayer Mat (Musalla)",
+    slug: "Velvet-Prayer-Mat-(Musalla)",
     image:
       "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/686/9780349413686.jpg",
     mrp: 650,
@@ -264,6 +273,7 @@ export const product_list = [
   {
     _id: "10",
     name: "Travel Prayer Mat with Bag",
+    slug: "Travel-Prayer-Mat-with-Bag",
     image:
       "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/686/9780349413686.jpg",
     mrp: 450,
@@ -281,6 +291,7 @@ export const product_list = [
   {
     _id: "11",
     name: "Islamic Gift Set (Qur'an + Tasbih + Attar)",
+    slug: "Islamic-Gift-Set-(Qur'an + Tasbih + Attar)",
     image:
       "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/686/9780349413686.jpg",
     mrp: 1200,
@@ -298,6 +309,7 @@ export const product_list = [
   {
     _id: "12",
     name: "Perfume Oil - White Musk",
+    slug: "Perfume-Oil-White-Musk",
     image:
       "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/686/9780349413686.jpg",
     mrp: 380,
@@ -316,6 +328,7 @@ export const product_list = [
   {
     _id: "13",
     name: "Riyad Us-Saliheen (English)",
+    slug: "Riyad-Us-Saliheen-(English)",
     image:
       "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/686/9780349413686.jpg",
     mrp: 550,
@@ -336,6 +349,7 @@ export const product_list = [
   {
     _id: "14",
     name: "Islamic Home Frame – Ayatul Kursi",
+    slug: "Islamic-Home-Frame–Ayatul-Kursi",
     image:
       "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/686/9780349413686.jpg",
     mrp: 1000,
@@ -353,6 +367,7 @@ export const product_list = [
   {
     _id: "15",
     name: "Amber Oud Gold Edition",
+    slug: "Amber-Oud-Gold-Edition",
     image:
       "https://d2g9wbak88g7ch.cloudfront.net/productimages/mainimages/686/9780349413686.jpg",
     mrp: 1600,

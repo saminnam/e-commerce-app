@@ -33,8 +33,8 @@ const CartPage = () => {
       ) : (
         <div className="bg-white shadow-md rounded-lg">
           {/* Wrapper to enable horizontal scroll on mobile */}
-          <div className="overflow-x-auto overflow-y-auto scrollbar">
-            <div className="min-w-[700px] max-h-[500px]">
+          <div className="overflow-x-auto md:overflow-y-auto scrollbar">
+            <div className="min-w-[700px] md:max-h-[500px]">
               {/* Cart Header */}
               <div className="grid grid-cols-6 text-[12px] md:text-[15px] font-semibold bg-gray-100 text-gray-700 p-3">
                 <p className="col-span-2 text-center">Product</p>
@@ -52,7 +52,7 @@ const CartPage = () => {
                 >
                   {/* Product Info */}
                   <div className="col-span-2 flex items-center gap-4">
-                    <Link to={`/product/${product._id}`}>
+                    <Link to={`/product/${product.slug}`}>
                       <img
                         src={product.image}
                         alt={product.name}
@@ -81,14 +81,14 @@ const CartPage = () => {
                   </p>
 
                   {/* Quantity Controls */}
-                  <div className="flex justify-center items-center gap-3">
+                  <div className="flex justify-center items-center gap-3 text-gray-600">
                     <button
                       onClick={() => removeFromCart(product._id)}
                       className="bg-gray-200 cursor-pointer p-1 rounded hover:bg-gray-300"
                     >
                       <Minus size={16} />
                     </button>
-                    <span className="text-gray-800 font-medium">
+                    <span className="md:text-[15px] text-[12px] font-medium">
                       {cartItems[product._id]}
                     </span>
                     <button

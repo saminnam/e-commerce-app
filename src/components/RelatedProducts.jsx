@@ -42,7 +42,7 @@ const RelatedProducts = ({ category, currentProductId }) => {
       >
         {relatedProducts.map((item) => (
           <SwiperSlide key={item._id}>
-            <div className="border hover:border-[#e5b236] group overflow-hidden bg-white border-gray-200 pb-5 md:pb-10 relative rounded-lg p-4">
+            <div className="border content-font hover:border-[#e5b236] group overflow-hidden bg-white border-gray-200 pb-5 md:pb-10 relative rounded-lg p-4">
               <div>
                 <div className="overflow-hidden h-48">
                   <img
@@ -55,11 +55,11 @@ const RelatedProducts = ({ category, currentProductId }) => {
                   <h3 className="text-[12px] md:text-[16px] truncate w-[120px] md:w-[200px]">
                     {item.name}
                   </h3>
-                  {item.author && (
+                  {/* {item.author && (
                     <h5 className="text-[10px] md:text-[13px] truncate w-[120px] md:w-[200px] text-gray-700">
-                      By - {item.author}
+                      {item.author}
                     </h5>
-                  )}
+                  )} */}
                   <div className="flex md:mt-0 mt-1 md:flex-row flex-col md:items-center gap-1 md:gap-4">
                     <div className="flex gap-2">
                       <p className="text-gray-800 text-[12px] md:text-[15px] font-semibold">
@@ -90,7 +90,7 @@ const RelatedProducts = ({ category, currentProductId }) => {
               <div className="absolute bottom-3 md:bottom-5 w-full left-1/2 px-4 transform -translate-x-1/2">
                 <div className="flex items-center w-full justify-between">
                   <Link
-                    to={`/product/${item._id}`}
+                    to={`/product/${item.slug}`}
                     className="bg-[#111825] md:text-[15px] text-[12px] text-white px-2 py-1 md:py-2 md:px-5 rounded hover:bg-yellow-600 transition"
                   >
                     View Details

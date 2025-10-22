@@ -46,7 +46,7 @@ const ProductListPage = () => {
             filteredProducts.map((product) => (
               <div
                 key={product._id}
-                className="border h-max hover:border-[#e5b236] group overflow-hidden bg-white border-gray-200 pb-5 md:pb-10 relative rounded-lg p-4"
+                className="border content-font h-max hover:border-[#e5b236] group overflow-hidden bg-white border-gray-200 pb-5 md:pb-10 relative rounded-lg p-4"
               >
                 <div>
                   <div className="overflow-hidden h-48">
@@ -93,7 +93,7 @@ const ProductListPage = () => {
                 <div className="absolute bottom-3 md:bottom-5 w-full left-1/2 px-4 transform -translate-x-1/2">
                   <div className="flex items-center w-full justify-between">
                     <Link
-                      to={`/product/${product._id}`}
+                      to={`/product/${product.slug}`}
                       className="bg-[#111825] md:text-[15px] text-[12px] text-white px-2 py-1 md:py-2 md:px-5 rounded hover:bg-yellow-600 transition"
                     >
                       View Details
