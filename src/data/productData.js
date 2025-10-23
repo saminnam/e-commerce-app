@@ -53,7 +53,7 @@ export const category_list = [
   },
   {
     id: 10,
-    cat_name: "Qur'an Stands",
+    cat_name: "Quran Stands",
     cat_img:
       "https://www.artic.edu/iiif/2/76426163-4d68-1bfc-1511-195ba7fa7af7/full/843,/0/default.jpg",
   },
@@ -98,7 +98,7 @@ export const category_list = [
 export const product_list = [
   {
     _id: "1",
-    name: "Qur'an (Arabic with English Translation)",
+    name: "Quran (Arabic with English Translation)",
     slug: "Quran-(Arabic with English Translation)",
     image:
       "https://dummyimage.com/650x800/b3aab3/fff",

@@ -20,7 +20,7 @@ const RelatedProducts = ({ category, currentProductId }) => {
   if (relatedProducts.length === 0) return null;
 
   return (
-    <div className="container mx-auto px-4 py-10">
+    <div className="container mx-auto py-10">
       <div className="">
         <h3 className="text-xl md:text-2xl font-semibold mb-6">
           Related Products
