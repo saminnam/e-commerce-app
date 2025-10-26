@@ -1,14 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-// this old header
 import React, { useEffect, useRef, useState } from "react";
 import {
   Menu,
@@ -25,7 +14,7 @@ import { category_list } from "../data/productData";
 import { useContext } from "react";
 import { StoreContext } from "../context/StoreContext";
 import logo from "../assets/images/logo-bg.png";
-import MobileSearchBar from "../components/MobileSearchBar";
+import MobileSearchBar from "./MobileSearchBar";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -34,6 +23,26 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [showHeader, setShowHeader] = useState(true); // 🔑 state to show/hide header
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > lastScrollY && currentScrollY > 80) {
+        // scrolling down
+        setShowHeader(false);
+      } else {
+        // scrolling up
+        setShowHeader(true);
+      }
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
 
   const handleSearch = () => {
     if (searchValue.trim() !== "") {
@@ -217,39 +226,43 @@ const Navbar = () => {
         )}
       </header>
       {/* 🔹 Middle Section */}
-      <div className="z-40 md:sticky top-0">
+      <div
+        className={`z-40 sticky top-0 transition-transform duration-500 ease-in-out ${
+          showHeader ? "translate-y-0" : "-translate-y-full"
+        }`}
+      >
         <div className="flex items-center justify-between px-4 md:px-10 py-3 bg-[#111825]">
           {/* Logo */}
           <Link to="/">
-            <img src={logo} alt="" className="w-[80px] md:w-[105px]" />
+            <img src={logo} alt="Logo" className="w-[80px] md:w-[105px]" />
           </Link>
+
+          {/* Navbar links */}
           <nav className="hidden uppercase lg:flex justify-center gap-10 text-white text-sm font-medium">
-            <Link to="/" className="hover:text-[#E5B236] transition-animation">
+            <Link to="/" className="hover:text-[#E5B236] transition-colors">
               Home
             </Link>
             <Link
               to="/products"
-              className="hover:text-[#E5B236] transition-animation"
+              className="hover:text-[#E5B236] transition-colors"
             >
               Shop
             </Link>
-            <Link to="/" className="hover:text-[#E5B236] transition-animation">
+            <Link to="/" className="hover:text-[#E5B236] transition-colors">
               Re-seller
             </Link>
-            <Link
-              to="/blog"
-              className="hover:text-[#E5B236] transition-animation"
-            >
+            <Link to="/blog" className="hover:text-[#E5B236] transition-colors">
               Blog
             </Link>
             <Link
               to="/contact_us"
-              className="hover:text-[#E5B236] transition-animation"
+              className="hover:text-[#E5B236] transition-colors"
             >
               Contact Us
             </Link>
           </nav>
-          {/* Search & Categories (Desktop) */}
+
+          {/* Search & Category */}
           <div className="hidden md:flex items-center mx-10">
             <div ref={dropdownRef} className="relative text-gray-600">
               <button
@@ -281,6 +294,8 @@ const Navbar = () => {
                 ))}
               </div>
             </div>
+
+            {/* Search input */}
             <div className="flex border bg-white lg:rounded-l-none rounded-l-full rounded-r-full">
               <input
                 type="text"
@@ -298,7 +313,7 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* Wishlist & Cart */}
+          {/* Right icons */}
           <div className="flex items-center gap-4 text-white">
             <button className="relative">
               <Heart size={22} />
@@ -320,6 +335,7 @@ const Navbar = () => {
             <button className="hidden md:block">
               <User size={22} />
             </button>
+
             {/* Mobile Menu Button */}
             <button
               className="lg:hidden cursor-pointer text-white"
@@ -330,7 +346,7 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-      <div className="sticky top-0 z-40 bg-white">
+      <div className="sticky top-0 z-30 bg-white">
         <MobileSearchBar
           category_list={category_list}
           searchValue={searchValue}
@@ -344,4 +360,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
