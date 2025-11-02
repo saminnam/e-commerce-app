@@ -33,17 +33,7 @@ const StoreContextProvider = (props) => {
       return updated;
     });
   };
-
-  // ➖ Remove from cart
-  //   const removeFromCart = (itemId) => {
-  //     setCartItems((prev) => {
-  //       const updated = { ...prev };
-  //       if (updated[itemId] > 1) updated[itemId] -= 1;
-  //       else delete updated[itemId];
-  //       localStorage.setItem("cartItems", JSON.stringify(updated));
-  //       return updated;
-  //     });
-  //   };
+  
   const clearCart = () => setCartItems({});
 
   const removeFromCart = (id, removeAll = false) => {

@@ -1,14 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-// this old header
 import React, { useEffect, useRef, useState } from "react";
 import {
   Menu,
@@ -26,6 +15,8 @@ import { useContext } from "react";
 import { StoreContext } from "../context/StoreContext";
 import logo from "../assets/images/logo-bg.png";
 import MobileSearchBar from "../components/MobileSearchBar";
+import { policyData } from "../data/policyData";
+import PolicyPopup from "../modals/PolicyPopup";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -34,6 +25,15 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+
+  const [selectedPolicy, setSelectedPolicy] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openPolicy = (id) => {
+    const found = policyData.find((p) => p.id === id);
+    setSelectedPolicy(found);
+    setIsOpen(true);
+  };
 
   const handleSearch = () => {
     if (searchValue.trim() !== "") {
@@ -76,12 +76,12 @@ const Navbar = () => {
               About Us
             </Link>
             <span>|</span>
-            <Link
-              to="/return_policy"
-              className="hover:text-[#111825] transition-animation"
+            <div
+              onClick={() => openPolicy("return-policy")}
+              className="hover:text-[#111825] cursor-pointer transition-animation"
             >
               Returns Policy
-            </Link>
+            </div>
           </div>
           <div className="flex gap-3 text-white">
             <Link
@@ -182,9 +182,23 @@ const Navbar = () => {
                 className="border-b border-gray-300 pb-2"
                 onClick={() => setMenuOpen(false)}
               >
-                <Link to="/return_policy" className="block">
+                <div
+                  onClick={() => openPolicy("return-policy")}
+                  className="block"
+                >
                   Returns Policy
-                </Link>
+                </div>
+              </li>
+              <li
+                className="border-b border-gray-300 pb-2"
+                onClick={() => setMenuOpen(false)}
+              >
+                <div
+                  onClick={() => openPolicy("terms-conditions")}
+                  className="block"
+                >
+                  Terms & Conditions
+                </div>
               </li>
             </ul>
             <ul className="mt-5 flex gap-2 justify-center text-center">
@@ -269,7 +283,22 @@ const Navbar = () => {
               : "opacity-0 scale-y-0 pointer-events-none"
           }`}
               >
-                {category_list.map((item, index) => (
+                {[{ cat_name: "All" }, ...category_list].map((item, index) => (
+                  <ul className="text-sm" key={index}>
+                    <li
+                      onClick={() => handleCategorySelect(item.cat_name)}
+                      className={`px-3 font-semibold py-2 hover:bg-[#E5B236] hover:text-white cursor-pointer ${
+                        selectedCategory === item.cat_name
+                          ? "bg-[#E5B236] text-white"
+                          : ""
+                      }`}
+                    >
+                      {item.cat_name}
+                    </li>
+                  </ul>
+                ))}
+
+                {/* {category_list.map((item, index) => (
                   <ul className="text-sm" key={index}>
                     <li
                       onClick={() => handleCategorySelect(item.cat_name)}
@@ -278,7 +307,7 @@ const Navbar = () => {
                       {item.cat_name}
                     </li>
                   </ul>
-                ))}
+                ))} */}
               </div>
             </div>
             <div className="flex border bg-white lg:rounded-l-none rounded-l-full rounded-r-full">
@@ -291,7 +320,7 @@ const Navbar = () => {
               />
               <button
                 onClick={handleSearch}
-                className="bg-[#E5B236] text-white px-4 rounded-r-full"
+                className="bg-[#E5B236] cursor-pointer text-white px-4 rounded-r-full"
               >
                 <Search size={18} />
               </button>
@@ -339,9 +368,14 @@ const Navbar = () => {
           setSelectedCategory={setSelectedCategory}
         />
       </div>
+
+      <PolicyPopup
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        data={selectedPolicy}
+      />
     </>
   );
 };
 
 export default Navbar;
-

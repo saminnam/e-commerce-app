@@ -1,14 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-// this old header
 import React, { useEffect, useRef, useState } from "react";
 import {
   Menu,

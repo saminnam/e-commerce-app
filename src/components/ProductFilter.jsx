@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Filter } from "lucide-react";
+import { category_list } from "../data/productData";
 
 const ProductFilter = ({
   categories,
@@ -49,33 +50,22 @@ const ProductFilter = ({
             className="border border-gray-300 p-2 rounded"
           />
           {/* Category */}
-          {/* <select
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-            className="border border-gray-300 p-2 rounded"
-          >
-            {categories.map((cat, i) => (
-              <option key={i} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </select> */}
           <div className="border border-gray-300 p-2 rounded">
             <h4 className="font-semibold text-gray-800 border-gray-300 border-b pb-1 mb-2">
               Categories
             </h4>
             <ul className="p-2 max-h-60 scrollbar overflow-y-auto w-full">
-              {categories.map((cat, i) => (
+              {[{ cat_name: "All" }, ...category_list].map((cat, i) => (
                 <li
                   key={i}
-                  onClick={() => setSelectedCategory(cat)}
+                  onClick={() => setSelectedCategory(cat.cat_name)}
                   className={`px-3 py-2 cursor-pointer rounded transition ${
-                    selectedCategory === cat
+                    selectedCategory === cat.cat_name
                       ? "bg-[#e5b236] text-white"
                       : "hover:bg-gray-100 text-gray-700"
                   }`}
                 >
-                  {cat}
+                  {cat.cat_name}
                 </li>
               ))}
             </ul>
@@ -124,15 +114,6 @@ const ProductFilter = ({
           </div>
 
           {/* Sort */}
-          {/* <select
-            value={sortOrder}
-            onChange={(e) => setSortOrder(e.target.value)}
-            className="border border-gray-300 p-2 rounded"
-          >
-            <option value="">Sort By</option>
-            <option value="low-to-high">Price: Low to High</option>
-            <option value="high-to-low">Price: High to Low</option>
-          </select> */}
           <ul className="border border-gray-300 rounded p-2 max-h-48 overflow-y-auto space-y-2">
             <li className="font-semibold text-gray-800 border-gray-300 border-b pb-1">
               Sort By

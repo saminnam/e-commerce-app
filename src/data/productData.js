@@ -2,94 +2,110 @@ export const category_list = [
   {
     id: 1,
     cat_name: "Books",
+    cat_slug: "books",
     cat_img: "https://3.imimg.com/data3/CY/NJ/MY-15306271/books-500x500.png",
   },
   {
     id: 2,
     cat_name: "Fragrance",
+    cat_slug: "fragrance",
     cat_img:
       "https://5.imimg.com/data5/SELLER/Default/2023/6/317525711/PX/CM/DV/3074232/fragrance-perfume-manufacturer-500x500.png",
   },
   {
     id: 3,
     cat_name: "Prayer Mats",
+    cat_slug: "prayer-mats",
     cat_img:
       "https://i.etsystatic.com/26266305/r/il/0c7eaa/2939122197/il_fullxfull.2939122197_5ers.jpg",
   },
   {
     id: 4,
     cat_name: "Tasbih",
+    cat_slug: "tasbih",
     cat_img:
       "https://i.etsystatic.com/29774917/r/il/9e6174/5594900622/il_570xN.5594900622_a2pg.jpg",
   },
   {
     id: 5,
     cat_name: "Attar",
+    cat_slug: "attar",
     cat_img: "https://kyomfragrances.com/cdn/shop/files/21.1.png?v=1725417553",
   },
   {
     id: 6,
     cat_name: "Islamic Decor",
+    cat_slug: "islamic-decor",
     cat_img:
       "https://mannarcraft.com/uploads/items/078f6b74e3e998b653b4b96b9b223ada.jpg",
   },
   {
     id: 7,
     cat_name: "Gift Sets",
+    cat_slug: "gift-sets",
     cat_img:
       "https://images-cdn.ubuy.co.in/65476b3b0a210d278e58bdef-birthday-gifts-for-women-lavender-bath.jpg",
   },
   {
     id: 8,
     cat_name: "Hijabs",
+    cat_slug: "hijabs",
     cat_img:
       "https://assets.digitalcontent.marksandspencer.app/images/w_2560,q_auto,f_auto/SD_04_T93_3780_F3_X_EC_0/Hijab",
   },
   {
     id: 9,
     cat_name: "Islamic Caps",
+    cat_slug: "islamic-caps",
     cat_img:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRy4XCsOE0WZna2IVvZCSGcAo4EtMjqNjsKGA&s",
   },
   {
     id: 10,
     cat_name: "Quran Stands",
+    cat_slug: "quran-stands",
     cat_img:
       "https://www.artic.edu/iiif/2/76426163-4d68-1bfc-1511-195ba7fa7af7/full/843,/0/default.jpg",
   },
   {
     id: 11,
     cat_name: "Wall Frames",
+    cat_slug: "wall-frames",
     cat_img:
       "https://homcraft.com/cdn/shop/files/shahada-islamic-calligraphy-wall-painting-PTVCH_2483_Gold_1.jpg?v=1715856616",
   },
   {
     id: 12,
     cat_name: "Gift Boxes",
+    cat_slug: "gift-boxes",
     cat_img:
       "https://www.bigsmall.in/cdn/shop/files/MG_5047_1200x1200.jpg?v=1715163835",
   },
   {
     id: 13,
     cat_name: "Home Decor Lights",
+    cat_slug: "home-decor-lights",
     cat_img:
       "https://m.media-amazon.com/images/I/51+g3OitrLL._AC_UF1000,1000_QL80_.jpg",
   },
   {
     id: 14,
     cat_name: "Incense Burners",
+    cat_slug: "incense-burners",
     cat_img:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfck7UemWq8KR0iffm1UGYGRBUdZWmSp98Uw&s",
   },
   {
     id: 15,
     cat_name: "Islamic Clocks",
+    cat_slug: "islamic-clocks",
     cat_img:
       "https://myhadya.in/wp-content/uploads/2023/09/islamic-wall-clock-Islaic-Home-Decor.webp",
   },
   {
     id: 16,
     cat_name: "Keychains",
+    cat_slug: "keychains",
     cat_img:
       "https://noorbooks.com.au/cdn/shop/products/islamic-keyrings-691128.jpg?v=1648911213",
   },
