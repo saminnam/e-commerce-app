@@ -3,10 +3,10 @@ import "./assets/styles/global.css";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
-import ProductDetail from "./pages/ProductDetail";
-import CheckoutPage from "./pages/CheckoutPage";
-import CartPage from "./pages/CartPage";
-import ProductPage from "./pages/ProductPage";
+import ProductDetail from "./pages/productDetail/ProductDetail";
+import ProductPage from "./pages/products/ProductPage";
+import CartPage from "./pages/cart/CartPage";
+import CheckoutPage from "./pages/checkout/CheckoutPage";
 
 const App = () => {
   const ScrollToTop = () => {
