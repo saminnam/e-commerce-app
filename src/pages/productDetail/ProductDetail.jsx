@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { StoreContext } from "../../context/StoreContext";
 import "swiper/css";
 import "swiper/css/navigation";
+import { ShoppingCart } from "lucide-react";
 import RelatedProducts from "../../components/RelatedProducts";
 import GlobalHero from "../../components/GlobalHero";
 
@@ -85,9 +86,9 @@ const ProductDetail = () => {
             <div className="flex gap-3 pt-4 content-font">
               <button
                 onClick={() => addToCart(product._id)}
-                className="bg-[#111825] cursor-pointer text-white px-5 py-2 rounded hover:bg-[#E5B236] transition"
+                className="bg-[#111825] cursor-pointer flex gap-2 items-center text-white px-5 py-2 rounded hover:bg-[#E5B236] transition"
               >
-                🛒 Add to Cart
+                <ShoppingCart size={20} /> <span>Add to Cart</span>
               </button>
             </div>
           </div>

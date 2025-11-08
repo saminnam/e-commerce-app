@@ -6,11 +6,10 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { useContext } from "react";
 import { StoreContext } from "../context/StoreContext";
-import ProductCardSkeleton from "../skeletonLoader/ProductCardSkeleton"
-
+import ProductCardSkeleton from "../skeletonLoader/ProductCardSkeleton";
 
 const RelatedProducts = ({ category, currentProductId }) => {
-  const { product_list, addToCart,loading } = useContext(StoreContext);
+  const { product_list, addToCart, loading } = useContext(StoreContext);
 
   // Filter related products by category (excluding current one)
   const relatedProducts = product_list.filter(
@@ -54,13 +53,15 @@ const RelatedProducts = ({ category, currentProductId }) => {
                 <SwiperSlide key={item._id}>
                   <div className="border content-font hover:border-[#e5b236] group overflow-hidden bg-white border-gray-200 pb-5 md:pb-10 relative rounded-lg p-4">
                     <div>
-                      <div className="overflow-hidden">
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          className="w-full transition-transform duration-300 group-hover:scale-110 object-cover rounded"
-                        />
-                      </div>
+                      <Link to={`/product/${item.slug}`}>
+                        <div className="overflow-hidden">
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            className="w-full transition-transform duration-300 group-hover:scale-110 object-cover rounded"
+                          />
+                        </div>
+                      </Link>
                       <div className="md:space-y-1 mt-4 mb-8">
                         <h3 className="text-[12px] md:text-[16px] truncate w-[120px] md:w-[160px] 2xl:w-[200px]">
                           {item.name}
@@ -103,7 +104,7 @@ const RelatedProducts = ({ category, currentProductId }) => {
 
                         <button
                           onClick={() => addToCart(item._id)}
-                          className="flex cursor-pointer items-center border border-slate-100 justify-center text-[#111825] p-2 shadow-lg bg-white rounded-full transition"
+                          className="flex cursor-pointer items-center border  border-slate-[#111825] justify-center text-[#111825] p-2 shadow-md bg-white rounded-full transition"
                         >
                           <Plus className="w-4 transition-transform duration-300 hover:rotate-180 h-4 md:w-5 md:h-5" />
                         </button>

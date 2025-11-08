@@ -87,13 +87,15 @@ const ProductListPage = () => {
                   className="border content-font h-max hover:border-[#e5b236] group overflow-hidden bg-white border-gray-200 pb-5 md:pb-10 relative rounded-lg p-4"
                 >
                   <div>
-                    <div className="overflow-hidden">
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="w-full transition-transform duration-300 group-hover:scale-110 object-cover rounded"
-                      />
-                    </div>
+                    <Link to={`/product/${product.slug}`}>
+                      <div className="overflow-hidden">
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          className="w-full transition-transform duration-300 group-hover:scale-110 object-cover rounded"
+                        />
+                      </div>
+                    </Link>
                     <div className="md:space-y-1 mt-4 mb-8">
                       <h3 className="text-[12px] md:text-[14px] truncate w-[120px] md:w-[200px]">
                         {product.name}
@@ -136,7 +138,7 @@ const ProductListPage = () => {
                       </Link>
                       <button
                         onClick={() => addToCart(product._id)}
-                        className="flex cursor-pointer items-center border border-slate-100 justify-center text-[#111825] p-2 shadow-lg bg-white rounded-full transition"
+                        className="flex cursor-pointer items-center border border-slate-[#111825] justify-center text-[#111825] p-2 shadow-md bg-white rounded-full transition"
                       >
                         <Plus className="w-4 transition-transform duration-300 hover:rotate-180 h-4 md:w-5 md:h-5" />
                       </button>
@@ -159,12 +161,12 @@ const ProductListPage = () => {
 
           {/* Pagination Controls */}
           {!loading && filteredProducts.length > productsPerPage && (
-            <div className="flex justify-center items-center mt-6 md:mt-10 gap-4">
+            <div className="flex justify-center items-center mt-6 md:mb-0 mb-20 md:mt-10 gap-4">
               {/* Previous Button */}
               <button
                 onClick={handlePrev}
                 disabled={currentPage === 1}
-                className={`flex items-center gap-2 px-4 py-2 border rounded-full transition-all ${
+                className={`flex items-center gap-2 px-2 md:px-4 py-2 border rounded-full transition-all ${
                   currentPage === 1
                     ? "bg-gray-100 text-gray-400 cursor-not-allowed"
                     : "bg-white hover:bg-[#e5b236] cursor-pointer hover:text-white text-gray-700"
@@ -175,7 +177,7 @@ const ProductListPage = () => {
               </button>
 
               {/* Page Info */}
-              <span className="text-gray-700 font-medium">
+              <span className="text-gray-700 text-sm md:text-lg font-medium">
                 Page <span className="text-[#e5b236]">{currentPage}</span> of{" "}
                 {totalPages}
               </span>
@@ -184,7 +186,7 @@ const ProductListPage = () => {
               <button
                 onClick={handleNext}
                 disabled={currentPage === totalPages}
-                className={`flex items-center gap-2 px-4 py-2 border rounded-full transition-all ${
+                className={`flex items-center gap-2 px-2 md:px-4 py-2 border rounded-full transition-all ${
                   currentPage === totalPages
                     ? "bg-gray-100 text-gray-400 cursor-not-allowed"
                     : "bg-white hover:bg-[#e5b236] cursor-pointer hover:text-white text-gray-700"

@@ -17,8 +17,6 @@ import logo from "../assets/images/logo-bg.png";
 import MobileSearchBar from "../components/MobileSearchBar";
 import { policyData } from "../data/policyData";
 import PolicyPopup from "../modals/PolicyPopup";
-import FloatingMenu from "./FloatingMenu";
-
 
 const Navbar = () => {
   const [categoryOpen, setCategoryOpen] = useState(false);
@@ -364,7 +362,6 @@ const Navbar = () => {
         onClose={() => setIsOpen(false)}
         data={selectedPolicy}
       />
-      <FloatingMenu />
     </>
   );
 };

@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, { useEffect, useRef, useContext, useState } from "react";
 import { Filter } from "lucide-react";
-import { category_list } from "../data/productData";
+import { category_list, product_list } from "../data/productData";
 import { StoreContext } from "../context/StoreContext";
+import { X } from 'lucide-react';
 
 const ProductFilter = ({
   categories,
@@ -15,8 +16,18 @@ const ProductFilter = ({
   setSortOrder,
 }) => {
   // const [showFilter, setShowFilter] = useState(false);
-  const {showFilter, setShowFilter} = useContext(StoreContext)
+  const { showFilter, setShowFilter } = useContext(StoreContext);
   const drawerRef = useRef(null);
+  const [maxPrice, setMaxPrice] = useState(0); 
+
+  useEffect(() => {
+    // ✅ Get the maximum price from product list
+    if (product_list.length > 0) {
+      const maxVal = Math.max(...product_list.map((p) => p.price));
+      setMaxPrice(maxVal);
+      setPriceRange([0, maxVal]);
+    }
+  }, []);
 
   // Close drawer when clicking outside
   useEffect(() => {
@@ -75,6 +86,7 @@ const ProductFilter = ({
 
           {/* Price Range */}
           <div className="flex md:flex-row flex-col md:items-center gap-3">
+            {/* Min Price Input */}
             <div className="flex items-center gap-2">
               <span className="text-sm text-nowrap">Min ₹</span>
               <input
@@ -89,10 +101,11 @@ const ProductFilter = ({
               />
             </div>
 
+            {/* Range Slider */}
             <input
               type="range"
               min="0"
-              max="5000"
+              max={maxPrice}
               value={priceRange[1]}
               onChange={(e) =>
                 setPriceRange([priceRange[0], Number(e.target.value)])
@@ -100,12 +113,13 @@ const ProductFilter = ({
               className="w-28 accent-[#e5b236]"
             />
 
+            {/* Max Price Input */}
             <div className="flex items-center gap-2">
               <span className="text-sm text-nowrap">Max ₹</span>
               <input
                 type="number"
                 min={priceRange[0]}
-                max="5000"
+                max={maxPrice}
                 value={priceRange[1]}
                 onChange={(e) =>
                   setPriceRange([priceRange[0], Number(e.target.value) || 0])
@@ -154,14 +168,6 @@ const ProductFilter = ({
         </div>
       </div>
 
-      {/* Mobile Floating Filter Button */}
-      {/* <button
-        onClick={() => setShowFilter(true)}
-        className="md:hidden cursor-pointer z-20 fixed bottom-16 right-5 bg-[#e5b236] text-white p-3 rounded-full shadow-lg hover:bg-yellow-600 transition"
-      >
-        <Filter size={20} />
-      </button> */}
-
       {/* Mobile Off-Canvas Filter */}
       <div
         className={`fixed inset-0 z-50 flex justify-end transition-all duration-300 ${
@@ -190,7 +196,7 @@ const ProductFilter = ({
               onClick={() => setShowFilter(false)}
               className="text-gray-500 hover:text-gray-700"
             >
-              ✕
+              <X size={22}/>
             </button>
           </div>
 
