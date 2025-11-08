@@ -62,10 +62,10 @@ const RelatedProducts = ({ category, currentProductId }) => {
                         />
                       </div>
                       <div className="md:space-y-1 mt-4 mb-8">
-                        <h3 className="text-[12px] md:text-[16px] truncate w-[120px] md:w-[200px]">
+                        <h3 className="text-[12px] md:text-[16px] truncate w-[120px] md:w-[160px] 2xl:w-[200px]">
                           {item.name}
                         </h3>
-                        <div className="flex md:mt-0 mt-1 md:flex-row flex-col md:items-center gap-1 md:gap-4">
+                        <div className="flex md:mt-0 mt-1 md:flex-row flex-col md:items-center gap-1 2xl:gap-4">
                           <div className="flex gap-2">
                             <p className="text-gray-800 text-[12px] md:text-[15px] font-semibold">
                               ₹{item.price}
@@ -74,7 +74,7 @@ const RelatedProducts = ({ category, currentProductId }) => {
                               ₹{item.mrp}
                             </p>
                           </div>
-                          <div className="flex items-center gap-1">
+                          <div className="flex items-center gap-[1.3px] 2xl:gap-1">
                             {Array.from({ length: 5 }, (_, i) => (
                               <Star
                                 key={i}
@@ -96,7 +96,7 @@ const RelatedProducts = ({ category, currentProductId }) => {
                       <div className="flex items-center w-full justify-between">
                         <Link
                           to={`/product/${item.slug}`}
-                          className="bg-[#111825] md:text-[15px] text-[12px] text-white px-2 py-1 md:py-2 md:px-5 rounded hover:bg-yellow-600 transition"
+                          className="bg-[#111825] md:text-[13px] text-[10px] sm:text-[12px] text-white px-2 py-1 md:py-2 md:px-5 rounded hover:bg-yellow-600 transition"
                         >
                           View Details
                         </Link>

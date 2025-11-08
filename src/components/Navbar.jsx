@@ -17,11 +17,12 @@ import logo from "../assets/images/logo-bg.png";
 import MobileSearchBar from "../components/MobileSearchBar";
 import { policyData } from "../data/policyData";
 import PolicyPopup from "../modals/PolicyPopup";
+import FloatingMenu from "./FloatingMenu";
+
 
 const Navbar = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
-  const { cartItems } = useContext(StoreContext);
+  const { menuOpen, setMenuOpen, cartItems } = useContext(StoreContext);
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -297,17 +298,6 @@ const Navbar = () => {
                     </li>
                   </ul>
                 ))}
-
-                {/* {category_list.map((item, index) => (
-                  <ul className="text-sm" key={index}>
-                    <li
-                      onClick={() => handleCategorySelect(item.cat_name)}
-                      className="px-3 font-semibold py-2 hover:bg-[#E5B236] hover:text-white cursor-pointer"
-                    >
-                      {item.cat_name}
-                    </li>
-                  </ul>
-                ))} */}
               </div>
             </div>
             <div className="flex border bg-white lg:rounded-l-none rounded-l-full rounded-r-full">
@@ -374,6 +364,7 @@ const Navbar = () => {
         onClose={() => setIsOpen(false)}
         data={selectedPolicy}
       />
+      <FloatingMenu />
     </>
   );
 };

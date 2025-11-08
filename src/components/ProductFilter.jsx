@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { Filter } from "lucide-react";
 import { category_list } from "../data/productData";
+import { StoreContext } from "../context/StoreContext";
 
 const ProductFilter = ({
   categories,
@@ -13,7 +14,8 @@ const ProductFilter = ({
   sortOrder,
   setSortOrder,
 }) => {
-  const [showFilter, setShowFilter] = useState(false);
+  // const [showFilter, setShowFilter] = useState(false);
+  const {showFilter, setShowFilter} = useContext(StoreContext)
   const drawerRef = useRef(null);
 
   // Close drawer when clicking outside
@@ -153,12 +155,12 @@ const ProductFilter = ({
       </div>
 
       {/* Mobile Floating Filter Button */}
-      <button
+      {/* <button
         onClick={() => setShowFilter(true)}
         className="md:hidden cursor-pointer z-20 fixed bottom-16 right-5 bg-[#e5b236] text-white p-3 rounded-full shadow-lg hover:bg-yellow-600 transition"
       >
         <Filter size={20} />
-      </button>
+      </button> */}
 
       {/* Mobile Off-Canvas Filter */}
       <div

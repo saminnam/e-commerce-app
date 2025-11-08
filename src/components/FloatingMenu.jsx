@@ -1,0 +1,48 @@
+import React, { useContext } from "react";
+import { Home, ShoppingCart, Filter, User } from "lucide-react";
+import { StoreContext } from "../context/StoreContext";
+import { Link } from "react-router-dom";
+
+const FloatingMenu = () => {
+  const { menuOpen, setMenuOpen, showFilter, setShowFilter } =
+    useContext(StoreContext);
+
+  return (
+    <div className="md:hidden block fixed bottom-2 left-1/2 -translate-x-1/2 w-[90%] max-w-md bg-[#11182575] text-white backdrop-blur border border-white/20 rounded-full flex justify-around py-3 px-2 z-40">
+      {/* Menu */}
+      <button
+        onClick={() => setMenuOpen(!menuOpen)}
+        className="flex flex-col items-center gap-1 text-sm transition-all duration-200 "
+      >
+        <Home size={18} />
+        <span className="text-[10px] uppercase font-medium">Menu</span>
+      </button>
+
+      {/* Cart */}
+      <Link
+        to={"/cart"}
+        className="flex flex-col items-center gap-1 text-sm transition-all duration-200"
+      >
+        <ShoppingCart size={18} />
+        <span className="text-[10px] uppercase font-medium">Cart</span>
+      </Link>
+
+      {/* Filter */}
+      <button
+        className="flex flex-col items-center gap-1 text-sm transition-all duration-200"
+        onClick={() => setShowFilter(true)}
+      >
+        <Filter size={18} />
+        <span className="text-[10px] uppercase font-medium">Filter</span>
+      </button>
+
+      {/* Profile */}
+      <button className="flex flex-col items-center gap-1 text-sm transition-all duration-200">
+        <User size={18} />
+        <span className="text-[10px] uppercase font-medium">Profile</span>
+      </button>
+    </div>
+  );
+};
+
+export default FloatingMenu;

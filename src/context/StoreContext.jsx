@@ -4,6 +4,8 @@ import { product_list } from "../data/productData";
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [showFilter, setShowFilter] = useState(false);
   const [cartItems, setCartItems] = useState({});
 
   // 🟢 Filters & Sorting States
@@ -33,7 +35,7 @@ const StoreContextProvider = (props) => {
       return updated;
     });
   };
-  
+
   const clearCart = () => setCartItems({});
 
   const removeFromCart = (id, removeAll = false) => {
@@ -92,6 +94,10 @@ const StoreContextProvider = (props) => {
   const categories = ["All", ...new Set(product_list.map((p) => p.category))];
 
   const contextValue = {
+    menuOpen,
+    setMenuOpen,
+    showFilter,
+    setShowFilter,
     // Products & Filters
     product_list,
     filteredProducts,
