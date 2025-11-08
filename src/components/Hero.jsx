@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { heroSlides } from "../data/heroSlides";
+import OfferHeroSection from "./OfferHeroSection";
 
 const Hero = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -96,38 +97,43 @@ const Hero = () => {
   }, []);
 
   return (
-    <div className="slider-container overflow-hidden">
-      <div
-        id="slides"
-        ref={slidesRef}
-        className="slides"
-        onMouseDown={(e) => handleStart(e.pageX)}
-        onTouchStart={(e) => handleStart(e.touches[0].clientX)}
-      >
-        {heroSlides.map((slide) => (
-          <div className="slide" key={slide.id}>
-            <img
-              src={isMobile ? slide.mobileImg : slide.desktopImg}
-              alt={slide.title}
-              className="object-contain h-full md:h-[500px]"
-            />
-          </div>
-        ))}
-      </div>
+    <section className="flex md:flex-row flex-col">
+      <div className="slider-container overflow-hidden md:w-[55%] w-full">
+        <div
+          id="slides"
+          ref={slidesRef}
+          className="slides"
+          onMouseDown={(e) => handleStart(e.pageX)}
+          onTouchStart={(e) => handleStart(e.touches[0].clientX)}
+        >
+          {heroSlides.map((slide) => (
+            <div className="slide" key={slide.id}>
+              <img
+                src={isMobile ? slide.mobileImg : slide.desktopImg}
+                alt={slide.title}
+                className="object-contain h-full md:h-[500px]"
+              />
+            </div>
+          ))}
+        </div>
 
-      <div className="indicators">
-        {heroSlides.map((_, i) => (
-          <div
-            key={i}
-            ref={(el) => (indicatorsRef.current[i] = el)}
-            className={`indicator ${i === current ? "active" : ""}`}
-            onClick={() => goToSlide(i)}
-          >
-            <div className="progress"></div>
-          </div>
-        ))}
+        <div className="indicators">
+          {heroSlides.map((_, i) => (
+            <div
+              key={i}
+              ref={(el) => (indicatorsRef.current[i] = el)}
+              className={`indicator ${i === current ? "active" : ""}`}
+              onClick={() => goToSlide(i)}
+            >
+              <div className="progress"></div>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+      <div className="md:w-[45%] lg:block hidden w-full overflow-hidden">
+        <OfferHeroSection />
+      </div>
+    </section>
   );
 };
 
