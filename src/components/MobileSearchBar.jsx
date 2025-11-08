@@ -50,19 +50,29 @@ const MobileSearchBar = ({
           {showDropdown && (
             <div
               className={`absolute top-full left-0 bg-white mt-1 rounded shadow-lg w-max py-2 z-50 overflow-y-auto max-h-[150px] md:max-h-[300px]
-              transition-all duration-200 ease-in-out transform origin-top
-              opacity-100 scale-y-100`}
+  transition-all duration-200 ease-in-out transform origin-top
+  opacity-100 scale-y-100`}
             >
-              {category_list.map((item, index) => (
-                <ul className="text-sm" key={index}>
+              <ul className="text-sm">
+                {/* All Category */}
+                <li
+                  onClick={() => handleCategorySelect("All")}
+                  className="px-3 font-semibold py-2 hover:bg-[#E5B236] hover:text-white cursor-pointer"
+                >
+                  All
+                </li>
+
+                {/* Dynamic Categories */}
+                {category_list.map((item, index) => (
                   <li
+                    key={index}
                     onClick={() => handleCategorySelect(item.cat_name)}
                     className="px-3 font-semibold py-2 hover:bg-[#E5B236] hover:text-white cursor-pointer"
                   >
                     {item.cat_name}
                   </li>
-                </ul>
-              ))}
+                ))}
+              </ul>
             </div>
           )}
         </div>
