@@ -23,7 +23,7 @@ const CategorySwiperSection = () => {
         const navNext = `next-${index}`;
 
         return (
-          <div key={category} className="space-y-6 container mx-auto">
+          <div key={category} className="space-y-6 container mx-auto md:mb-0 md-20">
             {/* 🔹 Section Header */}
             <div className="flex justify-between items-center">
               <h2 className="text-xl md:text-2xl font-semibold text-gray-900">

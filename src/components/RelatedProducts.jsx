@@ -97,7 +97,7 @@ const RelatedProducts = ({ category, currentProductId }) => {
                       <div className="flex items-center w-full justify-between">
                         <Link
                           to={`/product/${item.slug}`}
-                          className="bg-[#111825] md:text-[13px] text-[10px] sm:text-[12px] text-white px-2 py-1 md:py-2 md:px-5 rounded hover:bg-yellow-600 transition"
+                          className="bg-[#111825] md:text-[13px] text-[12px] sm:text-[12px] text-white px-2 py-1 md:py-2 md:px-5 rounded hover:bg-yellow-600 transition"
                         >
                           View Details
                         </Link>

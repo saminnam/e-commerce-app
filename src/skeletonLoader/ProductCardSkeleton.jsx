@@ -2,7 +2,7 @@ import React from "react";
 
 const ProductCardSkeleton = () => {
   return (
-    <div className="border animate-pulse md:w-[240px] h-max overflow-hidden bg-white border-gray-200 pb-5 md:pb-10 relative rounded-lg p-4">
+    <div className="md:border animate-pulse md:w-[240px] h-max overflow-hidden bg-white border-gray-200 pb-5 md:pb-10 relative rounded-lg md:p-4">
       {/* Image Placeholder */}
       <div className="overflow-hidden rounded object-cover bg-gray-200 h-[250px] w-full"></div>
 
@@ -28,7 +28,7 @@ const ProductCardSkeleton = () => {
       </div>
 
       {/* Buttons Placeholder */}
-      <div className="absolute bottom-3 md:bottom-5 w-full left-1/2 px-4 transform -translate-x-1/2">
+      <div className="absolute bottom-3 md:bottom-5 w-full left-1/2 md:px-4 transform -translate-x-1/2">
         <div className="flex items-center w-full justify-between">
           <div className="h-6 md:h-8 bg-gray-200 rounded w-20 md:w-28"></div>
           <div className="h-8 w-8 md:h-10 md:w-10 bg-gray-200 rounded-full"></div>
