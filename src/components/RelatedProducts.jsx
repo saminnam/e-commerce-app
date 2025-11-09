@@ -104,24 +104,20 @@ const RelatedProducts = ({ category, currentProductId }) => {
 
                         <button
                           onClick={() => addToCart(item._id)}
-                          className="flex cursor-pointer items-center border  border-slate-[#111825] justify-center text-[#111825] p-2 shadow-md bg-white rounded-full transition"
+                          className="flex cursor-pointer items-center border  border-slate-[#111825] justify-center text-[#111825] p-1 md:p-2 shadow-md bg-white rounded-full transition"
                         >
-                          <Plus className="w-4 transition-transform duration-300 hover:rotate-180 h-4 md:w-5 md:h-5" />
+                          <Plus className="w-3 transition-transform duration-300 hover:rotate-180 h-3 md:w-5 md:h-5" />
                         </button>
                       </div>
                     </div>
 
                     {/* Discount tag */}
-                    <div
-                      className="absolute top-3 rounded-s right-0 w-[50px] text-center py-1 text-[12px] md:text-sm text-white bg-[#e5b336]
-                hover:scale-110 transition-transform duration-300 overflow-hidden"
-                    >
-                      {item.discount}%
-                      <span
-                        className="absolute top-0 left-[-75%] w-[50%] h-full bg-white opacity-20 rotate-12 
-                  animate-[shine_2s_infinite]"
-                      ></span>
-                    </div>
+                    {item.discount > 0 && (
+                      <div className="absolute top-3 rounded-s right-0 w-[50px] text-center py-1 text-[12px] md:text-sm text-white bg-[#e5b336] hover:scale-110 transition-transform duration-300 overflow-hidden">
+                        {item.discount}%
+                        <span className="absolute top-0 left-[-75%] w-[50%] h-full bg-white opacity-20 rotate-12 animate-[shine_2s_infinite]" />
+                      </div>
+                    )}
                   </div>
                 </SwiperSlide>
               ))}

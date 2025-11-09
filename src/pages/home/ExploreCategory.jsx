@@ -8,6 +8,7 @@ import { Autoplay } from "swiper/modules";
 const ExploreCategory = () => {
   const navigate = useNavigate();
 
+
   const handleCategorySelect = (category) => {
     navigate(`/products?category=${encodeURIComponent(category)}`);
   };
