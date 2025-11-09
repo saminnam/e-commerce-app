@@ -1,7 +1,7 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
-import { heroOfferSlides } from "../data/heroSlides"; // adjust path if needed
+import { heroOfferSlides } from "../../data/heroSlides"; // adjust path if needed
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 

@@ -1,14 +1,9 @@
 import React from "react";
-import { category_list } from "../data/productData";
+import { category_list } from "../../data/productData";
 import { useNavigate } from "react-router-dom";
-
 // ✅ Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
-
-// ✅ Import Swiper styles
-import "swiper/css";
-import "swiper/css/autoplay";
 
 const ExploreCategory = () => {
   const navigate = useNavigate();
@@ -26,16 +21,16 @@ const ExploreCategory = () => {
             speed={4000}
             autoplay={{ delay: 1000, disableOnInteraction: false }}
             spaceBetween={4}
-            slidesPerView={3}
+            slidesPerView={2}
             breakpoints={{
-              320: { slidesPerView: 3, spaceBetween: 15 }, // small phones
+              320: { slidesPerView: 4, spaceBetween: 15 }, // small phones
               480: { slidesPerView: 4, spaceBetween: 17 },
               580: { slidesPerView: 5, spaceBetween: 18 }, // large phones
               640: { slidesPerView: 6, spaceBetween: 20 }, // tablets portrait
               768: { slidesPerView: 7, spaceBetween: 25 }, // tablets landscape
               1024: { slidesPerView: 8, spaceBetween: 30 }, // laptops
               1280: { slidesPerView: 10, spaceBetween: 35 }, // desktops
-              1536: { slidesPerView: 12, spaceBetween: 40 }, // large screens
+              1536: { slidesPerView: 11, spaceBetween: 40 }, // large screens
             }}
             loop={true}
             className="mySwiper"

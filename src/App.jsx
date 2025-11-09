@@ -7,12 +7,12 @@ import {
   useLocation,
 } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Home from "./pages/Home";
 import ProductDetail from "./pages/productDetail/ProductDetail";
 import ProductPage from "./pages/products/ProductPage";
 import CartPage from "./pages/cart/CartPage";
 import CheckoutPage from "./pages/checkout/CheckoutPage";
 import FloatingMenu from "./components/FloatingMenu";
+import Home from "./pages/home/Home";
 
 const App = () => {
   const ScrollToTop = () => {

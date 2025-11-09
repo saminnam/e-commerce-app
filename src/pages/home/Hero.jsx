@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { heroSlides } from "../data/heroSlides";
+import { heroSlides } from "../../data/heroSlides";
 import OfferHeroSection from "./OfferHeroSection";
 
 const Hero = () => {
