@@ -51,7 +51,7 @@ const RelatedProducts = ({ category, currentProductId }) => {
             : // ✅ Show actual products when loaded
               relatedProducts.map((item) => (
                 <SwiperSlide key={item._id}>
-                  <div className="border content-font hover:border-[#e5b236] group overflow-hidden bg-white border-gray-200 pb-5 md:pb-10 relative rounded-lg p-4">
+                  <div className="md:border content-font hover:border-[#e5b236] group overflow-hidden bg-white border-gray-200 pb-5 md:pb-10 relative rounded-lg md:p-4">
                     <div>
                       <Link to={`/product/${item.slug}`}>
                         <div className="overflow-hidden">
@@ -93,7 +93,7 @@ const RelatedProducts = ({ category, currentProductId }) => {
                     </div>
 
                     {/* Buttons */}
-                    <div className="absolute bottom-3 md:bottom-5 w-full left-1/2 px-4 transform -translate-x-1/2">
+                    <div className="absolute bottom-3 md:bottom-5 w-full left-1/2 md:px-4 transform -translate-x-1/2">
                       <div className="flex items-center w-full justify-between">
                         <Link
                           to={`/product/${item.slug}`}

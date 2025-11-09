@@ -84,7 +84,7 @@ const ProductListPage = () => {
               currentProducts.map((product) => (
                 <div
                   key={product._id}
-                  className="border content-font h-max hover:border-[#e5b236] group overflow-hidden bg-white border-gray-200 pb-5 md:pb-10 relative rounded-lg p-4"
+                  className="md:border content-font h-max hover:border-[#e5b236] group overflow-hidden bg-white border-gray-200 pb-5 md:pb-10 relative rounded-lg md:p-4"
                 >
                   <div>
                     <Link to={`/product/${product.slug}`}>
@@ -128,7 +128,7 @@ const ProductListPage = () => {
                   </div>
 
                   {/* Buttons */}
-                  <div className="absolute bottom-3 md:bottom-5 w-full left-1/2 px-4 transform -translate-x-1/2">
+                  <div className="absolute bottom-3 md:bottom-5 w-full left-1/2 md:px-4 transform -translate-x-1/2">
                     <div className="flex items-center w-full justify-between">
                       <Link
                         to={`/product/${product.slug}`}
