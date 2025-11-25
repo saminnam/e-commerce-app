@@ -234,7 +234,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between px-4 md:px-10 py-3 bg-[#111825]">
           {/* Logo */}
           <Link to="/">
-            <img src={logo} alt="" className="w-[80px] md:w-[105px]" />
+            <img src={logo} alt="baqavi-book-centre-logo" className="w-[80px] md:w-[105px]" />
           </Link>
           <nav className="hidden uppercase lg:flex justify-center gap-10 text-white text-sm font-medium">
             <Link to="/" className="hover:text-[#E5B236] transition-animation">

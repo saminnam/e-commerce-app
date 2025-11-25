@@ -24,7 +24,7 @@ const OfferHeroSection = () => {
       >
         {heroOfferSlides.map((item) => (
           <SwiperSlide key={item.id}>
-            <div className="relative group bg-[url('https://img.freepik.com/premium-vector/shopping-pattern-background-design_260839-17.jpg')] bg-cover bg-center overflow-hidden">
+            <div className="relative group bg-[url('src/assets/images/bg-pattern/shopping-pattern.avif')] bg-cover bg-center overflow-hidden">
               {/* 🔹 Overlay background color */}
               <div
                 className={`absolute inset-0 opacity-90 ${

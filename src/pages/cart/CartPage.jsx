@@ -86,16 +86,18 @@ const CartPage = () => {
                     {/* Quantity Controls */}
                     <div className="flex justify-center items-center gap-3 text-gray-600">
                       <button
-                        onClick={() => removeFromCart(product._id)}
+                        onClick={() => removeFromCart(product)}
                         className="bg-gray-200 cursor-pointer p-1 rounded hover:bg-gray-300"
                       >
                         <Minus size={16} />
                       </button>
+
                       <span className="md:text-[15px] text-[12px] font-medium">
-                        {cartItems[product._id]}
+                        {cartItems[product._id] || 0}
                       </span>
+
                       <button
-                        onClick={() => addToCart(product._id)}
+                        onClick={() => addToCart(product)}
                         className="bg-gray-200 cursor-pointer p-1 rounded hover:bg-gray-300"
                       >
                         <Plus size={16} />
@@ -105,7 +107,7 @@ const CartPage = () => {
                     {/* Remove Button */}
                     <div className="flex justify-center">
                       <button
-                        onClick={() => removeFromCart(product._id, true)}
+                        onClick={() => removeFromCart(product, true)}
                         className="text-red-600 cursor-pointer  hover:text-red-700 transition"
                       >
                         <Trash2 size={20} />

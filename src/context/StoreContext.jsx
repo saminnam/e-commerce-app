@@ -1,5 +1,7 @@
 import { createContext, useState, useEffect, useMemo } from "react";
 import { product_list } from "../data/productData";
+import { showToast } from "../modals/ToastNotification";
+import { toast } from "react-toastify";
 
 export const StoreContext = createContext(null);
 
@@ -27,26 +29,57 @@ const StoreContextProvider = (props) => {
     if (savedCart) setCartItems(JSON.parse(savedCart));
   }, []);
 
-  // ➕ Add to cart
-  const addToCart = (itemId) => {
+  const addToCart = (product) => {
     setCartItems((prev) => {
-      const updated = { ...prev, [itemId]: (prev[itemId] || 0) + 1 };
+      const updated = {
+        ...prev,
+        [product._id]: (prev[product._id] || 0) + 1,
+      };
+
       localStorage.setItem("cartItems", JSON.stringify(updated));
       return updated;
     });
+
+    showToast(`${product.name} added to cart!`, "success");
   };
 
-  const clearCart = () => setCartItems({});
+  // const clearCart = () => setCartItems({});
+  const clearCart = () => {
+    if (!window.confirm("Are you sure you want to clear the entire cart?")) {
+      return;
+    }
 
-  const removeFromCart = (id, removeAll = false) => {
-    setCartItems((prev) => {
-      if (removeAll) {
-        const updated = { ...prev };
-        delete updated[id];
-        return updated;
-      }
-      return { ...prev, [id]: Math.max(prev[id] - 1, 0) };
+    setCartItems({});
+    localStorage.removeItem("cartItems");
+
+    toast.error("Cart has been cleared!", {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: true,
+      theme: "colored",
     });
+  };
+
+  const removeFromCart = (product, removeAll = false) => {
+    const id = product._id || product.id; // support both
+
+    setCartItems((prev) => {
+      let updated = { ...prev };
+
+      if (removeAll) {
+        delete updated[id];
+      } else {
+        updated[id] = Math.max((updated[id] || 0) - 1, 0);
+
+        if (updated[id] === 0) {
+          delete updated[id];
+        }
+      }
+
+      localStorage.setItem("cartItems", JSON.stringify(updated));
+      return updated;
+    });
+    showToast(`${product.name} removed from cart!`, "error");
   };
 
   // 💰 Calculate total cart value

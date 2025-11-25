@@ -13,6 +13,8 @@ import CartPage from "./pages/cart/CartPage";
 import CheckoutPage from "./pages/checkout/CheckoutPage";
 import FloatingMenu from "./components/FloatingMenu";
 import Home from "./pages/home/Home";
+import Footer from "./components/Footer";
+import ToastNotification from "./modals/ToastNotification";
 
 const App = () => {
   const ScrollToTop = () => {
@@ -35,7 +37,9 @@ const App = () => {
         <Route path="/cart" element={<CartPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
       </Routes>
+      <Footer />
       <FloatingMenu />
+      <ToastNotification />
     </>
   );
 };
