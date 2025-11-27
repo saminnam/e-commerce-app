@@ -103,7 +103,7 @@ const RelatedProducts = ({ category, currentProductId }) => {
                         </Link>
 
                         <button
-                          onClick={() => addToCart(item._id)}
+                          onClick={() => addToCart(item)}
                           className="flex cursor-pointer items-center border  border-slate-[#111825] justify-center text-[#111825] p-1 md:p-2 shadow-md bg-white rounded-full transition"
                         >
                           <Plus className="w-3 transition-transform duration-300 hover:rotate-180 h-3 md:w-5 md:h-5" />
