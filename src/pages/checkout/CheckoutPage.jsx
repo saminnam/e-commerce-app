@@ -100,8 +100,7 @@ const CheckoutPage = () => {
 
   return (
     <>
-      {/* <GlobalHero /> */}
-
+      <GlobalHero title={"📦 Checkout"} />
       <section className="container mx-auto px-4 py-10">
         <div className="mx-auto max-w-7xl">
           <div className="grid md:grid-cols-2 grid-cols-1 mt-16 md:gap-16 gap-10">

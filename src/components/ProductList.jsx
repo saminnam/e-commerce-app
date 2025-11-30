@@ -3,7 +3,7 @@ import { StoreContext } from "../context/StoreContext";
 import { Link, useSearchParams } from "react-router-dom";
 import { Plus, Star, ChevronLeft, ChevronRight } from "lucide-react";
 import ProductFilter from "./ProductFilter";
-import ProductCardSkeleton from "../skeletonLoader/ProductCardSkeleton";
+import ProductCardSkeleton from "../skeleton-loader/ProductCardSkeleton";
 
 const ProductListPage = () => {
   const [showFilter, setShowFilter] = useState(false);

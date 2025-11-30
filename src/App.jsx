@@ -7,7 +7,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import ProductDetail from "./pages/productDetail/ProductDetail";
+import ProductDetail from "./pages/product-detail/ProductDetail";
 import ProductPage from "./pages/products/ProductPage";
 import CartPage from "./pages/cart/CartPage";
 import CheckoutPage from "./pages/checkout/CheckoutPage";
@@ -15,6 +15,11 @@ import FloatingMenu from "./components/FloatingMenu";
 import Home from "./pages/home/Home";
 import Footer from "./components/Footer";
 import ToastNotification from "./modals/ToastNotification";
+import AboutPage from "./pages/about-us/AboutPage";
+import BecomeaSeller from "./pages/become-a-seller/BecomeaSeller";
+import BlogPage from "./pages/blog/BlogPage";
+import ContactPage from "./pages/contact/ContactPage";
+import BlogDetail from "./pages/blog-details/BlogDetail";
 
 const App = () => {
   const ScrollToTop = () => {
@@ -32,10 +37,15 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="about-us" element={<AboutPage />} />
         <Route path="/products" element={<ProductPage />} />
         <Route path="/product/:slug" element={<ProductDetail />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/become-a-seller" element={<BecomeaSeller />} />
+        <Route path="/blogs" element={<BlogPage />} />
+        <Route path="/blogs/:slug" element={<BlogDetail />} />
+        <Route path="/contact-us" element={<ContactPage />} />
       </Routes>
       <Footer />
       <FloatingMenu />

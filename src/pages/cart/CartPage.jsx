@@ -19,10 +19,8 @@ const CartPage = () => {
 
   return (
     <>
-      {/* <GlobalHero /> */}
+      <GlobalHero title={"🛒 Your Cart"}/>
       <div className="container mx-auto max-w-7xl px-4 py-10 content-font">
-        <h1 className="text-3xl font-bold mb-8 text-gray-800">🛒 Your Cart</h1>
-
         {cartProducts.length === 0 ? (
           <div className="text-center py-10 text-gray-600">
             <p className="text-lg">Your cart is empty.</p>

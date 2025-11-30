@@ -6,7 +6,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { useContext } from "react";
 import { StoreContext } from "../context/StoreContext";
-import ProductCardSkeleton from "../skeletonLoader/ProductCardSkeleton";
+import ProductCardSkeleton from "../skeleton-loader/ProductCardSkeleton";
 
 const RelatedProducts = ({ category, currentProductId }) => {
   const { product_list, addToCart, loading } = useContext(StoreContext);

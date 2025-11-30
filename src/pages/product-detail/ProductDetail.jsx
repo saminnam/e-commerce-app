@@ -26,7 +26,7 @@ const ProductDetail = () => {
 
   return (
     <>
-      {/* <GlobalHero /> */}
+      <GlobalHero title={"🛍️ Product Details"}/>
       <div className="container mx-auto px-4 py-10">
         {/* Product Detail Section */}
         <div className="flex flex-col md:flex-row gap-8 mx-auto max-w-7xl">
@@ -85,7 +85,7 @@ const ProductDetail = () => {
             {/* Add to Cart */}
             <div className="flex gap-3 pt-4 content-font">
               <button
-                onClick={() => addToCart(product._id)}
+                onClick={() => addToCart(product)}
                 className="bg-[#111825] cursor-pointer flex gap-2 items-center text-white px-5 py-2 rounded hover:bg-[#E5B236] transition"
               >
                 <ShoppingCart size={20} /> <span>Add to Cart</span>

@@ -64,16 +64,25 @@ const Navbar = () => {
         {/* 🔹 Top Bar */}
         <div className="hidden md:flex justify-between items-center bg-[#E5B236] text-sm px-6 py-2">
           <div className="flex gap-3 text-white">
-            <Link to="/" className="hover:text-[#111825] transition-animation">
+            <Link
+              to="/become-a-seller"
+              className="hover:text-[#111825] transition-animation"
+            >
               Become a Seller
             </Link>
             <span>|</span>
-            <Link
-              to="/about_us"
+            <a
+              href="https://saminnam.github.io/demo-book-center/"
+              className="hover:text-[#111825] transition-animation"
+            >
+              Fast Booking
+            </a>
+            {/* <Link
+              to="/about-us"
               className="hover:text-[#111825] transition-animation"
             >
               About Us
-            </Link>
+            </Link> */}
             <span>|</span>
             <div
               onClick={() => openPolicy("return-policy")}
@@ -149,7 +158,18 @@ const Navbar = () => {
                 className="border-b border-gray-300 pb-2"
                 onClick={() => setMenuOpen(false)}
               >
-                <Link to="/blog" className="block">
+                <a
+                  href="https://saminnam.github.io/demo-book-center/"
+                  className="block"
+                >
+                  Fast Booking
+                </a>
+              </li>
+              <li
+                className="border-b border-gray-300 pb-2"
+                onClick={() => setMenuOpen(false)}
+              >
+                <Link to="/blogs" className="block">
                   Blog
                 </Link>
               </li>
@@ -157,7 +177,7 @@ const Navbar = () => {
                 className="border-b border-gray-300 pb-2"
                 onClick={() => setMenuOpen(false)}
               >
-                <Link to="/contact_us" className="block">
+                <Link to="/contact-us" className="block">
                   Contact Us
                 </Link>
               </li>
@@ -165,7 +185,7 @@ const Navbar = () => {
                 className="border-b border-gray-300 pb-2"
                 onClick={() => setMenuOpen(false)}
               >
-                <Link to="/" className="block">
+                <Link to="/become-a-seller" className="block">
                   Become a Seller
                 </Link>
               </li>
@@ -173,7 +193,7 @@ const Navbar = () => {
                 className="border-b border-gray-300 pb-2"
                 onClick={() => setMenuOpen(false)}
               >
-                <Link to="/about_us" className="block">
+                <Link to="/about-us" className="block">
                   About Us
                 </Link>
               </li>
@@ -234,7 +254,11 @@ const Navbar = () => {
         <div className="flex items-center justify-between px-4 md:px-10 py-3 bg-[#111825]">
           {/* Logo */}
           <Link to="/">
-            <img src={logo} alt="baqavi-book-centre-logo" className="w-[80px] md:w-[105px]" />
+            <img
+              src={logo}
+              alt="baqavi-book-centre-logo"
+              className="w-[80px] md:w-[105px]"
+            />
           </Link>
           <nav className="hidden uppercase lg:flex justify-center gap-10 text-white text-sm font-medium">
             <Link to="/" className="hover:text-[#E5B236] transition-animation">
@@ -250,13 +274,13 @@ const Navbar = () => {
               Re-seller
             </Link>
             <Link
-              to="/blog"
+              to="/blogs"
               className="hover:text-[#E5B236] transition-animation"
             >
               Blog
             </Link>
             <Link
-              to="/contact_us"
+              to="/contact-us"
               className="hover:text-[#E5B236] transition-animation"
             >
               Contact Us

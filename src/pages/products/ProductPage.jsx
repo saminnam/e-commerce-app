@@ -6,7 +6,7 @@ import GlobalHero from '../../components/GlobalHero'
 const ProductPage = () => {
   return (
     <div>
-      {/* <GlobalHero /> */}
+      <GlobalHero title={"🛍️ Our Products"}/>
       <ProductListPage />
     </div>
   )

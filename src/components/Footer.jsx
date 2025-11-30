@@ -29,22 +29,22 @@ const Footer = () => {
             <h4 className="text-xl text-white font-medium mb-7">Our Links</h4>
             <ul className="space-y-3">
               <li>
-                <Link to={""} className="text-white">
+                <Link to={"/"} className="text-white">
                   Home
                 </Link>
               </li>
               <li>
-                <Link to={""} className=" text-white">
+                <Link to={"/about-us"} className=" text-white">
                   About
                 </Link>
               </li>
               <li>
-                <Link to={""} className=" text-white">
+                <Link to={"/products"} className=" text-white">
                   Shop
                 </Link>
               </li>
               <li>
-                <Link to={""} className=" text-white">
+                <Link to={"/cart"} className=" text-white">
                   Cart
                 </Link>
               </li>
@@ -54,7 +54,7 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to={""} className=" text-white">
+                <Link to={"/blogs"} className=" text-white">
                   Blog
                 </Link>
               </li>
@@ -96,7 +96,7 @@ const Footer = () => {
             <h4 className="text-xl text-white font-medium mb-7">Help</h4>
             <ul className="space-y-3">
               <li>
-                <Link to={""} className=" text-white">
+                <Link to={"/contact-us"} className=" text-white">
                   Contact
                 </Link>
               </li>
