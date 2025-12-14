@@ -3,111 +3,111 @@ export const category_list = [
     id: 1,
     cat_name: "Books",
     cat_slug: "books",
-    cat_img: "../../public/assets/images/categories/books.webp",
+    cat_img: "/assets/images/categories/books.webp",
   },
   {
     id: 2,
     cat_name: "Fragrance",
     cat_slug: "fragrance",
     cat_img:
-      "../../public/assets/images/categories/fragrance-perfume.webp",
+      "/assets/images/categories/fragrance-perfume.webp",
   },
   {
     id: 3,
     cat_name: "Prayer Mats",
     cat_slug: "prayer-mats",
     cat_img:
-      "../../public/assets/images/categories/prayer-mat.webp",
+      "/assets/images/categories/prayer-mat.webp",
   },
   {
     id: 4,
     cat_name: "Tasbih",
     cat_slug: "tasbih",
     cat_img:
-      "../../public/assets/images/categories/thaspi.avif",
+      "/assets/images/categories/thaspi.avif",
   },
   {
     id: 5,
     cat_name: "Attar",
     cat_slug: "attar",
-    cat_img: "../../public/assets/images/categories/attar.webp",
+    cat_img: "/assets/images/categories/attar.webp",
   },
   {
     id: 6,
     cat_name: "Islamic Decor",
     cat_slug: "islamic-decor",
     cat_img:
-      "../../public/assets/images/categories/decor.avif",
+      "/assets/images/categories/decor.avif",
   },
   {
     id: 7,
     cat_name: "Gift Sets",
     cat_slug: "gift-sets",
     cat_img:
-      "../../public/assets/images/categories/gift-set.jpg",
+      "/assets/images/categories/gift-set.jpg",
   },
   {
     id: 8,
     cat_name: "Hijabs",
     cat_slug: "hijabs",
     cat_img:
-      "../../public/assets/images/categories/hijab.avif",
+      "/assets/images/categories/hijab.avif",
   },
   {
     id: 9,
     cat_name: "Islamic Caps",
     cat_slug: "islamic-caps",
     cat_img:
-      "../../public/assets/images/categories/cap.jpeg",
+      "/assets/images/categories/cap.jpeg",
   },
   {
     id: 10,
     cat_name: "Quran Stands",
     cat_slug: "quran-stands",
     cat_img:
-      "../../public/assets/images/categories/stand.jpg",
+      "/assets/images/categories/stand.jpg",
   },
   {
     id: 11,
     cat_name: "Wall Frames",
     cat_slug: "wall-frames",
     cat_img:
-      "../../public/assets/images/categories/frame.webp",
+      "/assets/images/categories/frame.webp",
   },
   {
     id: 12,
     cat_name: "Gift Boxes",
     cat_slug: "gift-boxes",
     cat_img:
-      "../../public/assets/images/categories/gift-box.webp",
+      "/assets/images/categories/gift-box.webp",
   },
   {
     id: 13,
     cat_name: "Home Decor Lights",
     cat_slug: "home-decor-lights",
     cat_img:
-      "../../public/assets/images/categories/lamp.jpg",
+      "/assets/images/categories/lamp.jpg",
   },
   {
     id: 14,
     cat_name: "Incense Burners",
     cat_slug: "incense-burners",
     cat_img:
-      "../../public/assets/images/categories/burners.jpeg",
+      "/assets/images/categories/burners.jpeg",
   },
   {
     id: 15,
     cat_name: "Islamic Clocks",
     cat_slug: "islamic-clocks",
     cat_img:
-      "../../public/assets/images/categories/clock.jpg",
+      "/assets/images/categories/clock.jpg",
   },
   {
     id: 16,
     cat_name: "Keychains",
     cat_slug: "keychains",
     cat_img:
-      "../../public/assets/images/categories/keychain.webp",
+      "/assets/images/categories/keychain.webp",
   },
 ];
 
