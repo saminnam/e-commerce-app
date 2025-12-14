@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { StoreContext } from "../context/StoreContext";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Plus, Star, ChevronLeft, ChevronRight } from "lucide-react";
 import ProductFilter from "./ProductFilter";
 import ProductCardSkeleton from "../skeleton-loader/ProductCardSkeleton";
@@ -10,6 +10,13 @@ const ProductListPage = () => {
   const [searchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 10;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/login");
+    }
+  }, [navigate]);
 
   const {
     filteredProducts,
@@ -104,7 +111,8 @@ const ProductListPage = () => {
                       <div className="flex md:mt-0 mt-1 md:flex-row flex-col md:items-center gap-1 md:gap-4">
                         <div className="flex gap-2">
                           <p className="text-gray-800 text-[12px] md:text-[15px] font-semibold">
-                            ₹{product.price}
+                            {/* ₹{product.price} */}
+                             ₹{product.finalPrice}
                           </p>
                           <p className="text-red-500 text-[12px] md:text-[15px] line-through">
                             ₹{product.mrp}

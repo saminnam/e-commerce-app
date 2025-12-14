@@ -2,6 +2,8 @@ import { useContext, useState } from "react";
 import { StoreContext } from "../../context/StoreContext";
 import OrderSuccessPopup from "../../modals/OrderSuccessPopup";
 import GlobalHero from "../../components/GlobalHero";
+import { createOrder } from "../../services/orderService";
+import { product_list } from "../../data/productData";
 
 const CheckoutPage = () => {
   const { getTotalCartAmount, cartItems } = useContext(StoreContext);
@@ -79,19 +81,77 @@ const CheckoutPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const orderProducts = Object.keys(cartItems)
+    .map((id) => {
+      const product = product_list?.find(
+        (item) => String(item._id) === String(id)
+      );
+
+      if (!product) return null;
+
+      return {
+        productId: product._id,
+        productName: product.name,
+        quantity: cartItems[id],
+        price: product.price,
+      };
+    })
+    .filter(Boolean);
+
+  const placeOrder = async () => {
+    if (!orderProducts.length) {
+      alert("Cart is empty");
+      return;
+    }
+
+    try {
+      //       console.log({
+      //   name,
+      //   email,
+      //   phone,
+      //   address,
+      //   city,
+      //   postalCode,
+      //   orderProducts,
+      //   totalAmount,
+      // });
+
+      const res = await createOrder({
+        name,
+        email,
+        phone,
+        address,
+        city,
+        postalCode,
+        products: orderProducts,
+        totalAmount,
+      });
+
+      if (res.data.success) {
+        setShowPopup(true);
+
+        // Reset form AFTER success
+        setName("");
+        setEmail("");
+        setPhone("");
+        setAddress("");
+        setCity("");
+        setPostalCode("");
+        setSaveAddress(false);
+        setErrors({});
+      }
+    } catch (error) {
+      console.error("Order failed:", error.response?.data || error.message);
+      alert("Order failed. Check console.");
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      setShowPopup(true);
-      setName("");
-      setEmail("");
-      setPhone("");
-      setAddress("");
-      setCity("");
-      setPostalCode("");
-      setSaveAddress(false);
-      setErrors({});
-    }
+
+    if (!validateForm()) return;
+
+    placeOrder(); // ✅ only this
   };
 
   const totalAmount = getTotalCartAmount();
