@@ -20,9 +20,9 @@ import BecomeaSeller from "./pages/become-a-seller/BecomeaSeller";
 import BlogPage from "./pages/blog/BlogPage";
 import ContactPage from "./pages/contact/ContactPage";
 import BlogDetail from "./pages/blog-details/BlogDetail";
-import Profile from "./components/Profile";
-import Coupon from "./pages/re-seller/Coupon";
-import Login from "./pages/login/Login";
+// import Profile from "./components/Profile";
+// import Coupon from "./pages/re-seller/Coupon";
+// import Login from "./pages/login/Login";
 
 const App = () => {
   const ScrollToTop = () => {
