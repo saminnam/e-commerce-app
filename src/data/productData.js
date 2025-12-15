@@ -9,22 +9,19 @@ export const category_list = [
     id: 2,
     cat_name: "Fragrance",
     cat_slug: "fragrance",
-    cat_img:
-      "/assets/images/categories/fragrance-perfume.webp",
+    cat_img: "/assets/images/categories/fragrance-perfume.webp",
   },
   {
     id: 3,
     cat_name: "Prayer Mats",
     cat_slug: "prayer-mats",
-    cat_img:
-      "/assets/images/categories/prayer-mat.webp",
+    cat_img: "/assets/images/categories/prayer-mat.webp",
   },
   {
     id: 4,
     cat_name: "Tasbih",
     cat_slug: "tasbih",
-    cat_img:
-      "/assets/images/categories/thaspi.avif",
+    cat_img: "/assets/images/categories/thaspi.avif",
   },
   {
     id: 5,
@@ -36,78 +33,67 @@ export const category_list = [
     id: 6,
     cat_name: "Islamic Decor",
     cat_slug: "islamic-decor",
-    cat_img:
-      "/assets/images/categories/decor.avif",
+    cat_img: "/assets/images/categories/decor.avif",
   },
   {
     id: 7,
     cat_name: "Gift Sets",
     cat_slug: "gift-sets",
-    cat_img:
-      "/assets/images/categories/gift-set.jpg",
+    cat_img: "/assets/images/categories/gift-set.jpg",
   },
   {
     id: 8,
     cat_name: "Hijabs",
     cat_slug: "hijabs",
-    cat_img:
-      "/assets/images/categories/hijab.avif",
+    cat_img: "/assets/images/categories/hijab.avif",
   },
   {
     id: 9,
     cat_name: "Islamic Caps",
     cat_slug: "islamic-caps",
-    cat_img:
-      "/assets/images/categories/cap.jpeg",
+    cat_img: "/assets/images/categories/cap.jpeg",
   },
   {
     id: 10,
     cat_name: "Quran Stands",
     cat_slug: "quran-stands",
-    cat_img:
-      "/assets/images/categories/stand.jpg",
+    cat_img: "/assets/images/categories/stand.jpg",
   },
   {
     id: 11,
     cat_name: "Wall Frames",
     cat_slug: "wall-frames",
-    cat_img:
-      "/assets/images/categories/frame.webp",
+    cat_img: "/assets/images/categories/frame.webp",
   },
   {
     id: 12,
     cat_name: "Gift Boxes",
     cat_slug: "gift-boxes",
-    cat_img:
-      "/assets/images/categories/gift-box.webp",
+    cat_img: "/assets/images/categories/gift-box.webp",
   },
   {
     id: 13,
     cat_name: "Home Decor Lights",
     cat_slug: "home-decor-lights",
-    cat_img:
-      "/assets/images/categories/lamp.jpg",
+    cat_img: "/assets/images/categories/lamp.jpg",
   },
   {
     id: 14,
     cat_name: "Incense Burners",
     cat_slug: "incense-burners",
-    cat_img:
-      "/assets/images/categories/burners.jpeg",
+    cat_img: "/assets/images/categories/burners.jpeg",
   },
   {
     id: 15,
     cat_name: "Islamic Clocks",
     cat_slug: "islamic-clocks",
-    cat_img:
-      "/assets/images/categories/clock.jpg",
+    cat_img: "/assets/images/categories/clock.jpg",
   },
   {
     id: 16,
     cat_name: "Keychains",
     cat_slug: "keychains",
-    cat_img:
-      "/assets/images/categories/keychain.webp",
+    cat_img: "/assets/images/categories/keychain.webp",
   },
 ];
 
@@ -116,8 +102,7 @@ export const product_list = [
     _id: "1",
     name: "Quran (Arabic with English Translation)",
     slug: "Quran-(Arabic with English Translation)",
-    image:
-      "https://dummyimage.com/650x800/b3aab3/fff",
+    image: "https://dummyimage.com/650x800/b3aab3/fff",
     mrp: 550,
     price: 450,
     resellerPrice: 100,
@@ -140,8 +125,7 @@ export const product_list = [
     _id: "2",
     name: "Fortress of the Muslim (Hisnul Muslim)",
     slug: "Fortress-of-the-Muslim-(Hisnul Muslim)",
-    image:
-      "https://dummyimage.com/650x800/b3aab3/fff",
+    image: "https://dummyimage.com/650x800/b3aab3/fff",
     mrp: 200,
     price: 150,
     resellerPrice: 100,
@@ -164,8 +148,7 @@ export const product_list = [
     _id: "3",
     name: "Stories of the Prophets by Ibn Kathir",
     slug: "Stories-of-the-Prophets-by-Ibn-Kathir",
-    image:
-      "https://dummyimage.com/650x800/b3aab3/fff",
+    image: "https://dummyimage.com/650x800/b3aab3/fff",
     mrp: 450,
     price: 380,
     resellerPrice: 100,
@@ -189,8 +172,7 @@ export const product_list = [
     _id: "4",
     name: "Arabic Calligraphy Wall Art",
     slug: "Arabic-Calligraphy-Wall-Art",
-    image:
-      "https://dummyimage.com/650x800/b3aab3/fff",
+    image: "https://dummyimage.com/650x800/b3aab3/fff",
     mrp: 1100,
     price: 900,
     resellerPrice: 100,
@@ -210,8 +192,7 @@ export const product_list = [
     _id: "5",
     name: "Luxury Oud Attar",
     slug: "Luxury-Oud-Attar",
-    image:
-      "https://dummyimage.com/650x800/b3aab3/fff",
+    image: "https://dummyimage.com/650x800/b3aab3/fff",
     mrp: 900,
     price: 750,
     resellerPrice: 100,
@@ -232,8 +213,7 @@ export const product_list = [
     _id: "6",
     name: "Musk Tahara Roll-on",
     slug: "Musk-Tahara-Roll-on",
-    image:
-      "https://dummyimage.com/650x800/b3aab3/fff",
+    image: "https://dummyimage.com/650x800/b3aab3/fff",
     mrp: 400,
     price: 320,
     resellerPrice: 100,
@@ -254,8 +234,7 @@ export const product_list = [
     _id: "7",
     name: "Handcrafted Wooden Tasbih (99 Beads)",
     slug: "Handcrafted-Wooden-Tasbih-(99 Beads)",
-    image:
-      "https://dummyimage.com/650x800/b3aab3/fff",
+    image: "https://dummyimage.com/650x800/b3aab3/fff",
     mrp: 220,
     price: 180,
     resellerPrice: 100,
@@ -275,8 +254,7 @@ export const product_list = [
     _id: "8",
     name: "Crystal Tasbih with Silver Tassel",
     slug: "Crystal-Tasbih-with-Silver-Tassel",
-    image:
-      "https://dummyimage.com/650x800/b3aab3/fff",
+    image: "https://dummyimage.com/650x800/b3aab3/fff",
     mrp: 300,
     price: 250,
     resellerPrice: 100,
@@ -296,8 +274,7 @@ export const product_list = [
     _id: "9",
     name: "Velvet Prayer Mat (Musalla)",
     slug: "Velvet-Prayer-Mat-(Musalla)",
-    image:
-      "https://dummyimage.com/650x800/b3aab3/fff",
+    image: "https://dummyimage.com/650x800/b3aab3/fff",
     mrp: 650,
     price: 500,
     resellerPrice: 100,
@@ -317,8 +294,7 @@ export const product_list = [
     _id: "10",
     name: "Travel Prayer Mat with Bag",
     slug: "Travel-Prayer-Mat-with-Bag",
-    image:
-      "https://dummyimage.com/650x800/b3aab3/fff",
+    image: "https://dummyimage.com/650x800/b3aab3/fff",
     mrp: 450,
     price: 350,
     resellerPrice: 100,
@@ -338,8 +314,7 @@ export const product_list = [
     _id: "11",
     name: "Islamic Gift Set (Qur'an + Tasbih + Attar)",
     slug: "Islamic-Gift-Set-(Qur'an + Tasbih + Attar)",
-    image:
-      "https://dummyimage.com/650x800/b3aab3/fff",
+    image: "https://dummyimage.com/650x800/b3aab3/fff",
     mrp: 1200,
     price: 999,
     resellerPrice: 100,
@@ -359,8 +334,7 @@ export const product_list = [
     _id: "12",
     name: "Perfume Oil - White Musk",
     slug: "Perfume-Oil-White-Musk",
-    image:
-      "https://dummyimage.com/650x800/b3aab3/fff",
+    image: "https://dummyimage.com/650x800/b3aab3/fff",
     mrp: 380,
     price: 300,
     resellerPrice: 100,
@@ -381,8 +355,7 @@ export const product_list = [
     _id: "13",
     name: "Riyad Us-Saliheen (English)",
     slug: "Riyad-Us-Saliheen-(English)",
-    image:
-      "https://dummyimage.com/650x800/b3aab3/fff",
+    image: "https://dummyimage.com/650x800/b3aab3/fff",
     mrp: 550,
     price: 480,
     resellerPrice: 100,
@@ -405,8 +378,7 @@ export const product_list = [
     _id: "14",
     name: "Islamic Home Frame – Ayatul Kursi",
     slug: "Islamic-Home-Frame–Ayatul-Kursi",
-    image:
-      "https://dummyimage.com/650x800/b3aab3/fff",
+    image: "https://dummyimage.com/650x800/b3aab3/fff",
     mrp: 1000,
     price: 850,
     resellerPrice: 100,
@@ -426,8 +398,7 @@ export const product_list = [
     _id: "15",
     name: "Amber Oud Gold Edition",
     slug: "Amber-Oud-Gold-Edition",
-    image:
-      "https://dummyimage.com/650x800/b3aab3/fff",
+    image: "https://dummyimage.com/650x800/b3aab3/fff",
     mrp: 1600,
     price: 1350,
     resellerPrice: 100,
