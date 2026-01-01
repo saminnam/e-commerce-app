@@ -35,7 +35,7 @@ const CartPage = () => {
           <div className="bg-white shadow-md rounded-lg">
             {/* Wrapper to enable horizontal scroll on mobile */}
             <div className="overflow-x-auto md:overflow-y-auto scrollbar">
-              <div className="min-w-[700px] md:max-h-[500px]">
+              <div className="min-w-[700px] max-h-[500px]">
                 {/* Cart Header */}
                 <div className="grid grid-cols-6 text-[12px] md:text-[15px] font-semibold bg-gray-100 text-gray-700 p-3">
                   <p className="col-span-2 text-center">Product</p>

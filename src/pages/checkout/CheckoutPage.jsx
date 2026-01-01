@@ -105,17 +105,6 @@ const CheckoutPage = () => {
     }
 
     try {
-      //       console.log({
-      //   name,
-      //   email,
-      //   phone,
-      //   address,
-      //   city,
-      //   postalCode,
-      //   orderProducts,
-      //   totalAmount,
-      // });
-
       const res = await createOrder({
         name,
         email,

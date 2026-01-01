@@ -4,7 +4,7 @@ import { Navigation, Autoplay } from "swiper/modules";
 import { product_list } from "../../data/productData";
 import { MoveLeft, MoveRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { StoreContext } from "../../context/StoreContext";
+// import { StoreContext } from "../../context/StoreContext";
 // adjust path if needed
 
 const CategorySwiperSection = () => {

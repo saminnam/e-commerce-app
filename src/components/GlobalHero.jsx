@@ -33,7 +33,7 @@ const GlobalHero = ({ title }) => {
             {title}
           </h1>
 
-          <ul className="flex content-font flex-wrap text-sm md:text-[16px] font-medium gap-2 justify-center">
+          <ul className="flex content-font flex-wrap text-sm md:text-[16px] font-medium gap-2 md:justify-center">
             <li>
               <Link
                 to="/"
