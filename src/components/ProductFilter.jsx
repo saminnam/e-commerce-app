@@ -3,6 +3,7 @@ import { Filter } from "lucide-react";
 import { category_list, product_list } from "../data/productData";
 import { StoreContext } from "../context/StoreContext";
 import { X } from 'lucide-react';
+import { useNavigate } from "react-router-dom";
 
 const ProductFilter = ({
   categories,
@@ -19,6 +20,7 @@ const ProductFilter = ({
   const { showFilter, setShowFilter } = useContext(StoreContext);
   const drawerRef = useRef(null);
   const [maxPrice, setMaxPrice] = useState(0); 
+  const navigate = useNavigate()
 
   useEffect(() => {
     // ✅ Get the maximum price from product list
@@ -28,6 +30,12 @@ const ProductFilter = ({
       setPriceRange([0, maxVal]);
     }
   }, []);
+
+    const handleCategorySelect = (category) => {
+      setSelectedCategory(category);
+      navigate(`/products?category=${encodeURIComponent(category)}`);
+    };
+    const dropdownRef = useRef(null);
 
   // Close drawer when clicking outside
   useEffect(() => {
@@ -63,7 +71,7 @@ const ProductFilter = ({
             className="border border-gray-300 p-2 rounded"
           />
           {/* Category */}
-          <div className="border border-gray-300 p-2 rounded">
+          <div ref={dropdownRef} className="border border-gray-300 p-2 rounded">
             <h4 className="font-semibold text-gray-800 border-gray-300 border-b pb-1 mb-2">
               Categories
             </h4>
@@ -71,7 +79,7 @@ const ProductFilter = ({
               {[{ cat_name: "All" }, ...category_list].map((cat, i) => (
                 <li
                   key={i}
-                  onClick={() => setSelectedCategory(cat.cat_name)}
+                  onClick={() => handleCategorySelect(cat.cat_name)}
                   className={`px-3 py-2 cursor-pointer rounded transition ${
                     selectedCategory === cat.cat_name
                       ? "bg-[#e5b236] text-white"

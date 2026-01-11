@@ -20,9 +20,9 @@ import BecomeaSeller from "./pages/become-a-seller/BecomeaSeller";
 import BlogPage from "./pages/blog/BlogPage";
 import ContactPage from "./pages/contact/ContactPage";
 import BlogDetail from "./pages/blog-details/BlogDetail";
-// import Profile from "./components/Profile";
-// import Coupon from "./pages/re-seller/Coupon";
-// import Login from "./pages/login/Login";
+import LoginPage from "./pages/auth/LoginPage";
+import ProfilePage from "./pages/profile/ProfilePage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   const ScrollToTop = () => {
@@ -40,12 +40,29 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/login" element={<LoginPage />} />
+
+        <Route
+          path="/checkout"
+          element={
+            <ProtectedRoute>
+              <CheckoutPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
+
         <Route path="about-us" element={<AboutPage />} />
-        {/* <Route path="/login" element={<Login />}/> */}
         <Route path="/products" element={<ProductPage />} />
         <Route path="/product/:slug" element={<ProductDetail />} />
-        {/* <Route path="/profile" element={<Profile />} />
-         <Route path="/coupon" element={<Coupon />} /> */}
         <Route path="/cart" element={<CartPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/become-a-seller" element={<BecomeaSeller />} />

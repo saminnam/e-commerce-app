@@ -358,9 +358,9 @@ const Navbar = () => {
                   : null}
               </div>
             </Link>
-            <button className="hidden md:block">
+            <Link to={"/profile"} className="hidden md:block">
               <User size={22} />
-            </button>
+            </Link>
             {/* Mobile Menu Button */}
             <button
               className="lg:hidden cursor-pointer text-white"

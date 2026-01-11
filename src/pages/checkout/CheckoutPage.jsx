@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { StoreContext } from "../../context/StoreContext";
 import OrderSuccessPopup from "../../modals/OrderSuccessPopup";
 import GlobalHero from "../../components/GlobalHero";
@@ -20,6 +20,18 @@ const CheckoutPage = () => {
 
   // Error state
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    const profile = JSON.parse(localStorage.getItem("profile"));
+    if (profile) {
+      setName(profile.name);
+      setEmail(profile.email);
+      setPhone(profile.phone);
+      setAddress(profile.address);
+      setCity(profile.city);
+      setPostalCode(profile.postalCode);
+    }
+  }, []);
 
   // Regex patterns
   const nameRegex = /^[a-zA-Z\s]{3,}$/;
@@ -98,20 +110,65 @@ const CheckoutPage = () => {
     })
     .filter(Boolean);
 
+  // const placeOrder = async () => {
+  //   if (!orderProducts.length) {
+  //     alert("Cart is empty");
+  //     return;
+  //   }
+
+  //   try {
+  //     const res = await createOrder({
+  //       name,
+  //       email,
+  //       phone,
+  //       address,
+  //       city,
+  //       postalCode,
+  //       products: orderProducts,
+  //       totalAmount,
+  //     });
+
+  //     if (res.data.success) {
+  //       setShowPopup(true);
+
+  //       setName("");
+  //       setEmail("");
+  //       setPhone("");
+  //       setAddress("");
+  //       setCity("");
+  //       setPostalCode("");
+  //       setSaveAddress(false);
+  //       setErrors({});
+  //     }
+  //   } catch (error) {
+  //     console.error("Order failed:", error.response?.data || error.message);
+  //     alert("Order failed. Check console.");
+  //   }
+  // };
+
   const placeOrder = async () => {
     if (!orderProducts.length) {
       alert("Cart is empty");
       return;
     }
 
+    const profileData = {
+      name,
+      email,
+      phone,
+      address,
+      city,
+      postalCode,
+    };
+
+    // ✅ SAVE PROFILE IF CHECKED
+    if (saveAddress) {
+      localStorage.setItem("profile", JSON.stringify(profileData));
+    }
+
     try {
       const res = await createOrder({
-        name,
-        email,
-        phone,
-        address,
-        city,
-        postalCode,
+        ...profileData,
         products: orderProducts,
         totalAmount,
       });
@@ -119,7 +176,7 @@ const CheckoutPage = () => {
       if (res.data.success) {
         setShowPopup(true);
 
-        // Reset form AFTER success
+        // ❗ Reset form ONLY (not localStorage)
         setName("");
         setEmail("");
         setPhone("");

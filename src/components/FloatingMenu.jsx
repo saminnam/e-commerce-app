@@ -37,10 +37,10 @@ const FloatingMenu = () => {
       </button>
 
       {/* Profile */}
-      <button className="flex flex-col items-center gap-1 text-sm transition-all duration-200">
+      <Link to={"/profile"} className="flex flex-col items-center gap-1 text-sm transition-all duration-200">
         <User size={18} />
         <span className="text-[10px] uppercase font-medium">Profile</span>
-      </button>
+      </Link>
     </div>
   );
 };
