@@ -97,7 +97,7 @@ const ProfilePage = () => {
             {!isEditing && (
               <button
                 onClick={() => setIsEditing(true)}
-                className="flex items-center gap-2 text-yellow-600 hover:text-yellow-700 font-medium"
+                className="flex items-center cursor-pointer gap-2 text-yellow-600 hover:text-yellow-700 font-medium"
               >
                 <Pencil size={18} /> Edit
               </button>
@@ -105,7 +105,7 @@ const ProfilePage = () => {
 
             <button
               onClick={handleLogout}
-              className="flex items-center gap-2 text-red-500 hover:text-red-600 font-medium"
+              className="flex items-center cursor-pointer gap-2 text-red-500 hover:text-red-600 font-medium"
             >
               <LogOut size={18} /> Logout
             </button>
@@ -146,14 +146,14 @@ const ProfilePage = () => {
             <>
               <button
                 onClick={updateProfile}
-                className="flex-1 flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-white py-3 rounded-lg font-semibold"
+                className="flex-1 cursor-pointer flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-white py-3 rounded-lg font-semibold"
               >
                 <Save size={18} /> Save
               </button>
 
               <button
                 onClick={() => setIsEditing(false)}
-                className="flex-1 flex items-center justify-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 rounded-lg font-semibold"
+                className="flex-1 cursor-pointer flex items-center justify-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 rounded-lg font-semibold"
               >
                 <X size={18} /> Cancel
               </button>
@@ -161,7 +161,7 @@ const ProfilePage = () => {
           ) : (
             <button
               onClick={deleteProfile}
-              className="flex-1 flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg font-semibold"
+              className="flex-1 cursor-pointer flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg font-semibold"
             >
               <Trash2 size={18} /> Delete Profile
             </button>
