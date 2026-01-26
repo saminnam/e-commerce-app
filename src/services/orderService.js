@@ -1,8 +1,5 @@
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 
-export const createOrder = (orderData) => {
-  return axios.post(
-    "http://localhost:5000/api/orders/create",
-    orderData
-  );
+export const createOrder = (data) => {
+  return axiosInstance.post("/orders", data); // ✅ must match backend route
 };

@@ -20,9 +20,10 @@ import BecomeaSeller from "./pages/become-a-seller/BecomeaSeller";
 import BlogPage from "./pages/blog/BlogPage";
 import ContactPage from "./pages/contact/ContactPage";
 import BlogDetail from "./pages/blog-details/BlogDetail";
-import LoginPage from "./pages/auth/LoginPage";
 import ProfilePage from "./pages/profile/ProfilePage";
 import ProtectedRoute from "./components/ProtectedRoute";
+
+import AuthPage from "./pages/auth/AuthPage";
 
 const App = () => {
   const ScrollToTop = () => {
@@ -40,8 +41,7 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<LoginPage />} />
-
+        <Route path="/auth" element={<AuthPage />} />
         <Route
           path="/checkout"
           element={

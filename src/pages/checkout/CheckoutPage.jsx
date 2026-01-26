@@ -1,413 +1,291 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { useProfile } from "../../context/ProfileContext";
 import { StoreContext } from "../../context/StoreContext";
-import OrderSuccessPopup from "../../modals/OrderSuccessPopup";
-import GlobalHero from "../../components/GlobalHero";
 import { createOrder } from "../../services/orderService";
 import { product_list } from "../../data/productData";
+import {
+  User,
+  Mail,
+  Phone,
+  MapPin,
+  Building,
+  Hash,
+  CreditCard,
+} from "lucide-react";
 
 const CheckoutPage = () => {
-  const { getTotalCartAmount, cartItems } = useContext(StoreContext);
-  const [showPopup, setShowPopup] = useState(false);
+  /* ---------------- CONTEXT ---------------- */
+  const { profile, updateProfile } = useProfile();
+  const { cartItems, getTotalCartAmount, clearCart } = useContext(StoreContext);
 
-  // Form fields
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [postalCode, setPostalCode] = useState("");
-  const [saveAddress, setSaveAddress] = useState(false);
+  /* ---------------- STATE ---------------- */
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    city: "",
+    postalCode: "",
+  });
 
-  // Error state
   const [errors, setErrors] = useState({});
+  const [saveAddress, setSaveAddress] = useState(false);
+  const [loading, setLoading] = useState(false);
 
+  /* ---------------- PREFILL FROM PROFILE ---------------- */
   useEffect(() => {
-    const profile = JSON.parse(localStorage.getItem("profile"));
     if (profile) {
-      setName(profile.name);
-      setEmail(profile.email);
-      setPhone(profile.phone);
-      setAddress(profile.address);
-      setCity(profile.city);
-      setPostalCode(profile.postalCode);
+      setForm({
+        name: profile.name || "",
+        email: profile.email || "",
+        phone: profile.phone || "",
+        address: profile.address || "",
+        city: profile.city || "",
+        postalCode: profile.postalCode || "",
+      });
     }
-  }, []);
+  }, [profile]);
 
-  // Regex patterns
-  const nameRegex = /^[a-zA-Z\s]{3,}$/;
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const phoneRegex = /^[6-9]\d{9}$/;
-  const postalCodeRegex = /^\d{6}$/;
-
-  // --- Real-Time Validation Function ---
-  const validateField = (field, value) => {
-    let message = "";
-
-    switch (field) {
-      case "name":
-        if (!nameRegex.test(value)) message = "Enter a valid full name";
-        break;
-      case "email":
-        if (!emailRegex.test(value)) message = "Enter a valid email address";
-        break;
-      case "phone":
-        if (!phoneRegex.test(value))
-          message = "Enter a valid 10-digit phone number";
-        break;
-      case "address":
-        if (value.trim().length < 5) message = "Address is too short";
-        break;
-      case "city":
-        if (value.trim().length < 2) message = "Enter a valid city name";
-        break;
-      case "postalCode":
-        if (!postalCodeRegex.test(value))
-          message = "Enter a valid 6-digit postal code";
-        break;
-      default:
-        break;
-    }
-
-    setErrors((prev) => ({ ...prev, [field]: message }));
+  /* ---------------- VALIDATION ---------------- */
+  const regex = {
+    name: /^[a-zA-Z.\s]{3,}$/,
+    email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+    phone: /^[6-9]\d{9}$/,
+    postalCode: /^\d{6}$/,
   };
 
-  // --- Full Form Validation ---
   const validateForm = () => {
-    const fields = { name, email, phone, address, city, postalCode };
-    const newErrors = {};
+    let newErrors = {};
 
-    Object.entries(fields).forEach(([key, value]) => {
-      validateField(key, value);
-      if (
-        (key === "name" && !nameRegex.test(value)) ||
-        (key === "email" && !emailRegex.test(value)) ||
-        (key === "phone" && !phoneRegex.test(value)) ||
-        (key === "address" && value.trim().length < 5) ||
-        (key === "city" && value.trim().length < 2) ||
-        (key === "postalCode" && !postalCodeRegex.test(value))
-      ) {
-        newErrors[key] = true;
+    Object.entries(form).forEach(([key, value]) => {
+      let message = "";
+
+      switch (key) {
+        case "name":
+          if (!regex.name.test(value)) message = "Enter a valid full name";
+          break;
+        case "email":
+          if (!regex.email.test(value)) message = "Enter a valid email";
+          break;
+        case "phone":
+          if (!regex.phone.test(value))
+            message = "Enter valid 10-digit mobile number";
+          break;
+        case "address":
+          if (value.trim().length < 5) message = "Address is too short";
+          break;
+        case "city":
+          if (value.trim().length < 2) message = "Enter a valid city";
+          break;
+        case "postalCode":
+          if (!regex.postalCode.test(value))
+            message = "Enter valid 6-digit pincode";
+          break;
+        default:
+          break;
       }
+
+      if (message) newErrors[key] = message;
     });
 
+    setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const orderProducts = Object.keys(cartItems)
+  /* ---------------- CART → ORDER SUMMARY ---------------- */
+  const orderProducts = Object.keys(cartItems || {})
     .map((id) => {
-      const product = product_list?.find(
-        (item) => String(item._id) === String(id)
+      const product = product_list.find(
+        (item) => String(item._id) === String(id),
       );
 
-      if (!product) return null;
+      if (!product || cartItems[id] === 0) return null;
 
       return {
-        productId: product._id,
-        productName: product.name,
+        ...product,
         quantity: cartItems[id],
-        price: product.price,
+        total: product.price * cartItems[id],
       };
     })
     .filter(Boolean);
 
-  // const placeOrder = async () => {
-  //   if (!orderProducts.length) {
-  //     alert("Cart is empty");
-  //     return;
-  //   }
+  const totalItems = orderProducts.reduce(
+    (sum, item) => sum + item.quantity,
+    0,
+  );
 
-  //   try {
-  //     const res = await createOrder({
-  //       name,
-  //       email,
-  //       phone,
-  //       address,
-  //       city,
-  //       postalCode,
-  //       products: orderProducts,
-  //       totalAmount,
-  //     });
+  const totalMRP = orderProducts.reduce(
+    (sum, item) => sum + item.mrp * item.quantity,
+    0,
+  );
 
-  //     if (res.data.success) {
-  //       setShowPopup(true);
+  const totalPrice = orderProducts.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0,
+  );
 
-  //       setName("");
-  //       setEmail("");
-  //       setPhone("");
-  //       setAddress("");
-  //       setCity("");
-  //       setPostalCode("");
-  //       setSaveAddress(false);
-  //       setErrors({});
-  //     }
-  //   } catch (error) {
-  //     console.error("Order failed:", error.response?.data || error.message);
-  //     alert("Order failed. Check console.");
-  //   }
-  // };
+  const savedAmount = totalMRP - totalPrice;
+  const totalAmount = getTotalCartAmount();
 
+  /* ---------------- PLACE ORDER ---------------- */
   const placeOrder = async () => {
     if (!orderProducts.length) {
       alert("Cart is empty");
       return;
     }
 
-    const profileData = {
-      name,
-      email,
-      phone,
-      address,
-      city,
-      postalCode,
-    };
+    if (!validateForm()) return;
 
-    // ✅ SAVE PROFILE IF CHECKED
-    if (saveAddress) {
-      localStorage.setItem("profile", JSON.stringify(profileData));
-    }
+    setLoading(true);
 
     try {
-      const res = await createOrder({
-        ...profileData,
-        products: orderProducts,
+      if (saveAddress) {
+        await updateProfile(form);
+      }
+
+      await createOrder({
+        customer: {
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+        },
+        shippingAddress: {
+          street: form.address,
+          city: form.city,
+          postalCode: form.postalCode,
+        },
+        products: orderProducts.map((p) => ({
+          productId: p._id,
+          productName: p.name,
+          quantity: p.quantity,
+          price: p.price,
+        })),
         totalAmount,
       });
 
-      if (res.data.success) {
-        setShowPopup(true);
-
-        // ❗ Reset form ONLY (not localStorage)
-        setName("");
-        setEmail("");
-        setPhone("");
-        setAddress("");
-        setCity("");
-        setPostalCode("");
-        setSaveAddress(false);
-        setErrors({});
-      }
+      // clearCart && clearCart(); 
+      alert("🎉 Order placed successfully");
     } catch (error) {
-      console.error("Order failed:", error.response?.data || error.message);
-      alert("Order failed. Check console.");
+      console.error(error);
+      alert("❌ Order failed");
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  /* ---------------- UI FIELDS ---------------- */
+  const fields = [
+    { key: "name", icon: User, label: "Full Name" },
+    { key: "email", icon: Mail, label: "Email Address" },
+    { key: "phone", icon: Phone, label: "Mobile Number" },
+    { key: "address", icon: MapPin, label: "Address", textarea: true },
+    { key: "city", icon: Building, label: "City" },
+    { key: "postalCode", icon: Hash, label: "Postal Code" },
+  ];
 
-    if (!validateForm()) return;
-
-    placeOrder(); // ✅ only this
-  };
-
-  const totalAmount = getTotalCartAmount();
-  const savedAmount = totalAmount * 0.1;
-  const numberOfProducts = Object.keys(cartItems || {}).length;
-
+  /* ---------------- JSX ---------------- */
   return (
-    <>
-      <GlobalHero title={"📦 Checkout"} />
-      <section className="container mx-auto px-4 py-10">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid md:grid-cols-2 grid-cols-1 mt-16 md:gap-16 gap-10">
-            {/* Shipping Form */}
-            <form
-              onSubmit={handleSubmit}
-              className="bg-white px-4 py-5 md:px-8 md:py-10 rounded-2xl shadow-lg"
-            >
-              <h2 className="text-xl font-semibold mb-5 text-gray-800">
-                Shipping Details
-              </h2>
+    <div className="min-h-screen bg-gray-100 px-4 py-12">
+      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10">
+        {/* LEFT */}
+        <div className="bg-white rounded-2xl shadow-xl p-8">
+          <div className="flex items-center gap-3 mb-6">
+            <CreditCard className="text-yellow-500" />
+            <h2 className="text-2xl font-bold">Shipping Details</h2>
+          </div>
 
-              <div className="space-y-4">
-                <div className="flex gap-3 w-full">
-                  {/* Name */}
-                  <div className="w-full">
-                    <input
-                      type="text"
-                      placeholder="Full Name"
-                      value={name}
-                      onChange={(e) => {
-                        setName(e.target.value);
-                        validateField("name", e.target.value);
-                      }}
-                      className={`border p-3 rounded w-full focus:ring-2 outline-none ${
-                        errors.name
-                          ? "border-red-500 focus:ring-red-500"
-                          : "border-gray-300 focus:ring-yellow-500"
-                      }`}
-                    />
-                    {errors.name && (
-                      <p className="text-red-500 text-sm mt-1">{errors.name}</p>
-                    )}
-                  </div>
-
-                  {/* Email */}
-                  <div className="w-full">
-                    <input
-                      type="email"
-                      placeholder="Email Address"
-                      value={email}
-                      onChange={(e) => {
-                        setEmail(e.target.value);
-                        validateField("email", e.target.value);
-                      }}
-                      className={`border p-3 rounded w-full focus:ring-2 outline-none ${
-                        errors.email
-                          ? "border-red-500 focus:ring-red-500"
-                          : "border-gray-300 focus:ring-yellow-500"
-                      }`}
-                    />
-                    {errors.email && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {errors.email}
-                      </p>
-                    )}
-                  </div>
-                </div>
-
-                {/* Phone */}
-                <div>
-                  <input
-                    type="tel"
-                    placeholder="Phone Number"
-                    value={phone}
-                    onChange={(e) => {
-                      setPhone(e.target.value);
-                      validateField("phone", e.target.value);
-                    }}
-                    className={`border p-3 rounded w-full focus:ring-2 outline-none ${
-                      errors.phone
-                        ? "border-red-500 focus:ring-red-500"
-                        : "border-gray-300 focus:ring-yellow-500"
-                    }`}
-                  />
-                  {errors.phone && (
-                    <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
-                  )}
-                </div>
-
-                {/* Address */}
-                <div>
-                  <textarea
-                    placeholder="Address"
-                    rows="3"
-                    value={address}
-                    onChange={(e) => {
-                      setAddress(e.target.value);
-                      validateField("address", e.target.value);
-                    }}
-                    className={`border p-3 rounded w-full focus:ring-2 outline-none resize-none ${
-                      errors.address
-                        ? "border-red-500 focus:ring-red-500"
-                        : "border-gray-300 focus:ring-yellow-500"
-                    }`}
-                  ></textarea>
-                  {errors.address && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.address}
-                    </p>
-                  )}
-                </div>
-
-                <div className="flex gap-3 w-full">
-                  {/* City */}
-                  <div className="w-full">
-                    <input
-                      type="text"
-                      placeholder="City"
-                      value={city}
-                      onChange={(e) => {
-                        setCity(e.target.value);
-                        validateField("city", e.target.value);
-                      }}
-                      className={`border p-3 rounded w-full focus:ring-2 outline-none ${
-                        errors.city
-                          ? "border-red-500 focus:ring-red-500"
-                          : "border-gray-300 focus:ring-yellow-500"
-                      }`}
-                    />
-                    {errors.city && (
-                      <p className="text-red-500 text-sm mt-1">{errors.city}</p>
-                    )}
-                  </div>
-
-                  {/* Postal Code */}
-                  <div className="w-full">
-                    <input
-                      type="text"
-                      placeholder="Postal Code"
-                      value={postalCode}
-                      onChange={(e) => {
-                        setPostalCode(e.target.value);
-                        validateField("postalCode", e.target.value);
-                      }}
-                      className={`border p-3 rounded w-full focus:ring-2 outline-none ${
-                        errors.postalCode
-                          ? "border-red-500 focus:ring-red-500"
-                          : "border-gray-300 focus:ring-yellow-500"
-                      }`}
-                    />
-                    {errors.postalCode && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {errors.postalCode}
-                      </p>
-                    )}
-                  </div>
-                </div>
-
-                {/* Save Address */}
-                <label className="flex items-center space-x-2 cursor-pointer mt-3">
-                  <input
-                    type="checkbox"
-                    checked={saveAddress}
-                    onChange={(e) => setSaveAddress(e.target.checked)}
-                    className="w-4 h-4 text-yellow-500 border-gray-300 rounded"
-                  />
-                  <span className="text-gray-700 text-sm">
-                    Save this address for future orders
-                  </span>
+          <div className="space-y-5">
+            {fields.map(({ key, icon: Icon, label, textarea, disabled }) => (
+              <div key={key}>
+                <label className="text-sm font-medium text-gray-600">
+                  {label}
                 </label>
 
-                {/* Place Order Button */}
-                <button
-                  type="submit"
-                  className="mt-6 cursor-pointer bg-yellow-500 text-white px-6 py-3 rounded-md hover:bg-yellow-600 w-full transition font-semibold"
+                <div
+                  className={`mt-1 flex gap-3 border rounded-lg px-4 py-3 ${
+                    errors[key] ? "border-red-500" : "border-gray-300"
+                  }`}
                 >
-                  Place Order
-                </button>
-              </div>
-            </form>
+                  <Icon size={18} className="text-gray-500 mt-1" />
 
-            {/* Order Summary */}
-            <div className="px-4 py-5 md:px-8 md:py-10 bg-white h-max shadow-lg rounded-2xl">
-              <h2 className="text-xl font-semibold mb-5 text-gray-800">
-                Order Summary
-              </h2>
+                  {textarea ? (
+                    <textarea
+                      rows={3}
+                      value={form[key]}
+                      onChange={(e) =>
+                        setForm({ ...form, [key]: e.target.value })
+                      }
+                      className="w-full resize-none outline-none bg-transparent"
+                    />
+                  ) : (
+                    <input
+                      type="text"
+                      value={form[key]}
+                      disabled={disabled}
+                      onChange={(e) =>
+                        setForm({ ...form, [key]: e.target.value })
+                      }
+                      className="w-full outline-none bg-transparent"
+                    />
+                  )}
+                </div>
 
-              <div className="space-y-4 bg-gray-50 p-5 rounded-lg border border-gray-300">
-                <div className="flex justify-between text-gray-700">
-                  <span>Products:</span>
-                  <span>{numberOfProducts}</span>
-                </div>
-                <div className="flex justify-between text-gray-700">
-                  <span>Saved Amount:</span>
-                  <span className="text-green-600 font-medium">
-                    ₹{savedAmount.toLocaleString()}
-                  </span>
-                </div>
-                <div className="flex justify-between font-semibold text-lg">
-                  <span>Total Amount:</span>
-                  <span>₹{totalAmount.toLocaleString()}</span>
-                </div>
+                {errors[key] && (
+                  <p className="text-red-500 text-xs mt-1">{errors[key]}</p>
+                )}
               </div>
-            </div>
+            ))}
+
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={saveAddress}
+                onChange={(e) => setSaveAddress(e.target.checked)}
+              />
+              <span className="text-sm">Save address to profile</span>
+            </label>
+
+            <button
+              onClick={placeOrder}
+              disabled={loading}
+              className="w-full bg-yellow-500 hover:bg-yellow-600 text-white py-4 rounded-xl font-semibold"
+            >
+              {loading ? "Placing Order..." : "Place Order"}
+            </button>
           </div>
         </div>
 
-        {showPopup && <OrderSuccessPopup onClose={() => setShowPopup(false)} />}
-      </section>
-    </>
+        {/* RIGHT */}
+        <div className="bg-white rounded-2xl shadow-xl p-8 sticky top-24 h-fit">
+          <h3 className="text-xl font-bold mb-6">🧾 Order Summary</h3>
+
+          {orderProducts.map((item) => (
+            <div key={item._id} className="flex justify-between mb-3">
+              <div>
+                <p className="font-medium">{item.name}</p>
+                <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
+              </div>
+              <p className="font-semibold">₹{item.total}</p>
+            </div>
+          ))}
+
+          <div className="border-t mt-4 pt-4 space-y-2">
+            <div className="flex justify-between">
+              <span>Total Items</span>
+              <span>{totalItems}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Saved Amount</span>
+              <span>₹{savedAmount}</span>
+            </div>
+            <div className="flex justify-between font-bold text-lg">
+              <span>Total</span>
+              <span>₹{totalAmount}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

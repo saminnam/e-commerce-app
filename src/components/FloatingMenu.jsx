@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Home, ShoppingCart, Filter, User } from "lucide-react";
+import { Home, ShoppingCart, Filter, Store } from "lucide-react";
 import { StoreContext } from "../context/StoreContext";
 import { Link } from "react-router-dom";
 
@@ -18,13 +18,13 @@ const FloatingMenu = () => {
         <span className="text-[10px] uppercase font-medium">Menu</span>
       </button>
 
-      {/* Cart */}
+      {/* shop */}
       <Link
-        to={"/cart"}
+        to={"/products"}
         className="flex flex-col items-center gap-1 text-sm transition-all duration-200"
       >
-        <ShoppingCart size={18} />
-        <span className="text-[10px] uppercase font-medium">Cart</span>
+        <Store size={18} />
+        <span className="text-[10px] uppercase font-medium">Shop</span>
       </Link>
 
       {/* Filter */}
@@ -37,9 +37,21 @@ const FloatingMenu = () => {
       </button>
 
       {/* Profile */}
-      <Link to={"/profile"} className="flex flex-col items-center gap-1 text-sm transition-all duration-200">
+      {/* <Link
+        to={"/profile"}
+        className="flex flex-col items-center gap-1 text-sm transition-all duration-200"
+      >
         <User size={18} />
         <span className="text-[10px] uppercase font-medium">Profile</span>
+      </Link> */}
+
+      {/* Cart */}
+      <Link
+        to={"/cart"}
+        className="flex flex-col items-center gap-1 text-sm transition-all duration-200"
+      >
+        <ShoppingCart size={18} />
+        <span className="text-[10px] uppercase font-medium">Cart</span>
       </Link>
     </div>
   );

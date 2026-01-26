@@ -64,15 +64,15 @@ const Navbar = () => {
         {/* 🔹 Top Bar */}
         <div className="hidden md:flex justify-between items-center bg-[#E5B236] text-sm px-6 py-2">
           <div className="flex gap-3 text-white">
-            <Link
+            {/* <Link
               to="/become-a-seller"
               className="hover:text-[#111825] transition-animation"
             >
               Become a Seller
             </Link>
-            <span>|</span>
+            <span>|</span> */}
             <a
-              href="https://saminnam.github.io/demo-book-center/"
+              href="https://baqavibookcentre.com/"
               className="hover:text-[#111825] transition-animation"
             >
               Fast Booking
@@ -93,17 +93,17 @@ const Navbar = () => {
           </div>
           <div className="flex gap-3 text-white">
             <Link
-              to="/singup"
+              to="/auth"
               className="hover:text-[#111825] transition-animation"
             >
-              Create Account
+              Sign In
             </Link>
             <span>|</span>
             <Link
-              to="/login"
+              to="/auth"
               className="hover:text-[#111825] transition-animation"
             >
-              Login
+              Sign Up
             </Link>
           </div>
         </div>
@@ -146,14 +146,14 @@ const Navbar = () => {
                   Cart
                 </Link>
               </li>
-              <li
+              {/* <li
                 className="border-b border-gray-300 pb-2"
                 onClick={() => setMenuOpen(false)}
               >
                 <Link to="/" className="block">
                   Re-Seller
                 </Link>
-              </li>
+              </li> */}
               <li
                 className="border-b border-gray-300 pb-2"
                 onClick={() => setMenuOpen(false)}
@@ -270,8 +270,14 @@ const Navbar = () => {
             >
               Shop
             </Link>
-            <Link to="/" className="hover:text-[#E5B236] transition-animation">
+            {/* <Link to="/" className="hover:text-[#E5B236] transition-animation">
               Re-seller
+            </Link> */}
+            <Link
+              to="/become-a-seller"
+              className="hover:text-[#E5B236] transition-animation"
+            >
+              Become a Seller
             </Link>
             <Link
               to="/blogs"

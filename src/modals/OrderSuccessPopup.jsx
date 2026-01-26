@@ -1,6 +1,7 @@
+// components/checkout/OrderSuccessPopup.jsx
 const OrderSuccessPopup = ({ onClose }) => {
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/50 bg-opacity-40 z-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
       <div className="bg-white rounded-xl p-8 shadow-lg max-w-sm w-full text-center">
         <h2 className="text-2xl font-semibold text-green-600 mb-3">
           Order Submitted 🎉

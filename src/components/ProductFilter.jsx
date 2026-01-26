@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useContext, useState } from "react";
-import { Filter } from "lucide-react";
 import { category_list, product_list } from "../data/productData";
 import { StoreContext } from "../context/StoreContext";
 import { X } from 'lucide-react';
