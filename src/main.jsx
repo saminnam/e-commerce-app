@@ -10,13 +10,13 @@ import { ProfileProvider } from "./context/ProfileContext.jsx";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
-      <ProfileProvider>
-        <AuthProvider>
-        <StoreContextProvider>
-          <App />
-        </StoreContextProvider>
+      <AuthProvider>
+        <ProfileProvider>
+          <StoreContextProvider>
+            <App />
+          </StoreContextProvider>
+        </ProfileProvider>
       </AuthProvider>
-      </ProfileProvider>
     </BrowserRouter>
-  </StrictMode>
+  </StrictMode>,
 );

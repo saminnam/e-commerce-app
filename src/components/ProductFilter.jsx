@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useContext, useState } from "react";
 import { category_list, product_list } from "../data/productData";
 import { StoreContext } from "../context/StoreContext";
-import { X } from 'lucide-react';
+import { X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const ProductFilter = ({
   categories,
-  searchTerm,
-  setSearchTerm,
+  filterSearch,
+  setFilterSearch,
   selectedCategory,
   setSelectedCategory,
   priceRange,
@@ -18,8 +18,8 @@ const ProductFilter = ({
   // const [showFilter, setShowFilter] = useState(false);
   const { showFilter, setShowFilter } = useContext(StoreContext);
   const drawerRef = useRef(null);
-  const [maxPrice, setMaxPrice] = useState(0); 
-  const navigate = useNavigate()
+  const [maxPrice, setMaxPrice] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // ✅ Get the maximum price from product list
@@ -30,11 +30,11 @@ const ProductFilter = ({
     }
   }, []);
 
-    const handleCategorySelect = (category) => {
-      setSelectedCategory(category);
-      navigate(`/products?category=${encodeURIComponent(category)}`);
-    };
-    const dropdownRef = useRef(null);
+  const handleCategorySelect = (category) => {
+    setSelectedCategory(category);
+    navigate(`/products?category=${encodeURIComponent(category)}`);
+  };
+  const dropdownRef = useRef(null);
 
   // Close drawer when clicking outside
   useEffect(() => {
@@ -65,10 +65,11 @@ const ProductFilter = ({
           <input
             type="text"
             placeholder="Search..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            value={filterSearch}
             className="border border-gray-300 p-2 rounded"
+            onChange={(e) => setFilterSearch(e.target.value)}
           />
+
           {/* Category */}
           <div ref={dropdownRef} className="border border-gray-300 p-2 rounded">
             <h4 className="font-semibold text-gray-800 border-gray-300 border-b pb-1 mb-2">
@@ -203,7 +204,7 @@ const ProductFilter = ({
               onClick={() => setShowFilter(false)}
               className="text-gray-500 hover:text-gray-700"
             >
-              <X size={22}/>
+              <X size={22} />
             </button>
           </div>
 
@@ -212,8 +213,8 @@ const ProductFilter = ({
             <input
               type="text"
               placeholder="Search..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              value={filterSearch}
+              onChange={(e) => setFilterSearch(e.target.value)}
               className="border border-gray-300 p-2 rounded"
             />
             <select

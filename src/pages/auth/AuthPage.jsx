@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -24,20 +25,22 @@ const AuthPage = () => {
       login(res.data);
       navigate(redirectTo);
     } catch (err) {
-      console.error(err.response?.data || err.message);
-      alert(err.response?.data?.message || "Auth failed");
+      const message = err.response?.data?.message || "Auth failed";
+      toast.error(message);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-yellow-100 to-yellow-300 p-4">
+    <div className="min-h-screen content-font flex items-center justify-center bg-gradient-to-br from-yellow-100 to-yellow-300 p-4">
       <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-8">
         {/* Tab Switcher */}
         <div className="flex justify-center mb-6">
           <button
             onClick={() => setIsLogin(true)}
             className={`px-6 py-2 cursor-pointer rounded-tl-lg rounded-bl-lg font-semibold transition ${
-              isLogin ? "bg-yellow-500 text-white shadow-md" : "bg-yellow-100 text-yellow-700"
+              isLogin
+                ? "bg-yellow-500 text-white shadow-md"
+                : "bg-yellow-100 text-yellow-700"
             }`}
           >
             Login
@@ -45,7 +48,9 @@ const AuthPage = () => {
           <button
             onClick={() => setIsLogin(false)}
             className={`px-6 py-2 cursor-pointer rounded-tr-lg rounded-br-lg font-semibold transition ${
-              !isLogin ? "bg-yellow-500 text-white shadow-md" : "bg-yellow-100 text-yellow-700"
+              !isLogin
+                ? "bg-yellow-500 text-white shadow-md"
+                : "bg-yellow-100 text-yellow-700"
             }`}
           >
             Sign Up

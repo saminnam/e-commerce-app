@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { StoreContext } from "../context/StoreContext";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Plus, Star, ChevronLeft, ChevronRight } from "lucide-react";
 import ProductFilter from "./ProductFilter";
 import ProductCardSkeleton from "../skeleton-loader/ProductCardSkeleton";
@@ -27,8 +27,8 @@ const ProductListPage = () => {
     setSortOrder,
     priceRange,
     setPriceRange,
-    searchTerm,
-    setSearchTerm,
+    filterSearch,
+    setFilterSearch,
     addToCart,
     loading,
   } = useContext(StoreContext);
@@ -38,7 +38,7 @@ const ProductListPage = () => {
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = filteredProducts.slice(
     indexOfFirstProduct,
-    indexOfLastProduct
+    indexOfLastProduct,
   );
 
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
@@ -56,9 +56,9 @@ const ProductListPage = () => {
     const search = searchParams.get("search");
     const category = searchParams.get("category");
 
-    if (search) setSearchTerm(search);
+    if (search) setFilterSearch(search);
     if (category) setSelectedCategory(category);
-  }, [searchParams, setSearchTerm, setSelectedCategory]);
+  }, [searchParams, setFilterSearch, setSelectedCategory]);
 
   return (
     <div className="container mx-auto p-2 md:p-6 content-font">
@@ -69,8 +69,8 @@ const ProductListPage = () => {
             showFilter={showFilter}
             setShowFilter={setShowFilter}
             categories={categories}
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
+            filterSearch={filterSearch}
+            setFilterSearch={setFilterSearch}
             selectedCategory={selectedCategory}
             setSelectedCategory={setSelectedCategory}
             priceRange={priceRange}
@@ -112,7 +112,7 @@ const ProductListPage = () => {
                         <div className="flex gap-2">
                           <p className="text-gray-800 text-[12px] md:text-[15px] font-semibold">
                             ₹{product.price}
-                             {/* ₹{product.finalPrice} */}
+                            {/* ₹{product.finalPrice} */}
                           </p>
                           <p className="text-red-500 text-[12px] md:text-[15px] line-through">
                             ₹{product.mrp}

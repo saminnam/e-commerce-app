@@ -3,6 +3,7 @@ import { useProfile } from "../../context/ProfileContext";
 import { StoreContext } from "../../context/StoreContext";
 import { createOrder } from "../../services/orderService";
 import { product_list } from "../../data/productData";
+import { toast } from "react-toastify";
 import {
   User,
   Mail,
@@ -16,7 +17,7 @@ import {
 const CheckoutPage = () => {
   /* ---------------- CONTEXT ---------------- */
   const { profile, updateProfile } = useProfile();
-  const { cartItems, getTotalCartAmount, clearCart } = useContext(StoreContext);
+  const { cartItems, getTotalCartAmount } = useContext(StoreContext);
 
   /* ---------------- STATE ---------------- */
   const [form, setForm] = useState({
@@ -127,10 +128,9 @@ const CheckoutPage = () => {
   const savedAmount = totalMRP - totalPrice;
   const totalAmount = getTotalCartAmount();
 
-  /* ---------------- PLACE ORDER ---------------- */
   const placeOrder = async () => {
     if (!orderProducts.length) {
-      alert("Cart is empty");
+      toast.warning("Cart is empty");
       return;
     }
 
@@ -163,16 +163,32 @@ const CheckoutPage = () => {
         totalAmount,
       });
 
-      // clearCart && clearCart(); 
-      alert("🎉 Order placed successfully");
+      // --- 1. RESET THE FORM STATE ---
+      setForm({
+        name: "",
+        email: "",
+        phone: "",
+        address: "",
+        city: "",
+        postalCode: "",
+      });
+
+      // --- 2. RESET THE CHECKBOX ---
+      setSaveAddress(false);
+      // --- 3. CLEAR THE CART (Uncomment this) ---
+      // if (clearCart) clearCart();
+
+      toast.success("🎉 Order placed successfully!");
+
+      // Optional: Navigate to a "My Orders" page after a short delay
+      // setTimeout(() => navigate('/my-orders'), 2000);
     } catch (error) {
       console.error(error);
-      alert("❌ Order failed");
+      toast.error("❌ Order failed. Please try again.");
     } finally {
       setLoading(false);
     }
   };
-
   /* ---------------- UI FIELDS ---------------- */
   const fields = [
     { key: "name", icon: User, label: "Full Name" },
@@ -191,7 +207,9 @@ const CheckoutPage = () => {
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <div className="flex items-center gap-3 mb-6">
             <CreditCard className="text-yellow-500" />
-            <h2 className="text-2xl font-bold">Shipping Details</h2>
+            <h2 className="text-2xl font-semibold content-font">
+              Shipping Details
+            </h2>
           </div>
 
           <div className="space-y-5">
@@ -248,7 +266,7 @@ const CheckoutPage = () => {
             <button
               onClick={placeOrder}
               disabled={loading}
-              className="w-full bg-yellow-500 hover:bg-yellow-600 text-white py-4 rounded-xl font-semibold"
+              className="w-full cursor-pointer bg-yellow-500 hover:bg-yellow-600 text-white py-4 rounded-xl font-semibold"
             >
               {loading ? "Placing Order..." : "Place Order"}
             </button>
@@ -257,7 +275,9 @@ const CheckoutPage = () => {
 
         {/* RIGHT */}
         <div className="bg-white rounded-2xl shadow-xl p-8 sticky top-24 h-fit">
-          <h3 className="text-xl font-bold mb-6">🧾 Order Summary</h3>
+          <h3 className="text-xl font-semibold mb-6 border-b border-gray-300 pb-6 content-font">
+            🧾 Order Summary
+          </h3>
 
           {orderProducts.map((item) => (
             <div key={item._id} className="flex justify-between mb-3">
@@ -265,22 +285,24 @@ const CheckoutPage = () => {
                 <p className="font-medium">{item.name}</p>
                 <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
               </div>
-              <p className="font-semibold">₹{item.total}</p>
+              <p className="font-semibold text-[#E5B236]">₹{item.total}</p>
             </div>
           ))}
 
-          <div className="border-t mt-4 pt-4 space-y-2">
-            <div className="flex justify-between">
-              <span>Total Items</span>
-              <span>{totalItems}</span>
+          <div className="">
+            <div className="space-y-2 font-medium border-t border-gray-300 4 py-4">
+              <div className="flex justify-between">
+                <span>Total Items:</span>
+                <span>{totalItems}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Saved Amount:</span>
+                <span>₹{savedAmount}</span>
+              </div>
             </div>
-            <div className="flex justify-between">
-              <span>Saved Amount</span>
-              <span>₹{savedAmount}</span>
-            </div>
-            <div className="flex justify-between font-bold text-lg">
+            <div className="flex justify-between border-t border-gray-300 pt-4 font-bold text-lg">
               <span>Total</span>
-              <span>₹{totalAmount}</span>
+              <span className="text-[#E5B236]">₹{totalAmount}</span>
             </div>
           </div>
         </div>

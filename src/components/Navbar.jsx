@@ -8,6 +8,7 @@ import {
   Search,
   ChevronDown,
   LogIn,
+  LogOut,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { category_list } from "../data/productData";
@@ -17,17 +18,21 @@ import logo from "../assets/images/logo-bg.png";
 import MobileSearchBar from "../components/MobileSearchBar";
 import { policyData } from "../data/policyData";
 import PolicyPopup from "../modals/PolicyPopup";
-
+import { AuthContext } from "../context/AuthContext";
 const Navbar = () => {
   const [categoryOpen, setCategoryOpen] = useState(false);
   const { menuOpen, setMenuOpen, cartItems } = useContext(StoreContext);
   const navigate = useNavigate();
-  const [searchValue, setSearchValue] = useState("");
+  const [navbarSearch, setNavbarSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
   const [selectedPolicy, setSelectedPolicy] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
-
+  const { user, logout } = useContext(AuthContext);
+  const handleLogout = () => {
+    logout();
+    navigate("/auth"); // Redirect to login page after logout
+  };
   const openPolicy = (id) => {
     const found = policyData.find((p) => p.id === id);
     setSelectedPolicy(found);
@@ -35,8 +40,8 @@ const Navbar = () => {
   };
 
   const handleSearch = () => {
-    if (searchValue.trim() !== "") {
-      navigate(`/products?search=${encodeURIComponent(searchValue)}`);
+    if (navbarSearch.trim() !== "") {
+      navigate(`/products?search=${encodeURIComponent(navbarSearch)}`);
     }
   };
 
@@ -222,18 +227,12 @@ const Navbar = () => {
             </ul>
             <ul className="mt-5 flex gap-2 justify-center text-center">
               <li className="bg-[#111825] w-full text-white py-2 px-4">
-                <Link
-                  to="/login"
-                  className="flex  items-center justify-between"
-                >
-                  <span>Login</span> <LogIn size={18} />
+                <Link to="/auth" className="flex  items-center justify-between">
+                  <span>Sign In</span> <LogIn size={18} />
                 </Link>
               </li>
               <li className="bg-[#E5B236] text-white w-full py-2 px-4">
-                <Link
-                  to="/signup"
-                  className="flex  items-center justify-between"
-                >
+                <Link to="/auth" className="flex  items-center justify-between">
                   <span>Signup</span> <LogIn size={18} />
                 </Link>
               </li>
@@ -332,8 +331,8 @@ const Navbar = () => {
               <input
                 type="text"
                 placeholder="Search for products..."
-                value={searchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
+                value={navbarSearch}
+                onChange={(e) => setNavbarSearch(e.target.value)}
                 className="w-full px-4 py-2 outline-none"
               />
               <button
@@ -347,9 +346,9 @@ const Navbar = () => {
 
           {/* Wishlist & Cart */}
           <div className="flex items-center gap-4 text-white">
-            <button className="relative">
+            {/* <button className="relative">
               <Heart size={22} />
-            </button>
+            </button> */}
             <Link to="/cart" className="relative">
               <ShoppingCart size={22} />
               <div
@@ -364,9 +363,29 @@ const Navbar = () => {
                   : null}
               </div>
             </Link>
-            <Link to={"/profile"} className="hidden md:block">
+            {user ? (
+              // SHOW LOGOUT IF LOGGED IN
+              <button
+                onClick={handleLogout}
+                className="hidden md:block cursor-pointer hover:text-red-500 transition-colors"
+                title="Logout"
+              >
+                <LogOut size={22} />
+              </button>
+            ) : (
+              // SHOW LOGIN ICON IF NOT LOGGED IN
+              <Link
+                to="/auth"
+                className="hidden md:block hover:text-yellow-500 transition-colors"
+                title="Login"
+              >
+                <User size={22} />
+              </Link>
+            )}
+
+            {/* <Link to={"/profile"} className="hidden md:block">
               <User size={22} />
-            </Link>
+            </Link> */}
             {/* Mobile Menu Button */}
             <button
               className="lg:hidden cursor-pointer text-white"
@@ -380,8 +399,8 @@ const Navbar = () => {
       <div className="sticky top-0 z-40 bg-white">
         <MobileSearchBar
           category_list={category_list}
-          searchValue={searchValue}
-          setSearchValue={setSearchValue}
+          navbarSearch={navbarSearch}
+          setNavbarSearch={setNavbarSearch}
           handleSearch={handleSearch}
           setSelectedCategory={setSelectedCategory}
         />

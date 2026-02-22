@@ -14,7 +14,9 @@ const StoreContextProvider = (props) => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortOrder, setSortOrder] = useState("");
   const [priceRange, setPriceRange] = useState([0, 5000]);
-  const [searchTerm, setSearchTerm] = useState("");
+  // const [searchTerm, setSearchTerm] = useState("");
+  const [navbarSearch, setNavbarSearch] = useState("");
+  const [filterSearch, setFilterSearch] = useState("");
 
   const [loading, setLoading] = useState(true);
 
@@ -40,7 +42,7 @@ const StoreContextProvider = (props) => {
       return updated;
     });
 
-    showToast(`${product.name} added to cart!`, "success");
+    toast.success(`${product.name} added to cart!`, "success");
   };
 
   // const clearCart = () => setCartItems({});
@@ -79,7 +81,7 @@ const StoreContextProvider = (props) => {
       localStorage.setItem("cartItems", JSON.stringify(updated));
       return updated;
     });
-    showToast(`${product.name} removed from cart!`, "error");
+    toast.error(`${product.name} removed from cart!`);
   };
 
   // 💰 Calculate total cart value
@@ -93,27 +95,49 @@ const StoreContextProvider = (props) => {
   };
 
   // 🧠 Filtering, Sorting & Searching Logic (Memoized)
+  // const filteredProducts = useMemo(() => {
+  //   let filtered = [...product_list];
+  //   if (selectedCategory !== "All") {
+  //     filtered = filtered.filter((p) => p.category === selectedCategory);
+  //   }
+
+  //   filtered = filtered.filter(
+  //     (p) => p.price >= priceRange[0] && p.price <= priceRange[1]
+  //   );
+
+  //   if (searchTerm.trim()) {
+  //     filtered = filtered.filter((p) =>
+  //       p.name.toLowerCase().includes(searchTerm.toLowerCase())
+  //     );
+  //   }
+
+  //   if (sortOrder === "low-to-high") {
+  //     filtered.sort((a, b) => a.price - b.price);
+  //   } else if (sortOrder === "high-to-low") {
+  //     filtered.sort((a, b) => b.price - a.price);
+  //   }
+
+  //   return filtered;
+  // }, [selectedCategory, priceRange, sortOrder, searchTerm]);
   const filteredProducts = useMemo(() => {
     let filtered = [...product_list];
 
-    // Category filter
     if (selectedCategory !== "All") {
       filtered = filtered.filter((p) => p.category === selectedCategory);
     }
 
-    // Price filter
     filtered = filtered.filter(
-      (p) => p.price >= priceRange[0] && p.price <= priceRange[1]
+      (p) => p.price >= priceRange[0] && p.price <= priceRange[1],
     );
 
-    // Search filter
-    if (searchTerm.trim()) {
+    const finalSearch = navbarSearch || filterSearch;
+
+    if (finalSearch.trim()) {
       filtered = filtered.filter((p) =>
-        p.name.toLowerCase().includes(searchTerm.toLowerCase())
+        p.name.toLowerCase().includes(finalSearch.toLowerCase()),
       );
     }
 
-    // Sort
     if (sortOrder === "low-to-high") {
       filtered.sort((a, b) => a.price - b.price);
     } else if (sortOrder === "high-to-low") {
@@ -121,7 +145,7 @@ const StoreContextProvider = (props) => {
     }
 
     return filtered;
-  }, [selectedCategory, priceRange, sortOrder, searchTerm]);
+  }, [selectedCategory, priceRange, sortOrder, navbarSearch, filterSearch]);
 
   // 🔹 Get all unique categories (for dropdowns or filters)
   const categories = ["All", ...new Set(product_list.map((p) => p.category))];
@@ -150,8 +174,12 @@ const StoreContextProvider = (props) => {
     setSortOrder,
     priceRange,
     setPriceRange,
-    searchTerm,
-    setSearchTerm,
+    filterSearch,
+    setFilterSearch,
+    navbarSearch,
+    setNavbarSearch,
+    // searchTerm,
+    // setSearchTerm,
 
     // loader
     loading,

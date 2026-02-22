@@ -51,14 +51,14 @@ const App = () => {
           }
         />
 
-        <Route
+        {/* <Route
           path="/profile"
           element={
             <ProtectedRoute>
               <ProfilePage />
             </ProtectedRoute>
           }
-        />
+        /> */}
 
         <Route path="about-us" element={<AboutPage />} />
         <Route path="/products" element={<ProductPage />} />

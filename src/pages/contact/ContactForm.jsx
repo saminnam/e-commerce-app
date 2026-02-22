@@ -56,7 +56,7 @@ const ContactForm = () => {
       <div className="container mx-auto content-font">
         <div className="grid md:grid-cols-2 gap-8 bg-white overflow-hidden">
           {/* LEFT FORM SECTION */}
-          <div className="p-8 border-2 rounded-lg border-[#E5B236] overflow-hidden">
+          <div className="p-5 md:p-8 border-2 rounded-lg border-[#E5B236] overflow-hidden">
             <h2 className="text-2xl text-[#E5B236] mb-5 relative pb-4">
               Have a Question? We’re Just a Message Away
               <span className="absolute bottom-0 left-0 w-12 h-0.5 bg-[#E5B236]"></span>
