@@ -1,13 +1,19 @@
-import React from "react";
-import blogsData from "../../data/blogsData";
+import React, { useEffect, useState } from "react";
+// import blogsData from "../../data/blogsData";
 import { Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const BlogsCard = () => {
+  const [blogs, setBlogs] = useState([])
+  useEffect(() => {
+  fetch("http://localhost:5000/api/blogs")
+    .then((res) => res.json())
+    .then((data) => setBlogs(data));
+}, []);
   return (
     <div className="mx-auto p-2 md:p-6 mt-10">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
-        {blogsData.map((blog) => {
+        {blogs.map((blog) => {
           const [day, month] = blog.date.split(" ");
 
           return (

@@ -1,23 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import blogsData from "../../data/blogsData";
 import { Clock } from "lucide-react";
+import axios from "axios";
 import GlobalHero from "../../components/GlobalHero";
 
 const BlogDetail = () => {
   const { slug } = useParams();
 
-  const blog = blogsData.find((b) => b.slug === slug);
+  const [blog, setBlog] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchBlog = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:5000/api/blogs/${slug}`
+        );
+        setBlog(res.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching blog:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchBlog();
+  }, [slug]);
+
+  if (loading) {
+    return <h2 className="text-center mt-20">Loading...</h2>;
+  }
 
   if (!blog) {
     return <h2 className="text-center mt-20">Blog Not Found</h2>;
   }
 
-  const [day, month] = blog.date.split(" ");
+  const [day, month] = blog.date?.split(" ") || [];
 
   return (
     <>
-    <GlobalHero title={"📝 Blog Details"}/>
+      <GlobalHero title={"📝 Blog Details"} />
+
       <div className="max-w-4xl mx-auto p-4 md:p-8 mt-10">
         <img
           src={blog.image}
@@ -45,7 +68,7 @@ const BlogDetail = () => {
         <div
           className="mt-4 text-gray-700 leading-relaxed"
           dangerouslySetInnerHTML={{ __html: blog.content }}
-        ></div>
+        />
       </div>
     </>
   );

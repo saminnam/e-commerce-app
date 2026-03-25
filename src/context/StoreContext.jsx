@@ -1,6 +1,5 @@
 import { createContext, useState, useEffect, useMemo } from "react";
 import { product_list } from "../data/productData";
-import { showToast } from "../modals/ToastNotification";
 import { toast } from "react-toastify";
 
 export const StoreContext = createContext(null);
@@ -94,31 +93,6 @@ const StoreContextProvider = (props) => {
     return total;
   };
 
-  // 🧠 Filtering, Sorting & Searching Logic (Memoized)
-  // const filteredProducts = useMemo(() => {
-  //   let filtered = [...product_list];
-  //   if (selectedCategory !== "All") {
-  //     filtered = filtered.filter((p) => p.category === selectedCategory);
-  //   }
-
-  //   filtered = filtered.filter(
-  //     (p) => p.price >= priceRange[0] && p.price <= priceRange[1]
-  //   );
-
-  //   if (searchTerm.trim()) {
-  //     filtered = filtered.filter((p) =>
-  //       p.name.toLowerCase().includes(searchTerm.toLowerCase())
-  //     );
-  //   }
-
-  //   if (sortOrder === "low-to-high") {
-  //     filtered.sort((a, b) => a.price - b.price);
-  //   } else if (sortOrder === "high-to-low") {
-  //     filtered.sort((a, b) => b.price - a.price);
-  //   }
-
-  //   return filtered;
-  // }, [selectedCategory, priceRange, sortOrder, searchTerm]);
   const filteredProducts = useMemo(() => {
     let filtered = [...product_list];
 

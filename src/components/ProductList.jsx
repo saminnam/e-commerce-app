@@ -10,13 +10,6 @@ const ProductListPage = () => {
   const [searchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 10;
-  // const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   if (!localStorage.getItem("token")) {
-  //     navigate("/login");
-  //   }
-  // }, [navigate]);
 
   const {
     filteredProducts,
