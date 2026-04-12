@@ -63,7 +63,7 @@ const BlogsCard = () => {
           );
         })}
       </div>
-    </div>
+    </div> 
   );
 };
 

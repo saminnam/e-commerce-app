@@ -7,9 +7,8 @@ const blogsData = [
     category: "Travel",
     date: "27 March",
     readTime: "6 mins read",
-    image:
-      "https://dummyimage.com/600x400/bdbbbd/fff",
-          content: `
+    image: "https://dummyimage.com/600x400/bdbbbd/fff",
+    content: `
       <h2>React Performance Tips</h2>
       <p>Use memo, useCallback, and avoid unnecessary re-renders.</p>
     `,
@@ -22,9 +21,8 @@ const blogsData = [
     category: "Food",
     date: "20 March",
     readTime: "3 mins read",
-    image:
-      "https://dummyimage.com/600x400/bdbbbd/fff",
-          content: `
+    image: "https://dummyimage.com/600x400/bdbbbd/fff",
+    content: `
       <h2>React Performance Tips</h2>
       <p>Use memo, useCallback, and avoid unnecessary re-renders.</p>
     `,
@@ -37,14 +35,13 @@ const blogsData = [
     category: "Lifestyle",
     date: "15 April",
     readTime: "6 mins read",
-    image:
-      "https://dummyimage.com/600x400/bdbbbd/fff",
-          content: `
+    image: "https://dummyimage.com/600x400/bdbbbd/fff",
+    content: `
       <h2>React Performance Tips</h2>
       <p>Use memo, useCallback, and avoid unnecessary re-renders.</p>
     `,
   },
-    {
+  {
     id: 4,
     title: "Best Salad Images Ever",
     slug: "best-salad-images-ever",
@@ -52,14 +49,13 @@ const blogsData = [
     category: "Lifestyle",
     date: "15 April",
     readTime: "6 mins read",
-    image:
-      "https://dummyimage.com/600x400/bdbbbd/fff",
-          content: `
+    image: "https://dummyimage.com/600x400/bdbbbd/fff",
+    content: `
       <h2>React Performance Tips</h2>
       <p>Use memo, useCallback, and avoid unnecessary re-renders.</p>
     `,
   },
-    {
+  {
     id: 5,
     title: "Best Salad Images Ever",
     slug: "best-salad-images-ever",
@@ -67,14 +63,13 @@ const blogsData = [
     category: "Lifestyle",
     date: "15 April",
     readTime: "6 mins read",
-    image:
-      "https://dummyimage.com/600x400/bdbbbd/fff",
-          content: `
+    image: "https://dummyimage.com/600x400/bdbbbd/fff",
+    content: `
       <h2>React Performance Tips</h2>
       <p>Use memo, useCallback, and avoid unnecessary re-renders.</p>
     `,
   },
-    {
+  {
     id: 6,
     title: "Best Salad Images Ever",
     slug: "best-salad-images-ever",
@@ -82,14 +77,13 @@ const blogsData = [
     category: "Lifestyle",
     date: "15 April",
     readTime: "6 mins read",
-    image:
-      "https://dummyimage.com/600x400/bdbbbd/fff",
-          content: `
+    image: "https://dummyimage.com/600x400/bdbbbd/fff",
+    content: `
       <h2>React Performance Tips</h2>
       <p>Use memo, useCallback, and avoid unnecessary re-renders.</p>
     `,
   },
-    {
+  {
     id: 7,
     title: "Best Salad Images Ever",
     slug: "best-salad-images-ever",
@@ -97,9 +91,8 @@ const blogsData = [
     category: "Lifestyle",
     date: "15 April",
     readTime: "6 mins read",
-    image:
-      "https://dummyimage.com/600x400/bdbbbd/fff",
-          content: `
+    image: "https://dummyimage.com/600x400/bdbbbd/fff",
+    content: `
       <h2>React Performance Tips</h2>
       <p>Use memo, useCallback, and avoid unnecessary re-renders.</p>
     `,
