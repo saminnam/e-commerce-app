@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useContext, useState } from "react";
-import { category_list, product_list } from "../data/productData";
+// ❌ REMOVED: import { category_list, product_list } from "../data/productData";
 import { StoreContext } from "../context/StoreContext";
 import { X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const ProductFilter = ({
-  categories,
   filterSearch,
   setFilterSearch,
   selectedCategory,
@@ -15,28 +14,35 @@ const ProductFilter = ({
   sortOrder,
   setSortOrder,
 }) => {
-  // const [showFilter, setShowFilter] = useState(false);
-  const { showFilter, setShowFilter } = useContext(StoreContext);
+  // ✅ Extract live data and states from StoreContext
+  const { 
+    showFilter, 
+    setShowFilter, 
+    product_list, // Now coming from API via Context
+    categories    // Now dynamically generated in Context
+  } = useContext(StoreContext);
+
   const drawerRef = useRef(null);
+  const dropdownRef = useRef(null);
   const [maxPrice, setMaxPrice] = useState(0);
   const navigate = useNavigate();
 
+  // ✅ LOGIC: Update max price whenever the API product list changes
   useEffect(() => {
-    // ✅ Get the maximum price from product list
-    if (product_list.length > 0) {
+    if (product_list && product_list.length > 0) {
       const maxVal = Math.max(...product_list.map((p) => p.price));
       setMaxPrice(maxVal);
-      setPriceRange([0, maxVal]);
+      // We don't force setPriceRange here to avoid resetting user selection 
+      // during pagination or minor updates.
     }
-  }, []);
+  }, [product_list]);
 
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
     navigate(`/products?category=${encodeURIComponent(category)}`);
   };
-  const dropdownRef = useRef(null);
 
-  // Close drawer when clicking outside
+  // ✅ LOGIC: Close drawer when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (drawerRef.current && !drawerRef.current.contains(event.target)) {
@@ -53,7 +59,7 @@ const ProductFilter = ({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [showFilter]);
+  }, [showFilter, setShowFilter]);
 
   return (
     <>
@@ -76,17 +82,18 @@ const ProductFilter = ({
               Categories
             </h4>
             <ul className="p-2 max-h-60 scrollbar overflow-y-auto w-full">
-              {[{ cat_name: "All" }, ...category_list].map((cat, i) => (
+              {/* ✅ LOGIC: Map through dynamic categories from API */}
+              {categories.map((cat, i) => (
                 <li
                   key={i}
-                  onClick={() => handleCategorySelect(cat.cat_name)}
+                  onClick={() => handleCategorySelect(cat)}
                   className={`px-3 py-2 cursor-pointer rounded transition ${
-                    selectedCategory === cat.cat_name
+                    selectedCategory === cat
                       ? "bg-[#e5b236] text-white"
                       : "hover:bg-gray-100 text-gray-700"
                   }`}
                 >
-                  {cat.cat_name}
+                  {cat}
                 </li>
               ))}
             </ul>
@@ -189,6 +196,7 @@ const ProductFilter = ({
           className={`absolute inset-0 bg-black/40 transition-opacity duration-300 ${
             showFilter ? "opacity-100" : "opacity-0"
           }`}
+          onClick={() => setShowFilter(false)}
         ></div>
 
         {/* Drawer */}
@@ -208,7 +216,7 @@ const ProductFilter = ({
             </button>
           </div>
 
-          {/* Same Filter Content */}
+          {/* Filter Content */}
           <div className="flex flex-col gap-5">
             <input
               type="text"
@@ -217,6 +225,8 @@ const ProductFilter = ({
               onChange={(e) => setFilterSearch(e.target.value)}
               className="border border-gray-300 p-2 rounded"
             />
+            
+            {/* ✅ LOGIC: Use dynamic categories in mobile dropdown */}
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
@@ -247,7 +257,7 @@ const ProductFilter = ({
               <input
                 type="range"
                 min="0"
-                max="5000"
+                max={maxPrice}
                 value={priceRange[1]}
                 onChange={(e) =>
                   setPriceRange([priceRange[0], Number(e.target.value)])
@@ -260,7 +270,7 @@ const ProductFilter = ({
                 <input
                   type="number"
                   min={priceRange[0]}
-                  max="5000"
+                  max={maxPrice}
                   value={priceRange[1]}
                   onChange={(e) =>
                     setPriceRange([priceRange[0], Number(e.target.value) || 0])

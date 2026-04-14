@@ -1,21 +1,49 @@
-import React, { useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
-import { product_list } from "../../data/productData";
-import { MoveLeft, MoveRight } from "lucide-react";
+import axios from "axios"; // Added axios
+import { MoveLeft, MoveRight, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
-// import { StoreContext } from "../../context/StoreContext";
-// adjust path if needed
+
+// Ensure Swiper styles are imported in your project
+import "swiper/css";
+import "swiper/css/navigation";
 
 const CategorySwiperSection = () => {
-  // ✅ Get unique categories
-  // const { addToCart } = useContext(StoreContext);
-  const categories = [...new Set(product_list.map((p) => p.category))];
+  // ✅ Logic: State for products and loading
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // ✅ Logic: Fetch data from API
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const { data } = await axios.get("http://localhost:5000/api/products");
+        setProducts(data);
+      } catch (err) {
+        console.error("Error fetching products:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
+
+  // ✅ Logic: Get unique categories from API data
+  const categories = [...new Set(products.map((p) => p.category))];
+
+  // ✅ Logic: Prevent rendering swiper before data is ready
+  if (loading) return (
+    <div className="flex justify-center py-20">
+      <Loader2 className="animate-spin text-[#e5b236]" size={32} />
+    </div>
+  );
 
   return (
     <section className="px-5 md:px-8 space-y-12">
       {categories.map((category, index) => {
-        const categoryProducts = product_list.filter(
+        // ✅ Logic: Filter products based on fetched data
+        const categoryProducts = products.filter(
           (p) => p.category === category
         );
 
@@ -56,7 +84,7 @@ const CategorySwiperSection = () => {
                 1024: { slidesPerView: 5 },
                 1280: { slidesPerView: 6 },
               }}
-              loop={true}
+              loop={categoryProducts.length >= 6} // Loop only if enough items to prevent Swiper glitches
               className="category-swiper"
             >
               {categoryProducts.map((product) => (
@@ -85,19 +113,6 @@ const CategorySwiperSection = () => {
                               ₹{product.mrp}
                             </p>
                           </div>
-                          {/* <div className="flex items-center gap-[1.3px] 2xl:gap-1">
-                            {Array.from({ length: 5 }, (_, i) => (
-                              <Star
-                                key={i}
-                                size={14}
-                                className={
-                                  i < product.rating
-                                    ? "text-yellow-500"
-                                    : "text-gray-300"
-                                }
-                              />
-                            ))}
-                          </div> */}
                         </div>
                       </div>
                     </div>
@@ -110,12 +125,6 @@ const CategorySwiperSection = () => {
                         >
                           View Details
                         </Link>
-                        {/* <button
-                          onClick={() => addToCart(product._id)}
-                          className="flex cursor-pointer items-center border border-slate-[#111825] justify-center text-[#111825] p-2 shadow-md bg-white rounded-full transition"
-                        >
-                          <Plus className="w-4 transition-transform duration-300 hover:rotate-180 h-4 md:w-5 md:h-5" />
-                        </button> */}
                       </div>
                     </div>
                     {/* Discount Tag */}

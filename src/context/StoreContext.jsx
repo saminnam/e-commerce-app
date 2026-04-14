@@ -1,30 +1,51 @@
 import { createContext, useState, useEffect, useMemo } from "react";
-import { product_list } from "../data/productData";
+import axios from "axios"; // Ensure axios is installed
 import { toast } from "react-toastify";
 
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
+  // 🟢 Data States
+  const [products, setProducts] = useState([]); // Replaces static product_list
+  const [loading, setLoading] = useState(true);
+  
+  // UI & Cart States
   const [menuOpen, setMenuOpen] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [cartItems, setCartItems] = useState({});
 
-  // 🟢 Filters & Sorting States
+  // Filters & Sorting States
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortOrder, setSortOrder] = useState("");
-  const [priceRange, setPriceRange] = useState([0, 5000]);
-  // const [searchTerm, setSearchTerm] = useState("");
+  const [priceRange, setPriceRange] = useState([0, 10000]); // Set a high default
   const [navbarSearch, setNavbarSearch] = useState("");
   const [filterSearch, setFilterSearch] = useState("");
 
-  const [loading, setLoading] = useState(true);
+  // 1️⃣ FETCH DATA FROM API
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get("http://localhost:5000/api/products");
+      setProducts(response.data);
+      
+      // Auto-adjust price range based on actual data
+      if (response.data.length > 0) {
+        const maxPrice = Math.max(...response.data.map(p => p.price));
+        setPriceRange([0, maxPrice]);
+      }
+    } catch (error) {
+      console.error("Failed to fetch products:", error);
+      toast.error("Could not load products.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1000); // Simulate API delay
-    return () => clearTimeout(timer);
+    fetchProducts();
   }, []);
 
-  // 🟢 Load cart data from localStorage
+  // 2️⃣ CART LOGIC (Remains similar, but uses 'products' state)
   useEffect(() => {
     const savedCart = localStorage.getItem("cartItems");
     if (savedCart) setCartItems(JSON.parse(savedCart));
@@ -32,83 +53,61 @@ const StoreContextProvider = (props) => {
 
   const addToCart = (product) => {
     setCartItems((prev) => {
-      const updated = {
-        ...prev,
-        [product._id]: (prev[product._id] || 0) + 1,
-      };
-
+      const updated = { ...prev, [product._id]: (prev[product._id] || 0) + 1 };
       localStorage.setItem("cartItems", JSON.stringify(updated));
       return updated;
     });
-
-    toast.success(`${product.name} added to cart!`, "success");
-  };
-
-  // const clearCart = () => setCartItems({});
-  const clearCart = () => {
-    if (!window.confirm("Are you sure you want to clear the entire cart?")) {
-      return;
-    }
-
-    setCartItems({});
-    localStorage.removeItem("cartItems");
-
-    toast.error("Cart has been cleared!", {
-      position: "bottom-right",
-      autoClose: 3000,
-      hideProgressBar: true,
-      theme: "colored",
-    });
+    toast.success(`${product.name} added to cart!`);
   };
 
   const removeFromCart = (product, removeAll = false) => {
-    const id = product._id || product.id; // support both
-
+    const id = product._id;
     setCartItems((prev) => {
       let updated = { ...prev };
-
-      if (removeAll) {
-        delete updated[id];
-      } else {
+      if (removeAll) { delete updated[id]; } 
+      else {
         updated[id] = Math.max((updated[id] || 0) - 1, 0);
-
-        if (updated[id] === 0) {
-          delete updated[id];
-        }
+        if (updated[id] === 0) delete updated[id];
       }
-
       localStorage.setItem("cartItems", JSON.stringify(updated));
       return updated;
     });
-    toast.error(`${product.name} removed from cart!`);
+    toast.error(`${product.name} removed!`);
   };
 
-  // 💰 Calculate total cart value
+  const clearCart = () => {
+    if (window.confirm("Clear entire cart?")) {
+      setCartItems({});
+      localStorage.removeItem("cartItems");
+      toast.info("Cart cleared");
+    }
+  };
+
   const getTotalCartAmount = () => {
     let total = 0;
     for (const id in cartItems) {
-      const product = product_list.find((p) => p._id === id);
+      const product = products.find((p) => p._id === id);
       if (product) total += product.price * cartItems[id];
     }
     return total;
   };
 
+  // 3️⃣ FILTERING & SEARCHING (Client-side)
   const filteredProducts = useMemo(() => {
-    let filtered = [...product_list];
+    let filtered = [...products];
 
     if (selectedCategory !== "All") {
       filtered = filtered.filter((p) => p.category === selectedCategory);
     }
 
     filtered = filtered.filter(
-      (p) => p.price >= priceRange[0] && p.price <= priceRange[1],
+      (p) => p.price >= priceRange[0] && p.price <= priceRange[1]
     );
 
     const finalSearch = navbarSearch || filterSearch;
-
     if (finalSearch.trim()) {
       filtered = filtered.filter((p) =>
-        p.name.toLowerCase().includes(finalSearch.toLowerCase()),
+        p.name.toLowerCase().includes(finalSearch.toLowerCase())
       );
     }
 
@@ -119,45 +118,27 @@ const StoreContextProvider = (props) => {
     }
 
     return filtered;
-  }, [selectedCategory, priceRange, sortOrder, navbarSearch, filterSearch]);
+  }, [products, selectedCategory, priceRange, sortOrder, navbarSearch, filterSearch]);
 
-  // 🔹 Get all unique categories (for dropdowns or filters)
-  const categories = ["All", ...new Set(product_list.map((p) => p.category))];
+  const categories = ["All", ...new Set(products.map((p) => p.category))];
 
   const contextValue = {
-    menuOpen,
-    setMenuOpen,
-    showFilter,
-    setShowFilter,
-    // Products & Filters
-    product_list,
+    menuOpen, setMenuOpen,
+    showFilter, setShowFilter,
+    product_list: products, // Kept key name 'product_list' so your components don't break
     filteredProducts,
     categories,
-
-    // Cart
     clearCart,
     cartItems,
     addToCart,
     removeFromCart,
     getTotalCartAmount,
-
-    // Filters
-    selectedCategory,
-    setSelectedCategory,
-    sortOrder,
-    setSortOrder,
-    priceRange,
-    setPriceRange,
-    filterSearch,
-    setFilterSearch,
-    navbarSearch,
-    setNavbarSearch,
-    // searchTerm,
-    // setSearchTerm,
-
-    // loader
-    loading,
-    setLoading,
+    selectedCategory, setSelectedCategory,
+    sortOrder, setSortOrder,
+    priceRange, setPriceRange,
+    filterSearch, setFilterSearch,
+    navbarSearch, setNavbarSearch,
+    loading, setLoading,
   };
 
   return (

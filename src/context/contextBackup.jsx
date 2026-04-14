@@ -1,57 +1,30 @@
 import { createContext, useState, useEffect, useMemo } from "react";
-import { showToast } from "../modals/ToastNotification";
+import { product_list } from "../data/productData";
 import { toast } from "react-toastify";
 
 export const StoreContext = createContext(null);
 
-const StoreContextProvider = ({ children }) => {
+const StoreContextProvider = (props) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [cartItems, setCartItems] = useState({});
-  const [products, setProducts] = useState([]);
 
-  // Filters
+  // 🟢 Filters & Sorting States
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortOrder, setSortOrder] = useState("");
   const [priceRange, setPriceRange] = useState([0, 5000]);
-  const [searchTerm, setSearchTerm] = useState("");
+  // const [searchTerm, setSearchTerm] = useState("");
+  const [navbarSearch, setNavbarSearch] = useState("");
+  const [filterSearch, setFilterSearch] = useState("");
 
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 
-  const login = (data) => {
-    localStorage.setItem("token", data.token);
-    localStorage.setItem("user", JSON.stringify(data.user));
-    setUser(data.user);
-  };
-
-  const logout = () => {
-    localStorage.clear();
-    setUser(null);
-  };
-
-  // 🔐 Fetch products with JWT
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      setLoading(false);
-      return;
-    }
-
-    setLoading(true);
-
-    fetch("http://localhost:5000/api/products", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then(setProducts)
-      .catch(() => toast.error("Failed to load products"))
-      .finally(() => setLoading(false));
+    const timer = setTimeout(() => setLoading(false), 1000); // Simulate API delay
+    return () => clearTimeout(timer);
   }, []);
 
-  // Load cart
+  // 🟢 Load cart data from localStorage
   useEffect(() => {
     const savedCart = localStorage.getItem("cartItems");
     if (savedCart) setCartItems(JSON.parse(savedCart));
@@ -63,105 +36,133 @@ const StoreContextProvider = ({ children }) => {
         ...prev,
         [product._id]: (prev[product._id] || 0) + 1,
       };
+
       localStorage.setItem("cartItems", JSON.stringify(updated));
       return updated;
     });
 
-    showToast(`${product.name} added to cart!`, "success");
+    toast.success(`${product.name} added to cart!`, "success");
   };
 
+  // const clearCart = () => setCartItems({});
   const clearCart = () => {
-    if (!window.confirm("Clear cart?")) return;
+    if (!window.confirm("Are you sure you want to clear the entire cart?")) {
+      return;
+    }
+
     setCartItems({});
     localStorage.removeItem("cartItems");
-    toast.error("Cart cleared!");
+
+    toast.error("Cart has been cleared!", {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: true,
+      theme: "colored",
+    });
   };
 
   const removeFromCart = (product, removeAll = false) => {
-    const id = product._id;
+    const id = product._id || product.id; // support both
 
     setCartItems((prev) => {
       let updated = { ...prev };
 
-      if (removeAll) delete updated[id];
-      else {
-        updated[id]--;
-        if (updated[id] <= 0) delete updated[id];
+      if (removeAll) {
+        delete updated[id];
+      } else {
+        updated[id] = Math.max((updated[id] || 0) - 1, 0);
+
+        if (updated[id] === 0) {
+          delete updated[id];
+        }
       }
 
       localStorage.setItem("cartItems", JSON.stringify(updated));
       return updated;
     });
-
-    showToast(`${product.name} removed from cart!`, "error");
+    toast.error(`${product.name} removed from cart!`);
   };
 
+  // 💰 Calculate total cart value
   const getTotalCartAmount = () => {
     let total = 0;
     for (const id in cartItems) {
-      const product = products.find((p) => p._id === id);
-      if (product) total += product.finalPrice * cartItems[id];
+      const product = product_list.find((p) => p._id === id);
+      if (product) total += product.price * cartItems[id];
     }
     return total;
   };
 
   const filteredProducts = useMemo(() => {
-    let filtered = [...products];
+    let filtered = [...product_list];
 
     if (selectedCategory !== "All") {
       filtered = filtered.filter((p) => p.category === selectedCategory);
     }
 
     filtered = filtered.filter(
-      (p) => p.finalPrice >= priceRange[0] && p.finalPrice <= priceRange[1]
+      (p) => p.price >= priceRange[0] && p.price <= priceRange[1],
     );
 
-    if (searchTerm.trim()) {
+    const finalSearch = navbarSearch || filterSearch;
+
+    if (finalSearch.trim()) {
       filtered = filtered.filter((p) =>
-        p.name.toLowerCase().includes(searchTerm.toLowerCase())
+        p.name.toLowerCase().includes(finalSearch.toLowerCase()),
       );
     }
 
     if (sortOrder === "low-to-high") {
-      filtered.sort((a, b) => a.finalPrice - b.finalPrice);
+      filtered.sort((a, b) => a.price - b.price);
     } else if (sortOrder === "high-to-low") {
-      filtered.sort((a, b) => b.finalPrice - a.finalPrice);
+      filtered.sort((a, b) => b.price - a.price);
     }
 
     return filtered;
-  }, [products, selectedCategory, priceRange, sortOrder, searchTerm]);
+  }, [selectedCategory, priceRange, sortOrder, navbarSearch, filterSearch]);
 
-  const categories = ["All", ...new Set(products.map((p) => p.category))];
+  // 🔹 Get all unique categories (for dropdowns or filters)
+  const categories = ["All", ...new Set(product_list.map((p) => p.category))];
+
+  const contextValue = {
+    menuOpen,
+    setMenuOpen,
+    showFilter,
+    setShowFilter,
+    // Products & Filters
+    product_list,
+    filteredProducts,
+    categories,
+
+    // Cart
+    clearCart,
+    cartItems,
+    addToCart,
+    removeFromCart,
+    getTotalCartAmount,
+
+    // Filters
+    selectedCategory,
+    setSelectedCategory,
+    sortOrder,
+    setSortOrder,
+    priceRange,
+    setPriceRange,
+    filterSearch,
+    setFilterSearch,
+    navbarSearch,
+    setNavbarSearch,
+    // searchTerm,
+    // setSearchTerm,
+
+    // loader
+    loading,
+    setLoading,
+  };
 
   return (
-    <StoreContext.Provider
-      value={{
-        user,
-        login,
-        logout,
-        menuOpen,
-        setMenuOpen,
-        showFilter,
-        setShowFilter,
-        filteredProducts,
-        categories,
-        cartItems,
-        addToCart,
-        removeFromCart,
-        clearCart,
-        getTotalCartAmount,
-        selectedCategory,
-        setSelectedCategory,
-        sortOrder,
-        setSortOrder,
-        priceRange,
-        setPriceRange,
-        searchTerm,
-        setSearchTerm,
-        loading,
-      }}
-    >
-      {children}
+    <StoreContext.Provider value={contextValue}>
+      {props.children}
     </StoreContext.Provider>
   );
 };
