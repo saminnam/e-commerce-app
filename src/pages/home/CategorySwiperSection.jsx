@@ -1,43 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
-import axios from "axios"; // Added axios
 import { MoveLeft, MoveRight, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { StoreContext } from "../../context/StoreContext";
 
 // Ensure Swiper styles are imported in your project
 import "swiper/css";
 import "swiper/css/navigation";
 
 const CategorySwiperSection = () => {
-  // ✅ Logic: State for products and loading
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  // ✅ Logic: Fetch data from API
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const { data } = await axios.get("http://localhost:5000/api/products");
-        setProducts(data);
-      } catch (err) {
-        console.error("Error fetching products:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProducts();
-  }, []);
-
-  // ✅ Logic: Get unique categories from API data
-  const categories = [...new Set(products.map((p) => p.category))];
+  // ✅ Logic: Use products from StoreContext to avoid duplicate API calls
+  const { products, loading } = useContext(StoreContext);
 
   // ✅ Logic: Prevent rendering swiper before data is ready
-  if (loading) return (
+  if (loading || !products || products.length === 0) return (
     <div className="flex justify-center py-20">
       <Loader2 className="animate-spin text-[#e5b236]" size={32} />
     </div>
   );
+
+  // ✅ Logic: Get unique categories from API data
+  const categories = [...new Set(products.map((p) => p.category))];
 
   return (
     <section className="px-5 md:px-8 space-y-12">

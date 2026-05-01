@@ -11,7 +11,6 @@ import {
   LogOut,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { category_list } from "../data/productData";
 import { useContext } from "react";
 import { StoreContext } from "../context/StoreContext";
 import logo from "../assets/images/logo-bg.png";
@@ -21,7 +20,7 @@ import PolicyPopup from "../modals/PolicyPopup";
 import { AuthContext } from "../context/AuthContext";
 const Navbar = () => {
   const [categoryOpen, setCategoryOpen] = useState(false);
-  const { menuOpen, setMenuOpen, cartItems } = useContext(StoreContext);
+  const { menuOpen, setMenuOpen, cartItems, categories } = useContext(StoreContext);
   const navigate = useNavigate();
   const [navbarSearch, setNavbarSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -311,17 +310,17 @@ const Navbar = () => {
               : "opacity-0 scale-y-0 pointer-events-none"
           }`}
               >
-                {[{ cat_name: "All" }, ...category_list].map((item, index) => (
+                {categories.map((category, index) => (
                   <ul className="text-sm" key={index}>
                     <li
-                      onClick={() => handleCategorySelect(item.cat_name)}
+                      onClick={() => handleCategorySelect(category)}
                       className={`px-3 font-semibold py-2 hover:bg-[#E5B236] hover:text-white cursor-pointer ${
-                        selectedCategory === item.cat_name
+                        selectedCategory === category
                           ? "bg-[#E5B236] text-white"
                           : ""
                       }`}
                     >
-                      {item.cat_name}
+                      {category}
                     </li>
                   </ul>
                 ))}
@@ -398,7 +397,7 @@ const Navbar = () => {
       </div>
       <div className="sticky top-0 z-40 bg-white">
         <MobileSearchBar
-          category_list={category_list}
+          categories={categories}
           navbarSearch={navbarSearch}
           setNavbarSearch={setNavbarSearch}
           handleSearch={handleSearch}

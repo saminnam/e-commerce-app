@@ -1,8 +1,8 @@
 import { useEffect, useState, useContext } from "react";
 import { useProfile } from "../../context/ProfileContext";
 import { StoreContext } from "../../context/StoreContext";
+import { AuthContext } from "../../context/AuthContext";
 import { createOrder } from "../../services/orderService";
-import axios from "axios"; // 1. Added Axios for fetching
 import { toast } from "react-toastify";
 import {
   User,
@@ -12,17 +12,17 @@ import {
   Building,
   Hash,
   CreditCard,
-  Loader2, // Optional: for a better loading state
+  Plus,
+  Check,
 } from "lucide-react";
 
 const CheckoutPage = () => {
   /* ---------------- CONTEXT ---------------- */
   const { profile, updateProfile } = useProfile();
-  const { cartItems, getTotalCartAmount, clearCart } = useContext(StoreContext);
+  const { cartItems, getTotalCartAmount, product_list } = useContext(StoreContext);
+  const { user } = useContext(AuthContext);
 
   /* ---------------- STATE ---------------- */
-  const [products, setProducts] = useState([]); // 2. State for API products
-  const [dataLoading, setDataLoading] = useState(true); // 3. State for fetching data
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -35,36 +35,25 @@ const CheckoutPage = () => {
   const [errors, setErrors] = useState({});
   const [saveAddress, setSaveAddress] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [useSavedAddress, setUseSavedAddress] = useState(true); // Default to saved address if available
 
-  /* ---------------- FETCH PRODUCTS FROM API ---------------- */
+  /* ---------------- PREFILL FROM PROFILE OR AUTH USER ---------------- */
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/api/products");
-        // Adjust response.data based on your API structure (e.g., response.data.products)
-        setProducts(response.data); 
-      } catch (err) {
-        toast.error("Failed to load products from server");
-      } finally {
-        setDataLoading(false);
-      }
-    };
-    fetchProducts();
-  }, []);
-
-  /* ---------------- PREFILL FROM PROFILE ---------------- */
-  useEffect(() => {
-    if (profile) {
+    // Use profile data if available, otherwise use auth user data
+    const dataSource = profile || user;
+    if (dataSource) {
       setForm({
-        name: profile.name || "",
-        email: profile.email || "",
-        phone: profile.phone || "",
-        address: profile.address || "",
-        city: profile.city || "",
-        postalCode: profile.postalCode || "",
+        name: dataSource.name || "",
+        email: dataSource.email || "",
+        phone: profile?.phone || user?.phone || "",
+        address: profile?.address || "",
+        city: profile?.city || "",
+        postalCode: profile?.postalCode || "",
       });
+      // Set useSavedAddress based on whether profile has complete address
+      setUseSavedAddress(!!(profile?.address && profile?.city && profile?.postalCode && profile?.phone));
     }
-  }, [profile]);
+  }, [profile, user]);
 
   /* ---------------- VALIDATION ---------------- */
   const regex = {
@@ -96,8 +85,7 @@ const CheckoutPage = () => {
   /* ---------------- CART → ORDER SUMMARY (Using fetched 'products') ---------------- */
   const orderProducts = Object.keys(cartItems || {})
     .map((id) => {
-      // 4. Now finding product from the 'products' state fetched via API
-      const product = products.find((item) => String(item._id) === String(id));
+      const product = product_list?.find((item) => String(item._id) === String(id));
 
       if (!product || cartItems[id] === 0) return null;
 
@@ -133,7 +121,6 @@ const CheckoutPage = () => {
         shippingAddress: { street: form.address, city: form.city, postalCode: form.postalCode },
         products: orderProducts.map((p) => ({
           productId: p._id,
-          productName: p.name,
           quantity: p.quantity,
           price: p.price,
         })),
@@ -142,9 +129,6 @@ const CheckoutPage = () => {
 
       setForm({ name: "", email: "", phone: "", address: "", city: "", postalCode: "" });
       setSaveAddress(false);
-      
-      // 5. Clear the cart via context after successful order
-      if (clearCart) clearCart();
 
       toast.success("🎉 Order placed successfully!");
     } catch (error) {
@@ -163,15 +147,6 @@ const CheckoutPage = () => {
     { key: "postalCode", icon: Hash, label: "Postal Code" },
   ];
 
-  // 6. Handle initial data loading state
-  if (dataLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="animate-spin text-yellow-500" size={40} />
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-gray-100 px-4 py-12">
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10">
@@ -181,6 +156,87 @@ const CheckoutPage = () => {
             <CreditCard className="text-yellow-500" />
             <h2 className="text-2xl font-semibold content-font">Shipping Details</h2>
           </div>
+
+          {/* Address Selection */}
+          {profile && (profile.address || profile.city || profile.postalCode) && (
+            <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+              <p className="font-medium text-gray-800 mb-3">Select Shipping Address:</p>
+              <div className="space-y-3">
+                {/* Saved Address Option */}
+                <div
+                  onClick={() => {
+                    setUseSavedAddress(true);
+                    setForm({
+                      name: profile.name || "",
+                      email: profile.email || "",
+                      phone: profile.phone || "",
+                      address: profile.address || "",
+                      city: profile.city || "",
+                      postalCode: profile.postalCode || "",
+                    });
+                  }}
+                  className={`p-3 border-2 rounded-lg cursor-pointer transition ${
+                    useSavedAddress
+                      ? "border-yellow-500 bg-yellow-100"
+                      : "border-gray-200 hover:border-yellow-300"
+                  }`}
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="mt-1">
+                      {useSavedAddress ? (
+                        <Check className="text-yellow-600" size={18} />
+                      ) : (
+                        <div className="w-4 h-4 border-2 border-gray-300 rounded" />
+                      )}
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-800">Saved Address</p>
+                      <p className="text-sm text-gray-600 mt-1">
+                        {profile.name}, {profile.address}, {profile.city} - {profile.postalCode}
+                      </p>
+                      <p className="text-sm text-gray-600">{profile.phone}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* New Address Option */}
+                <div
+                  onClick={() => {
+                    setUseSavedAddress(false);
+                    setForm({
+                      name: profile.name || "",
+                      email: profile.email || "",
+                      phone: profile.phone || "",
+                      address: "",
+                      city: "",
+                      postalCode: "",
+                    });
+                  }}
+                  className={`p-3 border-2 rounded-lg cursor-pointer transition ${
+                    !useSavedAddress
+                      ? "border-yellow-500 bg-yellow-100"
+                      : "border-gray-200 hover:border-yellow-300"
+                  }`}
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="mt-1">
+                      {!useSavedAddress ? (
+                        <Check className="text-yellow-600" size={18} />
+                      ) : (
+                        <div className="w-4 h-4 border-2 border-gray-300 rounded" />
+                      )}
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-800 flex items-center gap-2">
+                        <Plus size={16} /> New Address
+                      </p>
+                      <p className="text-sm text-gray-600 mt-1">Enter a new shipping address</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="space-y-5">
             {fields.map(({ key, icon: Icon, label, textarea }) => (
@@ -198,10 +254,16 @@ const CheckoutPage = () => {
               </div>
             ))}
 
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" checked={saveAddress} onChange={(e) => setSaveAddress(e.target.checked)} />
-              <span className="text-sm">Save address to profile</span>
-            </label>
+            {!useSavedAddress && (
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={saveAddress}
+                  onChange={(e) => setSaveAddress(e.target.checked)}
+                />
+                <span className="text-sm">Save this address to profile for future orders</span>
+              </label>
+            )}
 
             <button onClick={placeOrder} disabled={loading} className="w-full cursor-pointer bg-yellow-500 hover:bg-yellow-600 text-white py-4 rounded-xl font-semibold transition-colors">
               {loading ? "Placing Order..." : "Place Order"}

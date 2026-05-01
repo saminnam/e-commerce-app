@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, lazy, Suspense } from "react";
 import "./assets/styles/global.css";
 import {
   BrowserRouter as Router,
@@ -7,23 +7,31 @@ import {
   useLocation,
 } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import ProductDetail from "./pages/product-detail/ProductDetail";
-import ProductPage from "./pages/products/ProductPage";
-import CartPage from "./pages/cart/CartPage";
-import CheckoutPage from "./pages/checkout/CheckoutPage";
 import FloatingMenu from "./components/FloatingMenu";
 import Home from "./pages/home/Home";
 import Footer from "./components/Footer";
 import ToastNotification from "./modals/ToastNotification";
-import AboutPage from "./pages/about-us/AboutPage";
-import BecomeaSeller from "./pages/become-a-seller/BecomeaSeller";
-import BlogPage from "./pages/blog/BlogPage";
-import ContactPage from "./pages/contact/ContactPage";
-import BlogDetail from "./pages/blog-details/BlogDetail";
-import ProfilePage from "./pages/profile/ProfilePage";
 import ProtectedRoute from "./components/ProtectedRoute";
 
-import AuthPage from "./pages/auth/AuthPage";
+// Lazy load components for better performance
+const ProductDetail = lazy(() => import("./pages/product-detail/ProductDetail"));
+const ProductPage = lazy(() => import("./pages/products/ProductPage"));
+const CartPage = lazy(() => import("./pages/cart/CartPage"));
+const CheckoutPage = lazy(() => import("./pages/checkout/CheckoutPage"));
+const AboutPage = lazy(() => import("./pages/about-us/AboutPage"));
+const BecomeaSeller = lazy(() => import("./pages/become-a-seller/BecomeaSeller"));
+const BlogPage = lazy(() => import("./pages/blog/BlogPage"));
+const ContactPage = lazy(() => import("./pages/contact/ContactPage"));
+const BlogDetail = lazy(() => import("./pages/blog-details/BlogDetail"));
+const ProfilePage = lazy(() => import("./pages/profile/ProfilePage"));
+const AuthPage = lazy(() => import("./pages/auth/AuthPage"));
+
+// Loading component for lazy loaded routes
+const LoadingFallback = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#E5B236]"></div>
+  </div>
+);
 
 const App = () => {
   const ScrollToTop = () => {
@@ -35,41 +43,44 @@ const App = () => {
 
     return null;
   };
+
   return (
     <>
       <ScrollToTop />
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/auth" element={<AuthPage />} />
-        <Route
-          path="/checkout"
-          element={
-            <ProtectedRoute>
-              <CheckoutPage />
-            </ProtectedRoute>
-          }
-        />
+      <Suspense fallback={<LoadingFallback />}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/auth" element={<AuthPage />} />
+          <Route
+            path="/checkout"
+            element={
+              <ProtectedRoute>
+                <CheckoutPage />
+              </ProtectedRoute>
+            }
+          />
 
-        {/* <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <ProfilePage />
-            </ProtectedRoute>
-          }
-        /> */}
+          {/* <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          /> */}
 
-        <Route path="about-us" element={<AboutPage />} />
-        <Route path="/products" element={<ProductPage />} />
-        <Route path="/product/:slug" element={<ProductDetail />} />
-        <Route path="/cart" element={<CartPage />} />
-        <Route path="/checkout" element={<CheckoutPage />} />
-        <Route path="/become-a-seller" element={<BecomeaSeller />} />
-        <Route path="/blogs" element={<BlogPage />} />
-        <Route path="/blogs/:slug" element={<BlogDetail />} />
-        <Route path="/contact-us" element={<ContactPage />} />
-      </Routes>
+          <Route path="about-us" element={<AboutPage />} />
+          <Route path="/products" element={<ProductPage />} />
+          <Route path="/product/:slug" element={<ProductDetail />} />
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/become-a-seller" element={<BecomeaSeller />} />
+          <Route path="/blogs" element={<BlogPage />} />
+          <Route path="/blogs/:slug" element={<BlogDetail />} />
+          <Route path="/contact-us" element={<ContactPage />} />
+        </Routes>
+      </Suspense>
       <Footer />
       <FloatingMenu />
       <ToastNotification />

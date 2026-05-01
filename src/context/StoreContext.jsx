@@ -1,10 +1,15 @@
-import { createContext, useState, useEffect, useMemo } from "react";
-import axios from "axios"; // Ensure axios is installed
+import { createContext, useState, useEffect, useMemo, useContext } from "react";
+import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 import { toast } from "react-toastify";
+import useDebounce from "../utils/useDebounce";
+import { AuthContext } from "./AuthContext";
 
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
+  const { user } = useContext(AuthContext);
+
   // 🟢 Data States
   const [products, setProducts] = useState([]); // Replaces static product_list
   const [loading, setLoading] = useState(true);
@@ -18,19 +23,23 @@ const StoreContextProvider = (props) => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortOrder, setSortOrder] = useState("");
   const [priceRange, setPriceRange] = useState([0, 10000]); // Set a high default
-  const [navbarSearch, setNavbarSearch] = useState("");
   const [filterSearch, setFilterSearch] = useState("");
 
-  // 1️⃣ FETCH DATA FROM API
+  // Debounce search values to reduce unnecessary re-renders
+  const debouncedFilterSearch = useDebounce(filterSearch, 300);
+
+  // 1️⃣ FETCH DATA FROM API (with pagination support)
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:5000/api/products");
-      setProducts(response.data);
+      const response = await axios.get("http://localhost:5000/api/products?limit=1000");
+      // Handle both old format (array) and new format (object with products key)
+      const productsData = response.data.products || response.data;
+      setProducts(productsData);
       
       // Auto-adjust price range based on actual data
-      if (response.data.length > 0) {
-        const maxPrice = Math.max(...response.data.map(p => p.price));
+      if (productsData.length > 0) {
+        const maxPrice = Math.max(...productsData.map(p => p.price));
         setPriceRange([0, maxPrice]);
       }
     } catch (error) {
@@ -45,16 +54,56 @@ const StoreContextProvider = (props) => {
     fetchProducts();
   }, []);
 
-  // 2️⃣ CART LOGIC (Remains similar, but uses 'products' state)
+  // 2️⃣ CART LOGIC - Sync with backend for logged-in users
+  const fetchCart = async () => {
+    if (!user) return;
+    try {
+      const response = await axiosInstance.get("/cart");
+      const items = {};
+      if (response.data && response.data.items) {
+        response.data.items.forEach((item) => {
+          items[item.productId._id] = item.quantity;
+        });
+      }
+      setCartItems(items);
+      localStorage.setItem("cartItems", JSON.stringify(items));
+    } catch (error) {
+      console.error("Failed to fetch cart:", error);
+    }
+  };
+
+  const saveCartToBackend = async (items) => {
+    if (!user) return;
+    try {
+      const itemsArray = Object.keys(items).map((productId) => ({
+        productId,
+        quantity: items[productId],
+      }));
+      await axiosInstance.post("/cart", { items: itemsArray });
+    } catch (error) {
+      console.error("Failed to save cart:", error);
+    }
+  };
+
   useEffect(() => {
     const savedCart = localStorage.getItem("cartItems");
     if (savedCart) setCartItems(JSON.parse(savedCart));
   }, []);
 
+  useEffect(() => {
+    if (user) fetchCart();
+    else {
+      // Clear cart from website when user logs out
+      setCartItems({});
+      localStorage.removeItem("cartItems");
+    }
+  }, [user]);
+
   const addToCart = (product) => {
     setCartItems((prev) => {
       const updated = { ...prev, [product._id]: (prev[product._id] || 0) + 1 };
       localStorage.setItem("cartItems", JSON.stringify(updated));
+      saveCartToBackend(updated);
       return updated;
     });
     toast.success(`${product.name} added to cart!`);
@@ -70,6 +119,7 @@ const StoreContextProvider = (props) => {
         if (updated[id] === 0) delete updated[id];
       }
       localStorage.setItem("cartItems", JSON.stringify(updated));
+      saveCartToBackend(updated);
       return updated;
     });
     toast.error(`${product.name} removed!`);
@@ -77,8 +127,10 @@ const StoreContextProvider = (props) => {
 
   const clearCart = () => {
     if (window.confirm("Clear entire cart?")) {
-      setCartItems({});
+      const updated = {};
+      setCartItems(updated);
       localStorage.removeItem("cartItems");
+      saveCartToBackend(updated);
       toast.info("Cart cleared");
     }
   };
@@ -92,7 +144,7 @@ const StoreContextProvider = (props) => {
     return total;
   };
 
-  // 3️⃣ FILTERING & SEARCHING (Client-side)
+  // 3️⃣ FILTERING & SEARCHING (Client-side with debounced search)
   const filteredProducts = useMemo(() => {
     let filtered = [...products];
 
@@ -104,11 +156,12 @@ const StoreContextProvider = (props) => {
       (p) => p.price >= priceRange[0] && p.price <= priceRange[1]
     );
 
-    const finalSearch = navbarSearch || filterSearch;
-    if (finalSearch.trim()) {
-      filtered = filtered.filter((p) =>
-        p.name.toLowerCase().includes(finalSearch.toLowerCase())
-      );
+    if (debouncedFilterSearch.trim()) {
+      const searchTermNoSpace = debouncedFilterSearch.toLowerCase().replace(/\s+/g, "");
+      filtered = filtered.filter((p) => {
+        const productNameNoSpace = p.name.toLowerCase().replace(/\s+/g, "");
+        return productNameNoSpace.includes(searchTermNoSpace);
+      });
     }
 
     if (sortOrder === "low-to-high") {
@@ -118,7 +171,7 @@ const StoreContextProvider = (props) => {
     }
 
     return filtered;
-  }, [products, selectedCategory, priceRange, sortOrder, navbarSearch, filterSearch]);
+  }, [products, selectedCategory, priceRange, sortOrder, debouncedFilterSearch]);
 
   const categories = ["All", ...new Set(products.map((p) => p.category))];
 
@@ -137,7 +190,6 @@ const StoreContextProvider = (props) => {
     sortOrder, setSortOrder,
     priceRange, setPriceRange,
     filterSearch, setFilterSearch,
-    navbarSearch, setNavbarSearch,
     loading, setLoading,
   };
 

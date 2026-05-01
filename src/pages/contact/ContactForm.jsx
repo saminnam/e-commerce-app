@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,6 +10,7 @@ import {
   Facebook,
   Radio,
   Youtube,
+  Loader2,
 } from "lucide-react";
 
 // ZOD SCHEMA
@@ -22,6 +23,9 @@ const contactSchema = z.object({
 });
 
 const ContactForm = () => {
+  const [contactInfo, setContactInfo] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   const {
     register,
     handleSubmit,
@@ -31,9 +35,27 @@ const ContactForm = () => {
     resolver: zodResolver(contactSchema),
   });
 
+  // Fetch contact information from API
+  useEffect(() => {
+    const fetchContactInfo = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/contact/info");
+        if (res.ok) {
+          const data = await res.json();
+          setContactInfo(data);
+        }
+      } catch (error) {
+        console.error("Error fetching contact info:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchContactInfo();
+  }, []);
+
   const onSubmit = async (data) => {
     try {
-      const res = await fetch("http://localhost:5000/api/contact", {
+      const res = await fetch("http://localhost:5000/api/contact/enquiry", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -124,111 +146,132 @@ const ContactForm = () => {
             </form>
           </div>
 
-          {/* RIGHT SECTION (NO CHANGES) */}
+          {/* RIGHT SECTION */}
           <div className="p-8 bg-black text-white rounded-lg">
             <h2 className="text-2xl text-[#E5B236] mb-8 relative pb-4">
               Contact Information
               <span className="absolute bottom-0 left-0 w-12 h-0.5 bg-[#E5B236]"></span>
             </h2>
 
-            {/* Location */}
-            <div className="flex items-start gap-4 mb-8">
-              <div className="w-12 h-12 bg-[#E5B236] flex items-center justify-center rounded-full text-xl">
-                <MapPin size={22} />
+            {loading ? (
+              <div className="flex items-center justify-center py-20">
+                <Loader2 className="animate-spin text-[#E5B236]" size={40} />
               </div>
-              <div>
-                <h3 className="text-lg mb-1">Our Location</h3>
-                <a
-                  href="https://maps.app.goo.gl/w1NTwN4vjaNUMxXg8"
-                  className="text-gray-300 leading-relaxed hover:text-[#E5B236] transition-animation"
-                >
-                  Near Eidgah Masjid, Angappan Street, <br /> Mannady, Chennai -
-                  600 001
-                </a>
-              </div>
-            </div>
+            ) : (
+              <>
+                {/* Location */}
+                <div className="flex items-start gap-4 mb-8">
+                  <div className="w-12 h-12 bg-[#E5B236] flex items-center justify-center rounded-full text-xl">
+                    <MapPin size={22} />
+                  </div>
+                  <div>
+                    <h3 className="text-lg mb-1">Our Location</h3>
+                    <a
+                      href={contactInfo?.googleMapsLink || "https://maps.app.goo.gl/w1NTwN4vjaNUMxXg8"}
+                      className="text-gray-300 leading-relaxed hover:text-[#E5B236] transition-animation"
+                    >
+                      {contactInfo?.address || "Near Eidgah Masjid, Angappan Street, Mannady, Chennai - 600 001"}
+                    </a>
+                  </div>
+                </div>
 
-            {/* Phone */}
-            <div className="flex items-start gap-4 mb-8">
-              <div className="w-12 h-12 bg-[#E5B236] flex items-center justify-center rounded-full text-xl">
-                <Phone size={22} />
-              </div>
-              <div>
-                <h3 className="text-lg mb-1">Phone Numbers</h3>
-                <p className="text-gray-300 leading-relaxed">
-                  <a
-                    href="tel:+917448888336"
-                    className="hover:text-[#E5B236] transition-animation"
-                  >
-                    +91 74488 88336
-                  </a>
-                </p>
-              </div>
-            </div>
+                {/* Phone */}
+                <div className="flex items-start gap-4 mb-8">
+                  <div className="w-12 h-12 bg-[#E5B236] flex items-center justify-center rounded-full text-xl">
+                    <Phone size={22} />
+                  </div>
+                  <div>
+                    <h3 className="text-lg mb-1">Phone Numbers</h3>
+                    <p className="text-gray-300 leading-relaxed">
+                      <a
+                        href={`tel:${contactInfo?.phone?.replace(/\s/g, "") || "+917448888336"}`}
+                        className="hover:text-[#E5B236] transition-animation"
+                      >
+                        {contactInfo?.phone || "+91 74488 88336"}
+                      </a>
+                    </p>
+                  </div>
+                </div>
 
-            {/* Email */}
-            <div className="flex items-start gap-4 mb-8">
-              <div className="w-12 h-12 bg-[#E5B236] flex items-center justify-center rounded-full text-xl">
-                <Mail size={22} />
-              </div>
-              <div>
-                <h3 className="text-lg mb-1">Email Address</h3>
-                <p className="text-gray-300 leading-relaxed">
-                  <a
-                    href="mailto:baqavibookcentre@gmail.com"
-                    className="hover:text-[#E5B236] transition-animation"
-                  >
-                    baqavibookcentre@gmail.com
-                  </a>
-                </p>
-              </div>
-            </div>
+                {/* Email */}
+                <div className="flex items-start gap-4 mb-8">
+                  <div className="w-12 h-12 bg-[#E5B236] flex items-center justify-center rounded-full text-xl">
+                    <Mail size={22} />
+                  </div>
+                  <div>
+                    <h3 className="text-lg mb-1">Email Address</h3>
+                    <p className="text-gray-300 leading-relaxed">
+                      <a
+                        href={`mailto:${contactInfo?.email || "baqavibookcentre@gmail.com"}`}
+                        className="hover:text-[#E5B236] transition-animation"
+                      >
+                        {contactInfo?.email || "baqavibookcentre@gmail.com"}
+                      </a>
+                    </p>
+                  </div>
+                </div>
 
-            <div className="mt-10 border-4 rounded-lg border-white">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m13!1m8!1m3!1d15543.904437821024!2d80.289125!3d13.1007!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTPCsDA2JzAyLjUiTiA4MMKwMTcnMzAuMSJF!5e0!3m2!1sen!2sin!4v1764492405085!5m2!1sen!2sin"
-                width="100%"
-                height="300"
-                allowfullscreen=""
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
-              ></iframe>
-            </div>
-            <div className="mt-10">
-              <h3 className="text-lg mb-4">Follow Us For More</h3>
-              {/* Social Icons */}
-              <div className="flex gap-4">
-                <a
-                  href="https://www.facebook.com/BaqaviBooks?rdid=46rRSBkAd9aifITY&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1CBcqbsNFV%2F#"
-                  className="w-10 h-10 bg-gray-700 flex items-center justify-center rounded-full text-white transition duration-300 hover:bg-blue-600 transform hover:-translate-y-1"
-                >
-                  <Facebook size={20} />
-                </a>
-                <a
-                  href="https://wa.me/+917448888336"
-                  className="w-10 h-10 bg-gray-700 text-white flex items-center justify-center rounded-full
-             transition duration-300 hover:bg-green-500 transform hover:-translate-y-1"
-                >
-                  <i class="fa-brands fa-whatsapp"></i>
-                </a>
+                {contactInfo?.mapEmbedUrl && (
+                  <div className="mt-10 border-4 rounded-lg border-white">
+                    <iframe
+                      src={contactInfo.mapEmbedUrl}
+                      width="100%"
+                      height="300"
+                      allowfullscreen=""
+                      loading="lazy"
+                      referrerpolicy="no-referrer-when-downgrade"
+                    ></iframe>
+                  </div>
+                )}
 
-                <a
-                  href="https://www.whatsapp.com/channel/0029VbAm1L15EjxsYm8ndw0b"
-                  className="w-10 h-10 bg-gray-700 flex items-center justify-center rounded-full text-white 
-             transition duration-300 hover:bg-green-600 transform hover:-translate-y-1"
-                >
-                  <Radio size={20} />
-                </a>
-
-                <a
-                  href="https://www.youtube.com/@baqavibookcentre"
-                  className="w-10 h-10 bg-gray-700 flex items-center justify-center rounded-full text-white 
-             transition duration-300 hover:bg-red-600 transform hover:-translate-y-1"
-                >
-                  <Youtube size={20} />
-                </a>
-              </div>
-            </div>
+                <div className="mt-10">
+                  <h3 className="text-lg mb-4">Follow Us For More</h3>
+                  {/* Social Icons */}
+                  <div className="flex gap-4">
+                    {contactInfo?.facebook && (
+                      <a
+                        href={contactInfo.facebook}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-10 h-10 bg-gray-700 flex items-center justify-center rounded-full text-white transition duration-300 hover:bg-blue-600 transform hover:-translate-y-1"
+                      >
+                        <Facebook size={20} />
+                      </a>
+                    )}
+                    {contactInfo?.whatsappChat && (
+                      <a
+                        href={contactInfo.whatsappChat}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-10 h-10 bg-gray-700 text-white flex items-center justify-center rounded-full transition duration-300 hover:bg-green-500 transform hover:-translate-y-1"
+                      >
+                        <i class="fa-brands fa-whatsapp"></i>
+                      </a>
+                    )}
+                    {contactInfo?.whatsappChannel && (
+                      <a
+                        href={contactInfo.whatsappChannel}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-10 h-10 bg-gray-700 flex items-center justify-center rounded-full text-white transition duration-300 hover:bg-green-600 transform hover:-translate-y-1"
+                      >
+                        <Radio size={20} />
+                      </a>
+                    )}
+                    {contactInfo?.youtube && (
+                      <a
+                        href={contactInfo.youtube}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-10 h-10 bg-gray-700 flex items-center justify-center rounded-full text-white transition duration-300 hover:bg-red-600 transform hover:-translate-y-1"
+                      >
+                        <Youtube size={20} />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

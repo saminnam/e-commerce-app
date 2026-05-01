@@ -13,27 +13,47 @@ export const ProfileProvider = ({ children }) => {
     try {
       const res = await axiosInstance.get("/profile");
       setProfile(res.data || null);
-    } catch {
-      setProfile(null);
+    } catch (error) {
+      // Handle 401 Unauthorized errors gracefully
+      if (error.response?.status === 401) {
+        console.log("User not authenticated or token expired");
+        setProfile(null);
+      } else {
+        console.error("Failed to fetch profile:", error.message);
+        setProfile(null);
+      }
     } finally {
       setLoading(false);
     }
   };
 
   const updateProfile = async (data) => {
-    const res = await axiosInstance.post("/profile", data);
-    setProfile(res.data); // This updates all components using useProfile()
+    try {
+      const res = await axiosInstance.post("/profile", data);
+      setProfile(res.data);
+      return res.data;
+    } catch (error) {
+      console.error("Failed to update profile:", error.message);
+      throw error;
+    }
   };
 
   const deleteProfile = async () => {
-    await axiosInstance.delete("/profile");
-    setProfile(null);
+    try {
+      await axiosInstance.delete("/profile");
+      setProfile(null);
+    } catch (error) {
+      console.error("Failed to delete profile:", error.message);
+      throw error;
+    }
   };
+
   useEffect(() => {
     if (user) {
       fetchProfile();
     } else {
       setProfile(null); // Clear profile on logout
+      setLoading(false);
     }
   }, [user]);
 
